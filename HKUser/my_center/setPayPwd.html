@@ -1,0 +1,95 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>设置支付密码</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../css/common-form.css" />
+		<link rel="stylesheet" href="../css/input.css" />
+		<style>
+			.mui-input-group .mui-input-row:after {
+				left: 0;
+			}
+			.mui-scroll {
+				width: 86%;
+				margin: 0 7%;
+			}
+			.mui-input-group {
+				margin: 30px 0 15px 0;
+			}
+			.mui-input-group input,
+			.mui-input-group .mui-input-row {
+				height: 50px;
+				padding: 0;
+			}
+			.mui-input-group:before {
+				height: 0;
+			}
+			.mui-icon.mui-icon-clear {
+				top: 14px !important;
+			}
+			.mui-row {
+				color: #999;
+				font-size: 14px;
+			}
+		</style>
+	</head>
+	<body>
+		<header class="header mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left main-font-color"></a>
+			<h1 class="mui-title main-font-color">设置支付密码</h1>
+		</header>	
+		<div class="mui-content mui-fullscreen mui-scroll-wrapper main-body-white">
+			<div class="mui-scroll">
+				<form class="mui-input-group">
+				    <div class="mui-input-row">
+				        <input type="password" class="mui-input-clear" placeholder="请输入您的支付密码" id="payPwd">
+				    </div>
+				    <div class="code mui-input-row">
+				        <input type="password" class="mui-input-clear" placeholder="请再次输入您的支付密码" id="repay">
+				    </div>
+				</form>
+				<div class="next">
+					<button id="next" type="button" class="mui-btn mui-btn-green">确定</button>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="../js/mui.min.js"></script>
+	<script type="text/javascript" src="../js/common.js" ></script>
+	<script type="text/javascript">
+		(function(_,doc,u,w){
+			_.init({swipeBack:true}),_(".mui-scroll-wrapper").scroll();
+			var pdata = {};
+			var payPwd = null,repay = null;
+			var payPwdObj = doc.getElementById("payPwd");
+			var repayObj = doc.getElementById("repay");
+			var nextObj = doc.getElementById("next");
+			_.plusReady(function(){
+				nextObj.addEventListener('tap', function() {
+					if(isEmojiCharacter(payPwdObj.value) || isEmojiCharacter(repayObj.value)){
+						_.toast("不支持表情输入");
+						return;
+					}
+					privateToken = w.getItem("privateToken");
+					pdata.privateToken = privateToken;
+					payPwd = payPwdObj.value.trim();
+					repay = repayObj.value.trim();
+					pdata.payPwd = payPwd;
+					pdata.rePayPwd = repay;
+					u.mypost("user_center/setPayPassword",pdata,true,function(data){
+						if(data.code == 0){
+							_.toast(data.msg);
+							u.close();
+							payPwdObj.value = "";
+							repayObj.value = "";
+						}else{
+							_.toast(data.msg);
+						}
+					},myerror);
+				});
+			})
+		})(mui,document,util,window)
+	</script>
+</html>

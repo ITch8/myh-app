@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="format-detection" content="telephone=no">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<title>消息列表</title>
+		<link rel="stylesheet" href="css/mui.min.css" />
+    	<link rel="stylesheet" href="css/common.css" />
+    	<link rel="stylesheet" href="css/pullRefresh.css" />
+    	<link rel="stylesheet" href="css/center/message_list.css" />
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">信息列表</h1>
+		</header>
+		<div id="mui-scroll-wrapper" class="mui-content mui-fullscreen mui-scroll-wrapper">
+			<div id="cases" class="mui-scroll">
+				<ul id="message-list" class="mui-table-view mui-table-view-striped mui-table-view-condensed"></ul>
+			</div> 
+		</div>
+	</body>
+	<script src="js/mui.min.js"></script>
+	<script src="js/mui.pullToRefresh.min.js"></script>
+	<script src="js/mui.pullToRefresh.material.min.js"></script>
+	<script src="js/common.js"></script>
+	<script>
+		(function(_,doc,u,w){
+			_.init(),_(".mui-scroll-wrapper").scroll();
+			var pdata = {},li = null,list = doc.getElementById('message-list'),_pull = null,privateToken = null,type = null,targetWeb = null,page = 0;
+			_.plusReady(function(){
+				privateToken = w.getItem("privateToken");
+				pdata.privateToken = privateToken;
+				//刷新
+				_pull = _('#cases').pullToRefresh({
+					down: {
+						callback: function() {
+							u.mypost('user_center/msgList',pdata, false, function(data) {
+								_pull.endPullDownToRefresh((data.data || []).length == 10);
+								if (data.code == 0) {
+									localStorage.setItem("allNewsNum",data.data.count || 0);
+									page = 1;
+									u.emptyHtml(list),getData(data.data || []);
+								}else{
+									_.toast(data.msg || '服务器异常');
+								}
+							}, function() {
+								_.toast('获取列表失败'), _pull.endPullDownToRefresh();
+							});
+						}
+					}
+				});
+				u.mypost('user_center/msgList', pdata, false, function(data) {
+					localStorage.setItem("allNewsNum",data.data.count || 0);
+					getData(data.data);
+				},myerror);
+			})
+			function getData(data){
+				_.each(data.msgList,function(i,obj){
+					li = doc.createElement("li");
+					li.id = obj.id;
+					var title = obj.docName || obj.packageTitle;
+					var officeName = obj.officeName || '';
+					var address = obj.address || '暂无详细地址';
+					if(obj.msgType == "留言问答"){
+						li.innerHTML = "<li data='"+obj.msgType+"' id='"+obj.id+"' class='mui-table-view-cell' style='border-bottom:1px solid #dedede;'>"+
+								            "<div class='mui-table'>"+
+								                "<div class='mui-table-cell mui-col-xs-10'>"+
+								                    "<h4 class='mui-ellipsis'>"+obj.docName+"</h4>"+
+								                "</div>"+
+								                "<div class='mui-table-cell mui-col-xs-2 mui-text-right'>"+
+								                    "<span class='mui-h5'>"+obj.msgType+"&nbsp;"+obj.state+"</span>"+
+								                    "<p class='message-time'>"+obj.dateline+"</p>"+
+								                "</div>"+
+								            "</div>"+
+								        "</li>";
+					}else if(obj.msgType == "在线问诊"){
+						li.innerHTML = "<li data='"+obj.msgType+"' id='"+obj.id+"' class='mui-table-view-cell' style='border-bottom:1px solid #dedede;'>"+
+								            "<div class='mui-table'>"+
+								                "<div class='mui-table-cell mui-col-xs-10'>"+
+								                    "<h4 class='mui-ellipsis'>"+obj.docName+"</h4>"+
+								                    "<p class='mui-h6 askContent'>"+obj.askContent+"</p>"+
+								                "</div>"+
+								                "<div class='mui-table-cell mui-col-xs-2 mui-text-right'>"+
+								                    "<span class='mui-h5'>"+obj.msgType+"&nbsp;"+obj.state+"</span>"+
+								                    "<p class='message-time'>"+obj.dateline+"</p>"+
+								                "</div>"+
+								            "</div>"+
+								        "</li>";
+					}else if(obj.msgType == "预约挂号"){
+						li.innerHTML = "<li data='"+obj.msgType+"' id='"+obj.id+"' class='mui-table-view-cell' style='border-bottom:1px solid #dedede;'>"+
+			            					"<div class='mui-table'>"+
+			               						"<div class='mui-table-cell mui-col-xs-10'>"+
+			                    					"<h4 class='mui-ellipsis-2'>"+obj.docName+"&nbsp;&nbsp;<span class='dep'>"+obj.officeName+"</span></h4>"+
+			                    					"<p class='mui-h6'>地址："+obj.address+"</p>"+
+			                					"</div>"+
+			               	 					"<div class='mui-table-cell mui-col-xs-2 mui-text-right'>"+
+			                    					"<span class='mui-h5'>"+obj.msgType+"&nbsp;"+obj.state+"</span>"+
+			                    					"<p class='message-time'>"+obj.dateline+"</p>"+
+			                					"</div>"+
+			            					"</div>"+
+			       	 					"</li>";
+					}else if(obj.msgType == "检测服务"){
+						li.innerHTML = "<li data='"+obj.msgType+"' id='"+obj.id+"' data1='"+obj.gid+"' class='mui-table-view-cell' style='border-bottom:1px solid #dedede;'>"+
+								            "<div class='mui-table'>"+
+								                "<div class='mui-table-cell mui-col-xs-10'>"+
+								                    "<h4 class='mui-ellipsis'>"+obj.packageTitle+"</h4>"+
+								                "</div>"+
+								                "<div class='mui-table-cell mui-col-xs-2 mui-text-right'>"+
+								                    "<span class='mui-h5'>"+obj.msgType+"&nbsp;"+obj.state+"</span>"+
+								                    "<p class='message-time'>"+obj.dateline+"</p>"+
+								                "</div>"+
+								            "</div>"+
+								        "</li>";
+					}else if(obj.msgType == "疫苗接种"){
+						li.innerHTML = "<li data='"+obj.msgType+"' id='"+obj.id+"' data1='"+obj.gid+"' class='mui-table-view-cell' style='border-bottom:1px solid #dedede;'>"+
+								            "<div class='mui-table'>"+
+								                "<div class='mui-table-cell mui-col-xs-10'>"+
+								                    "<h4 class='mui-ellipsis'>"+obj.packageTitle+"</h4>"+
+								                "</div>"+
+								                "<div class='mui-table-cell mui-col-xs-2 mui-text-right'>"+
+								                    "<span class='mui-h5'>"+obj.msgType+"&nbsp;"+obj.state+"</span>"+
+								                    "<p class='message-time'>"+obj.dateline+"</p>"+
+								                "</div>"+
+								            "</div>"+
+								        "</li>";
+					}else if(obj.msgType == "药品分配"){
+				        li.innerHTML = "<li data='"+obj.msgType+"' id='"+obj.id+"' data2='"+obj.medicineId+"' class='mui-table-view-cell' style='border-bottom:1px solid #dedede;'>"+
+					            "<div class='mui-table'>"+
+					                "<div class='mui-table-cell mui-col-xs-10'>"+
+					                    "<h4 class='mui-ellipsis'>"+obj.medicineName+"</h4>"+
+					                "</div>"+
+					                "<div class='mui-table-cell mui-col-xs-2 mui-text-right'>"+
+					                    "<span class='mui-h5'>"+obj.msgType+"&nbsp;"+(obj.guysName || '')+"</span>"+
+					                    "<p class='message-time'>"+obj.dateline+"</p>"+
+					                "</div>"+
+					            "</div>"+
+					        "</li>";
+					}
+					list.appendChild(li);
+				})
+			}
+			_('.mui-table-view').on('tap', 'li', function() {
+				var msgType = this.getAttribute("data");//类型
+				var gid = this.getAttribute("data1");//基因检测和疫苗接种的商品id
+				var medicineId = this.getAttribute("data2");//药品分配id
+				if(msgType == "留言问答"){
+					var ex1 = {
+						recordId:this.id
+					}
+					w.openView("my_center/qa_details.html",ex1);
+				}else if(msgType == "预约挂号"){
+					var ex2 = {
+						orderId:this.id
+					}
+					w.openView("my_center/order_detail.html",ex2);
+				}else if(msgType == "在线问诊"){
+					var ex3 = {
+						interviewId:this.id
+					}
+					w.openView("my_center/interview_details.html",ex3);
+				}else if(msgType == "检测服务"){
+					var ex4 = {
+						geneId:gid
+					}
+					w.openView("gene_detect/gene_detect_detail.html",ex4);
+				}else if(msgType == "疫苗接种"){
+					var ex5 = {
+						vaccinumId:gid
+					}
+					w.openView("vaccine/vaccine_detail.html",ex5);
+				}else if(msgType == "药品分配"){
+					var ex6 = {
+						mid:medicineId
+					}
+					w.openView("medicine_center/medicine_detail.html",ex6);
+				}
+			})
+		})(mui,document,util,window)
+	</script>
+</html>

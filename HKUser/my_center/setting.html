@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="format-detection" content="telephone=no">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<title>设置</title>
+		<link rel="stylesheet" href="../css/mui.min.css" />
+		<link rel="stylesheet" href="../css/common.css" />
+	</head>
+	<style>
+		.mui-content > .mui-table-view:first-child {
+			margin-top: 0;
+			font-size: 14px;
+		}
+		.mui-table-view-cell {
+			margin: 0;
+		}
+		.mui-table-view-cell:after{
+			height: 1px;left: 0;
+		}
+	</style>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">设置</h1>
+		</header>
+		<div class="mui-content">
+			<ul class="mui-table-view mui-table-view-chevron">
+				<li class="mui-table-view-cell">
+					<a id="feedback" class="mui-navigate-right">反馈意见</a>
+				</li>
+				<li class="mui-table-view-cell">
+					<a id="about" class="mui-navigate-right">关于软件</a>
+				</li>
+				<li class="mui-table-view-cell">
+					<a id="help" class="mui-navigate-right">帮助</a>
+				</li>
+			</ul>
+		</div>
+	</body>
+	<script src="../js/mui.min.js"></script>
+	<script src="../js/common.js"></script>
+	<script>
+		(function(_,doc,u,w){
+			
+			doc.getElementById("feedback").addEventListener('tap', function() {
+				if(!w.getUser()){
+					w.openView("../userLogin.html");
+				}else{
+					w.openView("feedback.html");
+				}
+			});
+			doc.getElementById("about").addEventListener('tap', function() {
+				w.openView("about_software.html");
+			});
+			doc.getElementById("help").addEventListener('tap', function() {
+				w.openView("help.html");
+			});
+		})(mui,document,util,window)
+	</script>
+</html>

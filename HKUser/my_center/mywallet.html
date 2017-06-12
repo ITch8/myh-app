@@ -1,0 +1,140 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>我的钱包</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link rel="stylesheet" href="../css/mui.min.css" />
+		<link rel="stylesheet" href="../css/my.css" />
+		<style>
+			body{
+				background: #f6f6f6;
+			}
+			header h1{
+				font-size: 18px;
+				
+			}
+			.mui-bar{
+				background: #33a2d7;
+				box-shadow: none;
+				border: none;				
+			}
+			.mui-bar h1{
+				color: #fff;
+				font-size: 18px;
+			}
+			.mui-bar a{
+				color: #fff;				
+			}
+			.mui-bar .baocun{
+				font-size: 14px;				
+				line-height: 28px;
+			}
+			.mui-content{				
+				background: #fff;				
+			}
+			.wallet-row{
+				background: #33a2d7;
+				color: #fff;
+				text-align: center;
+				padding: 30px 0;
+			}
+			.wallet-row>div{
+				margin-bottom: 10px;
+			}
+			
+			.wallet-row .wallet-ye{
+				font-size: 30px;
+				font-weight: 300;
+			}
+			.wallet-row .wallet-ye span{
+				font-size: 22px;
+			}
+			.width-line{
+				margin-top: 0 !important;
+			}
+			.mui-table-view-cell{
+				height: 45px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-pull-left mui-action-back mui-icon mui-icon-left-nav"></a>
+			<h1 id="title" class="mui-title">我的钱包</h1>	
+		</header>
+		<div class="mui-content" >
+			<div class="wallet-row">
+				<div class="wallet-zh">账户余额</div>
+				<div class="wallet-ye"><span>￥</span><span id="balance"></span></div>
+			</div>
+			<ul class="width-line mui-table-view mui-table-view-chevron" style="margin-top: 10px;">							
+				<li class="mui-table-view-cell" id="cz">
+					<div class="mui-navigate-right" >
+						<span class="mui-pull-left">充值</span>
+					</div>
+				</li>
+				<li class="mui-table-view-cell" id="tx">
+					<div class="mui-navigate-right" >
+						<span class="mui-pull-left">提现</span>
+					</div>
+				</li>
+				<li class="mui-table-view-cell" id="jl">
+					<div class="mui-navigate-right" >
+						<span class="mui-pull-left">交易记录</span>
+					</div>
+				</li>
+			</ul>
+		</div>
+	</body>
+	<script src="../js/mui.min.js"></script>
+	<script type="text/javascript" src="../js/common.js" ></script>
+	<script type="text/javascript">
+		mui.init({
+			swipeBack: false //启用右滑关闭功能
+		});
+		(function(_,doc,u,w){
+			_.init({swipeBack: false});
+			var pdata = {};
+			var money = null;
+			var privateToken = null;
+			var walletData = null;
+			_('.width-line').on('tap','#cz',function(){	      		
+	      		w.openView('recharge.html')
+	    	})
+			_('.width-line').on('tap','#tx',function(){	      		
+	      		w.openView('wallet_cash.html')
+	    	})
+			_('.width-line').on('tap','#jl',function(){	      		
+	      		w.openView('records.html')
+	    	})
+			_.plusReady(function(){
+				privateToken = w.getItem("privateToken");
+				pdata.privateToken = privateToken;
+				u.mypost("user_center/myMoneyIndex",pdata,true,function(data){
+					if(data.code == 0){
+						walletData = data.data[0][0];
+						money = walletData?walletData.amount:'0.00';
+						doc.getElementById("balance").textContent = money;
+					}
+				},myerror)
+			});
+		})(mui,document,util,window)
+		function walletData(){
+			var pdata = {};
+			var money = null;
+			var privateToken = null;
+			var walletData = null;
+			privateToken = window.getItem("privateToken");
+			pdata.privateToken = privateToken;
+			util.mypost("user_center/myMoneyIndex",pdata,true,function(data){
+				if(data.code == 0){
+					walletData = data.data[0][0];
+					money = walletData?walletData.amount:'0.00';
+					document.getElementById("balance").textContent = money;
+				}
+			},myerror)
+		}
+	</script>
+</html>

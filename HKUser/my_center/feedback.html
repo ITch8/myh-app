@@ -1,0 +1,88 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>反馈意见</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link rel="stylesheet" href="../css/mui.min.css" />
+		<link rel="stylesheet" href="../css/common.css" />
+		<style>
+			.mui-content{				
+				background: #fff;				
+			}
+			textarea{
+				margin-bottom: 0;
+				font-size: 12px;
+				padding: 10px 15px;
+				border-radius: 8px;
+			}
+			button{
+				width: 90%;
+				background: #33a2d7;
+				margin: 0 auto;
+				display: block;
+				border: none;
+				color: #fff;
+				height:33px;
+				border-radius: 22px;
+				margin-top: 20px;
+				font-size: 16px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-pull-left mui-action-back mui-icon mui-icon-left-nav"></a>
+			<h1 id="title" class="mui-title">反馈意见</h1>	
+		</header>
+		<div class="mui-content" >			
+			<div class="mui-input-row" style="margin: 15px 15px 0px 15px;">
+				<textarea id="content" name="status" rows="5" placeholder="请留下您的反馈意见" maxlength="300"></textarea>
+				<p class="mui-pull-right"><span id="counter">0</span>\300</p>
+			</div>
+			<button id="submit">提交</button>
+		</div>
+	</body>
+	<script src="../js/mui.min.js"></script>
+	<script src="../js/common.js"></script>
+	<script language="javascript"> 
+		(function(_,doc,u,w){
+			var pdata = {};
+			var content = null;
+			var privateToken = null;
+			var contentObj = doc.getElementById("content");
+			_.plusReady(function(){
+				privateToken = w.getItem("privateToken");
+				doc.getElementById("submit").addEventListener('tap',function(){
+					if(u.isNull(contentObj.value)){
+						_.toast("请输入您的反馈意见");
+						return;
+					}else if(contentObj.value.length > 300){
+						_.toast("反馈意见不能超过300字");
+						return;
+					}else if(isEmojiCharacter(contentObj.value)){
+						_.toast("不支持表情输入");
+						return;
+					}
+					pdata.privateToken = privateToken;
+					pdata.content = contentObj.value.trim();
+					u.mypost("user_center/feedback",pdata,true,function(data){
+						if(data.code == 0){
+							w.openView("setting.html");
+						    _.toast("反馈意见提交成功");
+						    contentObj.value = "";
+						    doc.getElementById("counter").textContent = 0;
+						}else{
+							_.toast(data.msg);
+						}
+					},myerror);
+				});
+				contentObj.addEventListener('input',function(){
+					doc.getElementById("counter").textContent = contentObj.value.length;
+				})
+			})
+			
+		})(mui,document,util,window)
+	</script>
+</html>

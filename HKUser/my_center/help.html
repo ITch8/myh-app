@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="format-detection" content="telephone=no">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<title>帮助</title>
+		<link rel="stylesheet" href="../css/mui.min.css" />
+		<link rel="stylesheet" href="../css/common.css" />
+	</head>
+	<style>
+		.mui-content > .mui-table-view:first-child {
+			margin-top: 0px;
+			font-size: 14px;
+		}
+		.help-question{
+			color: #33A2D7;
+			font-size: 15px;
+		}
+		.help-answer{
+			width: 100%;
+			padding-left: 25px;
+			font-size: 13px;
+			display: -webkit-box;
+		    overflow: hidden;
+		    white-space: normal !important;
+		    text-overflow: ellipsis;
+		    word-wrap: break-word;
+		    -webkit-line-clamp: 2;
+		    -webkit-box-orient: vertical;
+		}
+	</style>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">帮助</h1>
+		</header>
+		<div class="mui-content">
+			<ul id="help-list" class="mui-table-view"></ul>
+		</div>
+	</body>
+	<script src="../js/mui.min.js"></script>
+	<script src="../js/common.js"></script>
+	<script>
+		(function(_,doc,u,w){
+			_.init({swipeBack: true});
+			var pdata = {},li = null,list = doc.getElementById("help-list");
+			_.plusReady(function(){
+				pdata = {
+					type:1
+				}
+				u.mypost("api/getHelpList",pdata,true,function(data){
+					if(data.code == 0){
+						_.each(data.data,function(i,obj){
+							li = doc.createElement("li");
+							li.id = obj.id;
+							li.className = "mui-table-view-cell mui-media";
+							li.innerHTML = "<div class='help-question'>"+(i+1)+"."+obj.title+""+
+												"<p class='help-answer'>"+obj.description+"</p></div>";
+							list.appendChild(li);
+						})
+					}else{
+						list.innerHTML = nodataHtmlInfo;
+					}
+				},myerror);
+				_('.mui-table-view').on('tap','li',function(){	      		
+		      		w.openView('help_detail.html',{helpId:this.id});
+		    	})
+			})
+		})(mui,document,util,window)
+	</script>
+</html>

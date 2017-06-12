@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="format-detection" content="telephone=no">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<title>交流圈</title>
+		<link rel="stylesheet" href="../css/mui.min.css" />
+		<link rel="stylesheet" href="../css/common.css" />
+		<link rel="stylesheet" href="../css/pullRefresh.css" />
+	</head>
+	<style>
+		.introduce-info-btn {
+			border-bottom: 1px solid #DEDEDE;
+		}
+		
+		.mui-segmented-control {
+			border: 0;
+			box-shadow: 0 1px 6px transparent;
+			font-size: 14px;
+		}
+		
+		.mui-segmented-control .mui-control-item {
+			background-color: #FFFFFF;
+			height: 35px;
+			line-height: 35px;
+			color: #666;
+			border-left: 1px solid #DEDEDE;
+		}
+		
+		.mui-segmented-control .mui-control-item.mui-active {
+			color: #33A2D7;
+			background-color: #FFFFFF;
+			border-bottom: 2px solid #33A2D7;
+		}
+		
+		.doc-list {
+			width: 100%;
+			overflow: hidden;
+			background-color: #FFFFFF;
+			margin-top: 5px;
+			margin-bottom: 15px;
+		}
+		
+		.doc-img {
+			color: #666;
+			font-size: 13px;
+			margin-left: 2px;
+		}
+		
+		.great {
+			color: #666;
+			font-size: 13px;
+		}
+		.post-title{
+			width: 70%;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+			float: left;
+			font-size: 15px;
+			margin-right: 8px;
+		}
+		.praise-img.p-active{
+			width: 25px;
+			content: url(../images/praise-after.png);
+		}
+		.praise-img {
+			width: 25px;
+			content: url(../images/praise-before.png);
+		}
+		.praise-img-number{
+			font-size: 12px;
+		}
+		.mui-table-view-cell.mui-media{
+			padding: 11px 0 11px 10px;
+		}
+		.mui-media-object.mui-pull-left{
+			height: 60px;
+			width: 60px;
+			border-radius: 100%;
+		}
+		.mui-table-view-cell.mui-active{
+			background-color: #FFFFFF;
+		}
+	</style>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<h1 class="mui-title">交流圈</h1>
+		</header>
+		<div class="mui-content">
+			<div id="mui-scroll-wrapper" class="mui-fullscreen mui-scroll-wrapper" style="padding-bottom: 50px;">
+				<div id="cases" class="mui-scroll" style="top: 44px;">
+					<div class="introduce-info-btn">
+						<div id="segmentedControl" class="mui-segmented-control">
+							<a id="1" class="mui-control-item mui-active" href="#hot">
+								<div class="hot">本周热门</div>
+							</a>
+							<a id="2" class="mui-control-item" href="#new">最新</a>
+						</div>
+					</div>
+					<div id="hot" class="doc-list mui-control-content mui-active">
+						<ul id="hot-list" class="mui-table-view"></ul>
+					</div>
+					<div id="new" class="doc-list mui-control-content">
+						<ul id="new-list" class="mui-table-view"></ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script src="../js/mui.min.js"></script>
+	<script src="../js/mui.pullToRefresh.min.js"></script>
+	<script src="../js/mui.pullToRefresh.material.min.js"></script>
+	<script src="../js/common.js"></script>
+	<script>
+		(function(_,doc,u,w){
+			_.init({swipeBack:false}),_(".mui-scroll-wrapper").scroll();
+			var flag  = 1,_pull = null;//默认是1获取到本周最热列表，2获取到最新的帖子列表
+			var list = null,hot_list = doc.getElementById('hot-list'),new_list = doc.getElementById("new-list");
+			var pdata = {offset:0,limit:5};
+			var page = 0;
+			var imgServer = null;
+			var hasTaped = false;
+			var privateToken = null;
+			var isClickLike = true;//判断是否已点赞
+			_.plusReady(function(){
+				privateToken = w.getItem("privateToken");
+				pdata.privateToken = privateToken;
+				_pull = _('#cases').pullToRefresh({
+					down: {
+						callback: function() {
+							list = flag == 1?hot_list:new_list;
+							pdata.flag = flag;
+							pdata.offset = 0;
+							pdata.privateToken = w.getItem("privateToken");
+							u.mypost('post/listPost',pdata, false, function(data) {
+								_pull.endPullDownToRefresh((data.data.postList || []).length == 5);
+								if (data.code == 0) {
+									page = 1;
+									u.emptyHtml(list), renderList(data.data || []);
+								}else{
+									_.toast(data.msg || '服务器异常');
+								}
+							}, function() {
+								_.toast('获取列表失败'), _pull.endPullDownToRefresh();
+							});
+						}
+					},up: {
+						callback: function() {
+							list = flag == 1?hot_list:new_list;
+							pdata.flag = flag;
+							pdata.offset=(pdata.limit)*page;
+							u.mypost('post/listPost',pdata, false, function(data) {
+								_pull.endPullUpToRefresh((data.data.postList || []).length == 10);
+								if (data.code  == 0) {
+									page++;
+									renderList(data.data || []);
+								} else {
+									_.toast(data.msg ||'服务器异常');
+								}
+							}, function() {
+								_.toast('获取列表失败'), _pull.endPullUpToRefresh(true);
+							});
+						},auto: true
+					}
+				});
+			});
+			/**
+			 * 获取最新
+			 * */
+			function getNewList(){
+				list = new_list;
+				pdata.flag = flag;
+				pdata.offset = 0;
+				u.mypost('post/listPost',pdata, true, function(data) {
+					if (data.code == 0) {
+						u.emptyHtml(new_list), renderList(data.data || []);
+					}else{
+						_.toast(data.msg || '服务器异常');
+					}
+				}, function() {
+					_.toast('获取列表失败');
+				});
+			}
+			function getHotList(){
+				list = hot_list;
+				pdata.flag = flag;
+				pdata.offset = 0;
+				u.mypost('post/listPost',pdata, true, function(data) {
+					if (data.code == 0) {
+						u.emptyHtml(hot_list), renderList(data.data || []);
+					}else{
+						_.toast(data.msg || '服务器异常');
+					}
+				}, function() {
+					_.toast('获取列表失败');
+				});
+			}
+			function allList(){
+				mui('#mui-scroll-wrapper').scroll().scrollTo(0,0,100);
+				pdata.flag = flag;
+				pdata.offset = 0;
+				u.mypost('post/listPost',pdata, true, function(data) {
+					if (data.code == 0) {
+						u.emptyHtml(list), renderList(data.data || []);
+					}else{
+						_.toast(data.msg || '服务器异常');
+					}
+				}, function() {
+					_.toast('获取列表失败');
+				});
+			}
+			
+			//处理数据
+			function renderList(data){
+				if(data.postList && data.postList.length > 0){
+					var domItem = null;
+					imgServer = data.imgServer;
+					var cls = null;
+					var img = null;
+					var isAnonymous = null;
+					var postNickName = null;
+					var clickCount = null;
+					var countLen = null;
+					_.each(data.postList,function(i,o){
+						domItem = doc.createElement("li");
+						domItem.id = o.id;
+						if(o.avatar == ""){
+							img = "../images/default-person.png";
+						}else{
+							img = imgServer+o.avatar;
+						}
+						if(o.isAnonymous == "0"){
+							postNickName = o.postNickname;
+						}else if(o.isAnonymous == "1"){
+							postNickName = "匿名";
+						}
+						countLen = o.clickCount.toString().length;
+						if(countLen <= 4){
+							clickCount = o.clickCount;
+						}else if(countLen == 5){
+							clickCount = o.clickCount.substring(0,1)
+							clickCount = clickCount + "万";
+						}else if(countLen == 6){
+							clickCount = o.clickCount.substring(0,2);
+							clickCount = clickCount + "万";
+						}else if(countLen == 7){
+							clickCount = o.clickCount.substring(0,3);
+							clickCount = clickCount + "万";
+						}else if(countLen == 8){
+							clickCount = o.clickCount.substring(0,4);
+							clickCount = clickCount + "万";
+						}
+						cls = o.collId?"praise-img p-active":"praise-img";
+						domItem.className = "mui-table-view-cell mui-media";
+						domItem.innerHTML = "<img class='mui-media-object mui-pull-left' src='"+img+"'>"+
+							"<div class='mui-media-body'>"+
+								"<span class='post-title'>"+o.postTitle+"</span>"+
+								"<span id='"+o.id+"' data='"+o.collId+"' class='praise "+cls+"'></span><span class='doc-img'>"+clickCount+"</span>"+
+								"<p class='mui-ellipsis doc-img'>"+postNickName+"&emsp;时间："+o.postDate+"</p>"+
+							"</div><div class='mui-ellipsis great'>"+o.content+"</div>";
+						list.appendChild(domItem);
+					});
+				}
+			}
+			//进入详情页面
+			_('.mui-table-view').on('tap','li',function(){
+				var ex = {
+					postId:this.id
+				}
+	      		w.openView('post_detail',ex);
+	    	})
+			//点赞或取消点赞
+			_('.mui-table-view').on('tap','.praise',function(e){
+				if(!w.getUser()){
+					w.openView("../userLogin.html");
+				}else{
+					var pdata = {};
+					privateToken = w.getItem("privateToken");
+					pdata.privateToken = privateToken;
+					var self = this;
+					var nextSbilingNum = Number(self.nextSibling.innerHTML||'0');
+					var postId = this.id;
+					isClickLike = "null" == this.getAttribute("data")?false:true;//是否已点赞
+					if(isClickLike){
+						var pdata ={
+							postId:postId,
+							privateToken:privateToken
+						}
+						//取消点赞
+						u.mypost('post/cancelLike',pdata, false, function(data) {
+							if (data.code  == 0) {
+								_.toast("取消成功");
+								isClickLike = false;
+								toggleClass(self,"p-active");
+								self.nextSibling.innerHTML = nextSbilingNum>0?(nextSbilingNum - 1):'0';
+								allList();//刷新全部
+							} else {
+								_.toast("取消失败");
+							}
+						},myerror);
+					}else{
+						var pdata ={
+							postId:postId,
+							privateToken:privateToken
+						}
+						//点赞
+						u.mypost("post/clickLike",pdata,false,function(data){
+							if(data.code == 0){
+								u.mypost("post/listPost",pdata,true,function(data){
+									if(data.code == 0){
+										_.toast("点赞成功");
+										isClickLike = true;
+										toggleClass(self,"p-active");
+										self.nextSibling.innerHTML = nextSbilingNum + 1;
+										allList();//刷新全部
+									}
+								},myerror);
+							}else{
+								_.toast("点赞失败");
+							}
+						},myerror);
+					}
+				}
+				e.stopPropagation();
+	    	})
+			//选择tab 赋值flag
+			_("#segmentedControl").on("tap","a",function(){
+				flag = this.id;
+				if("2" == this.id && !hasTaped){
+					hasTaped = true;
+					getNewList();
+				}
+			})
+		})(mui,document,util,window)
+	</script>
+</html>

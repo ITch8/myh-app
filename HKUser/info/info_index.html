@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="format-detection" content="telephone=no">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<title>资讯</title>
+		<link rel="stylesheet" href="../css/mui.min.css" />
+		<link rel="stylesheet" href="../css/common.css" />
+		<link rel="stylesheet" href="../css/pullRefresh.css" />
+		<link rel="stylesheet" href="../css/info/info_index.css" />
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">资讯</h1>
+		</header>
+		<div id="mui-scroll-wrapper" class="mui-content mui-fullscreen mui-scroll-wrapper">
+			<form>
+				<div class="mui-input-row mui-search search-input">
+					<input type="search" id="keyword" class="mui-input-clear" placeholder="输入关键字或标签搜索">
+				</div>
+			</form>
+			<div id="cases" class="mui-scroll">
+				<div class="message-list">
+					<ul id="message-list" class="mui-table-view"></ul>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="../js/mui.min.js"></script>
+	<script type="text/javascript" src="../js/mui.pullToRefresh.min.js"></script>
+	<script type="text/javascript" src="../js/mui.pullToRefresh.material.min.js"></script>
+	<script type="text/javascript" src="../js/common.js"></script>
+	<script>
+		(function(_, doc, u, w) {
+			_.init({swipeBack: false}), _(".mui-scroll-wrapper").scroll();
+			var list = doc.getElementById('message-list'),keywordPro = doc.getElementById("keyword");
+			var pdata = {offset: 0,limit: 5},imgserver = null,_pull = null;
+			var page = 0,privateToken = null;
+			_.plusReady(function() {
+				_pull = _('#cases').pullToRefresh({
+					down: {
+						callback: function() {
+							pdata.offset = 0;
+							pdata.keyword = "";
+							keywordPro.value = "";
+							doc.activeElement.blur();
+							u.mypost('news/getNewsList', pdata, false, function(data) {
+								_pull.endPullDownToRefresh((data.data.news || []).length == pdata.limit);
+								if(data.code == 0) {
+									page = 1;
+									u.emptyHtml(list), infoList(data.data || []);
+								} else {
+									_.toast(data.msg || '服务器异常');
+								}
+							}, function() {
+								_.toast('获取列表失败'), _pull.endPullDownToRefresh();
+							});
+						}
+					},
+					up: {
+						callback: function() {
+							pdata.offset = (pdata.limit) * page;
+							u.mypost('news/getNewsList', pdata, false, function(data) {
+								_pull.endPullUpToRefresh((data.data.news || []).length < pdata.limit);
+								if(data.code == 0) {
+									page++;
+									infoList(data.data || []);
+								} else {
+									_.toast(data.msg || '服务器异常');
+								}
+							}, function() {
+								_.toast('获取列表失败'), _pull.endPullUpToRefresh(true);
+							});
+						},
+						auto: true
+					}
+				});
+			});
+			
+			//列表赋值
+			function infoList(data) {
+				imgserver = data.imgServer;
+				var li = null;
+				_.each(data.news || [], function(i, obj) {
+					li = doc.createElement("li");
+					li.id = obj.nid;
+					var img = obj.thumbnail == "" ? "images/default-news.png" : imgserver + obj.thumbnail;
+					li.className = "mui-table-view-cell mui-media";
+					li.innerHTML = "<img class='mui-media-object mui-pull-left' src='" + img + "'>" +
+						"<div class='mui-media-body'>" +
+						"<div class='mui-ellipsis-2 font-size-14 min-h'>" + obj.title + "</div>" +
+						"<p class='vac'>" + obj.tag + "<span class='mui-pull-right font-color-666'><i class='mui-icon mui-icon-person font-size-18'></i>" + obj.author + "&ensp;&ensp;" + (obj.createTime && obj.createTime.substr(0, 10)) + "</span></p>" +
+						"</div>";
+					list.appendChild(li);
+				})
+			}
+			
+			
+			_('.mui-table-view').on('tap', 'li', function(e) {
+				if(!w.getUser()) {
+					w.openView("../userLogin.html");
+				} else {
+					w.openView('info_detail.html', {
+						infoId: this.id
+					});
+				}
+			})
+			//搜索	
+			function searchKey(key) {
+				pdata.keyword = key;
+				pdata.offset = 0;
+				u.mypost('news/getNewsList', pdata, true, function(data) {
+					if(data.code == 0) {
+						u.emptyHtml(list), infoList(data.data || []);
+					} else {
+						_.toast(data.msg || '服务器异常');
+					}
+				}, function() {
+					_.toast('获取列表失败');
+				});
+			}
+			//关键字搜索
+			keywordPro.addEventListener('keypress', function(e) {
+				if(isEmojiCharacter(keywordPro.value)) {
+					_.toast("不支持表情输入");
+					e.preventDefault(); // 阻止默认事件
+					return;
+				}
+				if(e.keyCode == "13") {
+					doc.activeElement.blur();
+					searchKey(keywordPro.value);
+					e.preventDefault(); // 阻止默认事件
+				}
+			})
+		})(mui, document, util, window)
+	</script>
+</html>

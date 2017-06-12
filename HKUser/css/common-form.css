@@ -1,0 +1,4 @@
+/**
+ * body ,标题栏背景 都为白色
+ * */
+.header,.main-body-white{background-color:#FFFFFF}.header{box-shadow:0 1px 0 #ccc}.header2{background-color:#32A3D6}.header .mui-btn-link,.header .mui-icon.mui-icon-left-nav,.header .mui-title{color:#32A3D6}.mui-title{line-height:48px}.next{text-align:center}.next .mui-btn-grey{background-color:#fcd865;width:80%;color:#6d3f12;font-size:18px;height:35px;border-radius:40px;margin:30px 0 15px}.next .mui-btn-green{background-color:#32a3d6;width:100%;color:#fff;font-size:16px;height:33px;border-radius:40px;margin:30px 0 15px;border:0}.next .mui-btn-green:enabled:active{background-color:#007aff;border:0}.mui-btn:disabled{background-color:darkgray}

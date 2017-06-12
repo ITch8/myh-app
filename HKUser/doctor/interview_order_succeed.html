@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="format-detection" content="telephone=no">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<title>预约成功</title>
+		<link rel="stylesheet" href="../css/common.css" />
+		<link rel="stylesheet" href="../css/mui.min.css">
+		<link rel="stylesheet" href="../css/order.css" />
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">预约成功</h1>
+		</header>
+		<div class="mui-content">
+			<div class="order-audit">
+				<div><img src="../images/order-bg.png" /></div>
+				<div class="commit-success-btn">
+					<div class="commit-success-text">
+						<img src="../images/succeed.png"><br /> 预约成功
+					</div>
+				</div>
+				<div class="order-audit-content">
+					<div class="waiting">您的预约时间为：2016年8月1日 09:00<br/>地址为：广东省深圳市南山区粤海一道</div>
+					<div class="order-audit-btn">
+						<div class="check-btn" id="check-answer">查看我的问诊</div>
+						<div class="return-btn" id="return-index">返回首页</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script src="../js/mui.min.js"></script>
+	<script type="text/javascript" src="../js/common.js" ></script>
+	<script>
+		(function(_,doc,u,w){
+			doc.getElementById("return-index").addEventListener('tap', function() {
+				w.toIndex(0);
+			});
+			doc.getElementById("check-answer").addEventListener('tap', function() {
+				w.openView("../my_center/myInterview.html");
+			});
+		})(mui,document,util,window)
+	</script>
+</html>

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="format-detection" content="telephone=no">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<title>病历管理</title>
+		<link rel="stylesheet" href="../css/mui.min.css" />
+    	<link rel="stylesheet" href="../css/common.css" />
+    	<link rel="stylesheet" href="../css/case.css" />
+    	<link rel="stylesheet" href="../css/pullRefresh.css" />
+	</head>
+	<style>
+		.add-case img {
+			height: 20px;
+		}
+		.case-title{
+			color: #666;
+		}
+		.detail-content{
+			white-space: pre-wrap;	/*中文换行*/
+			word-break: break-all;/*英文换行*/
+		}
+		.mui-bar .mui-btn-link {
+		    line-height: 55px;
+	    }
+	</style>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">病历管理</h1>
+			<a class="mui-btn mui-btn-link mui-pull-right mui-btn-blue add-case" id="add-case"><img src="../images/add.png"></a>
+		</header>
+		<div id="mui-scroll-wrapper" class="mui-content mui-fullscreen mui-scroll-wrapper">
+			<div id="cases" class="mui-scroll">
+				<div id="case-list"></div>
+			</div>
+		</div>
+	</body>
+	<script src="../js/mui.min.js"></script>
+	<script src="../js/mui.pullToRefresh.min.js"></script>
+	<script src="../js/mui.pullToRefresh.material.min.js"></script>
+	<script src="../js/common.js"></script>
+	<script>
+		(function(_,doc,u,w){
+			_.init({swipeBack:true}),_(".mui-scroll-wrapper").scroll();
+			//添加病历
+			doc.getElementById("add-case").addEventListener('tap',function(){
+				w.openView("add_case.html");
+			});
+			var list = doc.getElementById('case-list');
+			var pdata = {offset:0,limit:6}, div = null,_pull = null;
+			var page = 0,privateToken = null,stageType = null;
+			_.plusReady(function(){
+				privateToken = w.getItem("privateToken");
+				pdata.privateToken = privateToken;
+				_pull = _('#cases').pullToRefresh({
+					down: {
+						callback: function() {
+							pdata.offset = 0;
+							u.mypost('medical/getIllnessList',pdata, false, function(data) {
+								_pull.endPullDownToRefresh((data.data || []).length == 6);
+								if (data.code == 0) {
+									page = 1;
+									u.emptyHtml(list), caseList(data.data || []);
+								}else{
+									_.toast(data.msg || '服务器异常');
+								}
+							}, function() {
+								_.toast('获取列表失败'), _pull.endPullDownToRefresh();
+							});
+						}
+					}
+				});
+				u.mypost("medical/getIllnessList",pdata,true,function(data){
+					caseList(data.data);
+				},myerror);
+			})
+			function caseList(data){
+				_.each(data[0],function(i,obj){
+					div = doc.createElement("div");
+					div.id = obj.illId;
+					//分期
+					stageType = "";
+					if(obj.stages == 1){
+						stageType = "Ⅰ期";
+					}else if(obj.stages == 2){
+						stageType = "Ⅱ期";
+					}else if(obj.stages == 3){
+						stageType = "Ⅲ期";
+					}else if(obj.stages == 4){
+						stageType = "Ⅳ期";
+					}else if(obj.stages == 0){
+						stageType = "无";
+					}
+					div.innerHTML = "<div class='case-item'><div class='case-info'><div class='caseName'>"+obj.illName+"</div><div class='sex'><span class='case-title'>性别：</span>"+(obj.sex == 1?'男':'女')+"</div><div class='age'><span class='case-title'>年龄：</span>"+obj.age+"</div></div>"+
+									"<div class='case-detail'>"+
+									"<div class='case-detail-item'><div class='detail-title'>就诊人：</div>"+obj.realname+"</div>"+
+									"<div class='case-detail-item'><div class='detail-title'>过敏史：</div>"+obj.allergyHistory+"</div>"+
+									"<div class='case-detail-item'><div class='detail-title'>诊断：</div>"+obj.result+"</div>"+
+									"<div class='case-detail-item'><div class='detail-title'>分期：</div>"+stageType+"</div>"+
+									"<div class='case-detail-item'><div class='detail-title'>基本病情：</div><div class='detail-content'>"+obj.situation+"</div></div>"+
+									"</div></div>";
+					list.appendChild(div);
+				})
+			}
+			//病历详情
+			_('.mui-content').on('tap','.case-item',function(){	
+	      		w.openView('case_detail.html',{illId:this.parentNode.id});
+	    	})
+		})(mui,document,util,window)
+		function getCaseList(){
+			var list = document.getElementById('case-list');
+			list.innerHTML = "";//清空之前的数据
+			var pdata = {offset:0,limit:6}
+			var stageType = null;
+			privateToken = window.getItem("privateToken");
+			pdata.privateToken = privateToken;
+			util.mypost("medical/getIllnessList",pdata,true,function(data){
+				mui.each(data.data[0],function(i,obj){
+					div = document.createElement("div");
+					div.id = obj.illId;
+					//分期
+					stageType = "";
+					if(obj.stages == 1){
+						stageType = "Ⅰ期";
+					}else if(obj.stages == 2){
+						stageType = "Ⅱ期";
+					}else if(obj.stages == 3){
+						stageType = "Ⅲ期";
+					}else if(obj.stages == 4){
+						stageType = "Ⅳ期";
+					}else if(obj.stages == 0){
+						stageType = "无";
+					}
+					div.innerHTML = "<div class='case-item'><div class='case-info'><div class='caseName'>"+obj.illName+"</div><div class='sex'><span class='case-title'>性别：</span>"+(obj.sex == 1?'男':'女')+"</div><div class='age'><span class='case-title'>年龄：</span>"+obj.age+"</div></div>"+
+									"<div class='case-detail'>"+
+									"<div class='case-detail-item'><div class='detail-title'>就诊人：</div>"+obj.realname+"</div>"+
+									"<div class='case-detail-item'><div class='detail-title'>过敏史：</div>"+obj.allergyHistory+"</div>"+
+									"<div class='case-detail-item'><div class='detail-title'>诊断：</div>"+obj.result+"</div>"+
+									"<div class='case-detail-item'><div class='detail-title'>分期：</div>"+stageType+"</div>"+
+									"<div class='case-detail-item'><div class='detail-title'>基本病情：</div><div class='detail-content'>"+obj.situation+"</div></div>"+
+									"</div></div>";
+					list.appendChild(div);
+				})
+			},myerror)
+		}
+	</script>
+</html>

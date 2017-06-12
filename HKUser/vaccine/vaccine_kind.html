@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="format-detection" content="telephone=no">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<title>疫苗种类</title>
+		<link rel="stylesheet" href="../css/mui.min.css" />
+		<link rel="stylesheet" href="../css/common.css" />
+		<link rel="stylesheet" href="../css/pullRefresh.css" />
+		<link rel="stylesheet" href="../css/list.css" />
+		<link rel="stylesheet" href="../css/medicine/vaccine_kind.css" />
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title up" id="menu-btn"><span id="vaccine-title">疫苗种类</span><i class="up-nav"></i></h1>
+		</header>
+		<div id="mui-scroll-wrapper" class="mui-content mui-fullscreen mui-scroll-wrapper">
+			<div class="form-bg"><form >
+					<div class="mui-input-row mui-search search-input">
+						<input type="search" class="mui-input-clear" placeholder="点击搜索疫苗" id="keyword">
+					</div>
+				</form></div>
+			<div id="cases" class="mui-scroll">
+				<div id="vaccine-list" class="gene-content"></div>
+			</div>	
+		</div>
+		<div id="menu-wrapper" class="menu-wrapper mui-hidden">
+			<ul id="vaccineList" class="mui-table-view mui-table-view-inverted">
+				<li class="mui-table-view-cell">全部</li>
+				<li id="2" class="mui-table-view-cell">成人疫苗</li>
+				<li id="1" class="mui-table-view-cell">儿童疫苗</li>
+			</ul>
+		</div>
+		<div id="backdrop"></div>
+	</body>
+	<script type="text/javascript" src="../js/mui.min.js"></script>
+	<script type="text/javascript" src="../js/mui.pullToRefresh.min.js" ></script>
+	<script type="text/javascript" src="../js/mui.pullToRefresh.material.min.js" ></script>
+	<script type="text/javascript" src="../js/mui.lazyload.js" ></script>
+	<script type="text/javascript" src="../js/mui.lazyload.img.js" ></script>
+	<script type="text/javascript"src="../js/common.js"></script>
+	<script type="text/javascript" src="../js/util/util.js" ></script>
+	<script>
+		(function(_,doc,u,w){
+			_.init({swipeBack: true}),_(".mui-scroll-wrapper").scroll();
+			var menuWrapper = document.getElementById("menu-wrapper"),backDropObj = document.getElementById("backdrop"),vaccineTitle = document.getElementById("vaccine-title");
+			
+			var list = doc.getElementById("vaccine-list"),keywordPro = doc.getElementById("keyword");
+			var pdata = {offset:0 ,limit:6},_pull = null,page = 0;
+			_.plusReady(function(){
+				_pull = _('#cases').pullToRefresh({
+					down: {
+						callback: function() {
+							pdata.offset = 0;
+							pdata.keyword = "";
+							keywordPro.value = "";
+							doc.activeElement.blur();
+							u.mypost('vaccinum/vaccinumList',pdata, false, function(data) {
+								_pull.endPullDownToRefresh((data.data.vaccinumList || []).length == pdata.limit);
+								if (data.code == 0) {
+									page = 1;
+									u.emptyHtml(list), renderList(data.data || []);
+								}else{
+									_.toast(data.msg || '服务器异常');
+								}
+							}, function() {
+								_.toast('获取列表失败'), _pull.endPullDownToRefresh();
+							});
+						}
+					},
+					up: {
+						callback: function() {
+							pdata.offset=(pdata.limit)*page;
+							u.mypost('vaccinum/vaccinumList',pdata, false, function(data) {
+								_pull.endPullUpToRefresh((data.data.vaccinumList || []).length < pdata.limit);
+								if (data.code  == 0) {
+									page++;
+									renderList(data.data || []);
+								} else {
+									_.toast(data.msg ||'服务器异常');
+								}
+							}, function() {
+								_.toast('获取列表失败'), _pull.endPullUpToRefresh(true);
+							});
+						},auto: true
+					}
+				});
+			});
+			//选择疫苗
+			_("#vaccineList").on("tap","li",function(){
+				removeClass(menuBtnObj,"up");
+				removeBackDrop(backDropObj);//移除遮罩层
+				addClass(menuWrapper,"mui-hidden");
+				_('#mui-scroll-wrapper').scroll().scrollTo(0,0,100);
+				pdata.vacciType = this.id;
+				pdata.offset = 0;
+				getMedData();
+				vaccineTitle.innerHTML = this.innerHTML;
+				if(!hasClass(menuBtnObj,"up")){
+					addClass(menuBtnObj,"up");
+				}else{
+					removeClass(menuBtnObj,"up");
+				}
+			});
+			//进入详情页面
+			_('.gene-content').on('tap','dl',function(){
+				/*疫苗id*/
+				var ex  = {
+					vaccinumId:this.id
+				}
+	      		w.openView('vaccine_detail.html',ex);
+	   		})
+			//获取数据	
+			function getMedData() {
+				pdata.keyword = keywordPro.value;
+				pdata.offset = 0;
+				u.mypost('vaccinum/vaccinumList', pdata, true, function(data) {
+					if(data.code == 0) {
+						u.emptyHtml(list),renderList(data.data || []);
+					} else {
+						_.toast(data.msg || '服务器异常');
+					}
+				}, function() {
+					_.toast('获取列表失败');
+				});
+			}
+			//搜索疫苗套餐名
+			keywordPro.addEventListener("keypress",function(e){
+				if(isEmojiCharacter(keywordPro.value)){
+					_.toast("不支持表情输入");
+					e.preventDefault();// 阻止默认事件
+					return;
+				}
+				if(e.keyCode == "13"){
+					doc.activeElement.blur();
+					getMedData();
+					e.preventDefault();// 阻止默认事件
+				}
+			});
+			/**
+			 * 获取数据--疫苗种类
+			 * **/
+			function renderList(data){
+				var imgserver = null
+				if(data.vaccinumList && data.vaccinumList.length > 0){
+					imgserver = data.imgServer;
+					_pull && _pull.refresh((data.vaccinumList || []).length == pdata.limit);
+					_.each(data.vaccinumList,function(i,obj){
+						dl = doc.createElement("dl");
+						dl.id = obj.id;
+						var img = obj.thumbnail == ""?"../images/default-record.png":imgserver+obj.thumbnail;
+						dl.innerHTML = "<dt><img data-lazyload='"+img+"'></dt>"+
+						"<dd><div class='gene-content-title mui-ellipsis-2'>"+(obj.name || '-')+"</div>"+
+							"<div class='gene-content-money'>￥"+(obj.price || '-')+"</div>"+
+						"</dd>";
+						list.appendChild(dl);
+					})
+					_("#vaccine-list").imageLazyload({
+						placeholder: '../images/default-news.png'
+					});  
+				}else{
+					_.toast("没有更多数据了");
+				}
+			}
+			var menuBtnObj = document.getElementById("menu-btn");
+			menuBtnObj.addEventListener("tap",function(){
+				toggleClass(menuWrapper,"mui-hidden");
+				toggleBackDrop(backDropObj);
+				if(!hasClass(this,"up")){
+					addClass(this,"up");
+				}else{
+					removeClass(this,"up");
+				}
+			})
+			backDropObj.addEventListener("tap",function(){
+				removeBackDrop(this);
+				addClass(menuWrapper,"mui-hidden");
+				if(!hasClass(menuBtnObj,"up")){
+					addClass(menuBtnObj,"up");
+				}else{
+					removeClass(menuBtnObj,"up");
+				}
+			})
+		})(mui,document,util,window)
+	</script>
+</html>

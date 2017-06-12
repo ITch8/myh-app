@@ -1,0 +1,2 @@
+//控制遮罩层显示
+function addBackDrop(obj){obj=obj||document.getElementById("backdrop");obj&&addClass(obj,'mui-backdrop')}function removeBackDrop(obj){obj=obj||document.getElementById("backdrop");obj&&removeClass(obj,'mui-backdrop')}function toggleBackDrop(obj){obj=obj||document.getElementById("backdrop");if(hasClass(obj,"mui-backdrop")){obj&&removeClass(obj,'mui-backdrop')}else{obj&&addClass(obj,'mui-backdrop')}}

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="format-detection" content="telephone=no">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<title>医院</title>
+		<link rel="stylesheet" href="../css/mui.min.css" />
+		<link rel="stylesheet" href="../css/common.css" />
+		<link rel="stylesheet" href="../css/pullRefresh.css" />
+		<link rel="stylesheet" href="../css/main/hospital.css" />
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">医院列表</h1>
+		</header>
+		<div id="mui-scroll-wrapper" class="mui-content mui-fullscreen mui-scroll-wrapper">
+			<div class="form-bg"><form>
+				<div class="mui-input-row mui-search search-input">
+					<input type="search" id="keyword" class="mui-input-clear" placeholder="点击搜索医院">
+				</div></div>
+			</form>
+			<div id="cases" class="mui-scroll">
+				<ul id="hospital-list" class="hospital-list mui-table-view"></ul>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="../js/mui.min.js"></script>
+	<script type="text/javascript" src="../js/mui.pullToRefresh.min.js"></script>
+	<script type="text/javascript" src="../js/mui.pullToRefresh.material.min.js"></script>
+	<script type="text/javascript" src="../js/common.js"></script>
+	<script>
+		(function(_, doc, u, w) {
+			_.init({swipeBack: true}), _(".mui-scroll-wrapper").scroll();
+			var list = doc.getElementById('hospital-list'),
+				keywordPro = doc.getElementById("keyword");
+			var pdata = {
+					offset: 0,
+					limit: 5
+				},
+				_pull = null,
+				page = 0;
+			_.plusReady(function() {
+				_pull = _('#cases').pullToRefresh({
+					down: {
+						callback: function() {
+							pdata.offset = 0;
+							pdata.keyword = "";
+							pdata.hid = "";
+							keywordPro.value = "";
+							doc.activeElement.blur();
+							u.mypost('hospital/getHospitalList', pdata, false, function(data) {
+								_pull.endPullDownToRefresh((data.data.hospitals || []).length == 5);
+								if(data.code == 0) {
+									page = 1;
+									u.emptyHtml(list), hospitalList(data.data || []);
+								} else {
+									_.toast(data.msg || '服务器异常');
+								}
+							}, function() {
+								_.toast('获取列表失败'), _pull.endPullDownToRefresh();
+							});
+						}
+					},
+					up: {
+						callback: function() {
+							pdata.offset = (pdata.limit) * page;
+							u.mypost('hospital/getHospitalList', pdata, false, function(data) {
+								_pull.endPullUpToRefresh((data.data.hospitals || []).length < 5);
+								if(data.code == 0) {
+									page++;
+									hospitalList(data.data || []);
+								} else {
+									_.toast(data.msg || '服务器异常');
+								}
+							}, function() {
+								_.toast('获取列表失败'), _pull.endPullUpToRefresh(true);
+							});
+						},
+						auto: true
+					}
+				});
+			})
+			//医院列表
+			function hospitalList(data) {
+				var imgServer = null;
+				imgServer = data.imgServer;
+				if((data.hospitals || []).length == 0){
+					_.toast("未找到相关数据")
+				}
+				_.each(data.hospitals || [], function(i, obj) {
+					li = doc.createElement("li");
+					li.id = obj.hid;
+					img = obj.img == "" ? "../images/default-news.png" : imgServer + obj.img;
+					li.className = "mui-table-view-cell mui-media";
+					li.innerHTML = "<img class='mui-media-object mui-pull-left' src='" + img + "'>" +
+						"<div class='font-size-14'>" + obj.hospitalName+
+						"</div><p><i class='icon-addr'></i>  " + obj.address + "</p>";
+					list.appendChild(li);
+				})
+			}
+
+			//搜索	
+			function searchKey(key) {
+				pdata.keyword = key;
+				pdata.offset = 0;
+				u.mypost('hospital/getHospitalList', pdata, true, function(data) {
+					if(data.code == 0) {
+						u.emptyHtml(list), hospitalList(data.data || []);
+					} else {
+						_.toast(data.msg || '服务器异常');
+					}
+				}, function() {
+					_.toast('获取列表失败');
+				});
+			}
+			//根据关键字搜索医院
+			keywordPro.addEventListener('keypress', function(e) {
+				if(isEmojiCharacter(keywordPro.value)) {
+					_.toast("不支持表情输入");
+					e.preventDefault(); // 阻止默认事件
+					return;
+				}
+				if(e.keyCode == "13") {
+					doc.activeElement.blur();
+					searchKey(keywordPro.value);
+					e.preventDefault(); // 阻止默认事件
+				}
+			})
+			//点击进入医生列表
+			_('.hospital-list').on('tap', 'li', function() {
+				w.openView('doctor_list_hospital.html',{hid:this.id});
+			})
+		})(mui, document, util, window)
+	</script>
+
+</html>

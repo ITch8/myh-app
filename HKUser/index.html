@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="format-detection" content="telephone=no">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<title>首页</title>
+		<link rel="stylesheet" href="css/mui.min.css" />
+		<link rel="stylesheet" href="css/common.css" />
+		<link rel="stylesheet" href="css/input.css" />
+		<link rel="stylesheet" href="css/pullRefresh.css" />
+		<link rel="stylesheet" href="css/main/index.css" />
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<div class="search">
+				<img src="images/search-icon.png">
+				<input type="text" id="search" placeholder="快速查询医生、医院" readonly="readonly"/></div>
+			<div class="info-icon">
+				<span id="service" class="mui-pull-right">
+					<span class="myicon contact-icon"></span>
+					<span id="newContactNum" class="mui-badge mui-badge-danger newContactNum m-undisplay">0</span>
+				</span>
+				<span id="message" class="mui-pull-right">
+					<span class="myicon alarm-icon"></span>
+					<span id="newInfoNum" class="mui-badge mui-badge-danger newInfoNum">0</span>
+				</span>
+			</div>
+		</header>
+		<div id="mui-scroll-wrapper" class="mui-content mui-scroll-wrapper">
+			<div id="cases" class="mui-scroll">
+				<div id="slider" class="mui-slider">
+					<div id="banner" class="mui-slider-group mui-slider-loop"></div>
+				</div>
+				<div class="choice-area" id="choicList">
+					<div class="choice-area-top">
+						<div class="hospital" id="hospital"><h4>在线诊疗</h4><span id="online-treat"></span></div>
+						<div class="medical" id="medical"><h4>药品中心</h4><span id="medicine-center"></span></div>
+					</div>
+					<div class="choice-area-bottom">
+						<div class="check" id="check"><h4>检测服务</h4><span id="gene-check"></span></div>
+						<div class="vaccine" id="vaccine"><h4>疫苗接种</h4><span id="vaccine-inoculate"></span></div>
+					</div>
+				</div>
+				<div id="doctor-more" class="tuijian font-size-14"><i class="icon_index_doctors"></i>&ensp;优秀名医<i class="icon_more mui-pull-right"></i></div>
+				<div class="doctor-list">
+					<div id="slider" class="mui-slider">
+						<div class="mui-scroll-wrapper mui-slider-indicator mui-segmented-control mui-segmented-control-inverted">
+							<div class="mui-scroll">
+								<ul id="doctor-list">
+									<!--<li>
+										<img src="images/default-doctor.png" />
+								   		<p class="mui-text-center mui-ellipsis font-size-16 font-color-333">医生姓名&ensp;<span class="font-size-12 font-color-999">肿瘤科</span></p>
+								   		<button type="button" class="mui-btn mui-btn-blue mui-btn-outlined">快速预约</button>
+									</li>-->
+								</ul>
+							</div>
+						</div>
+				</div>
+				<div id="info-more" class="tuijian font-size-14"><i class="icon_index_info"></i>&ensp;最新资讯<i class="icon_more mui-pull-right"></i></div>
+				<div class="message-list">
+					<ul id="message-list" class="mui-table-view"></ul>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="js/mui.min.js"></script>
+	<script type="text/javascript" src="js/mui.pullToRefresh.min.js"></script>
+	<script type="text/javascript" src="js/mui.pullToRefresh.material.min.js"></script>
+	<script type="text/javascript" src="js/mui.lazyload.js" ></script>
+	<script type="text/javascript" src="js/mui.lazyload.img.js" ></script>
+	<script type="text/javascript" src="js/common.js"></script>
+	<script>
+		var newNum = null,newContactNum = null;
+		(function(_,doc,u,w){
+			_.init({swipeBack: false}),_(".mui-scroll-wrapper").scroll();
+			var privateToken = null;
+			var sliderObj = doc.getElementById("slider"),bannerObj = doc.getElementById("banner"),docList = doc.getElementById('doctor-list'),infoList = doc.getElementById('message-list'),scrollList = doc.getElementById('scroll');
+			newNum = doc.getElementById("newInfoNum");
+			newContactNum = doc.getElementById("newContactNum");
+			var refreshCount = null,loadCount = null;
+			var pdata = {},div = null, dl = null,li = null;
+			var imgserver = null,bannerList = null,adWords = null,_pull = null,count_01 = null,count_02 = null;
+			
+			var bodyWidth = document.body.clientWidth;
+			_.plusReady(function(){
+				_('#mui-scroll-wrapper').scroll().scrollTo(0,0,100);
+				privateToken = w.getItem("privateToken");
+				pdata.privateToken = privateToken;
+				_pull = _('#cases').pullToRefresh({
+					down: {
+						callback: function() {
+							pdata.offset = 0;
+							pdata.privateToken = w.getItem("privateToken");
+							u.mypost('user_index/index',pdata, false, function(data) {
+								_pull.endPullDownToRefresh((data.data || []).length == 10);
+								if (data.code == 0) {
+									page = 1;
+									u.emptyHtml(scrollList);
+									u.emptyHtml(docList);
+									u.emptyHtml(infoList);
+									getIndexData(data.data || []);
+								}else{
+									_.toast(data.msg || '服务器异常');
+								}
+							}, function() {
+								_.toast('获取列表失败'), _pull.endPullDownToRefresh();
+							});
+							
+							setTimeout(function(){
+								pdata.privateToken = w.getItem("privateToken");
+								//消息列表条数
+								u.mypost("user_center/msgList",pdata,false,function(data){
+									count = data.data.count || 0;
+									var n = Number(count) - Number(localStorage.getItem("allNewsNum") || 0);
+									newNum.innerHTML = n>99?"99+":n;
+									if(n<=0){
+										newNum.className = "mui-badge mui-badge-danger newInfoNum m-undisplay";
+									}else{
+										newNum.className = "mui-badge mui-badge-danger newInfoNum";
+									}
+								},myerror);
+							},100);
+						}
+					}
+				});
+				//首页主要内容
+				u.mypost("user_index/index",pdata,true,function(data){
+					if(data.code == 0){
+						getIndexData(data.data);
+					}else{
+						docList.innerHTML = nodataHtmlInfo;
+						infoList.innerHTML = nodataHtmlInfo;
+					}
+				},myerror);
+				setTimeout(function(){
+					pdata.privateToken = w.getItem("privateToken");
+					//消息列表条数
+					u.mypost("user_center/msgList",pdata,false,function(data){
+						count = data.data.count || 0;
+						var n = Number(count) - Number(localStorage.getItem("allNewsNum") || 0);
+						newNum.innerHTML = n>99?"99+":n;
+						if(n<=0){
+							newNum.className = "mui-badge mui-badge-danger newInfoNum m-undisplay";
+						}else{
+							newNum.className = "mui-badge mui-badge-danger newInfoNum";
+						}
+					},myerror);
+				},100);
+				//信息列表
+				
+				doc.getElementById("message").addEventListener('tap', function(e) {
+					if(!w.getUser()){
+						w.openView("userLogin.html");
+					}else{
+						newNum.innerText = "";
+						newNum.className="mui-badge mui-badge-danger m-undisplay";
+						w.openView("message_list.html");
+					}
+				});
+				//资讯详情
+				_('#message-list').on('tap', 'li', function() {
+					w.openView('info/info_detail.html',{infoId:this.id});
+				})
+			})
+			//获取首页数据
+			function getIndexData(data){
+				imgserver = data.imgServer;
+				bannerList = data.banner;
+				//轮播图
+				if(bannerList &&  bannerList.length > 0){
+					var len = bannerList.length;
+					bannerObj.innerHTML = "<div class='mui-slider-item mui-slider-item-duplicate'><img src='"+imgserver+bannerList[len -1].img+"'></div>";
+					_.each(bannerList,function(i,obj){
+						bannerObj.innerHTML+="<div id='"+obj.nid+"' class='mui-slider-item'><img src='"+imgserver+obj.img+"'></div>";
+					})
+					bannerObj.innerHTML += "<div class='mui-slider-item mui-slider-item-duplicate'><img src='"+imgserver+bannerList[0].img+"'></div>";
+				}
+				_(sliderObj).slider({interval: 3000});
+				doc.getElementsByClassName("mui-slider-item")[0].querySelector("img").setAttribute("height",bodyWidth && bodyWidth/15*7);
+				//导航
+				adWords = data.adWords;
+				doc.getElementById("online-treat").textContent = adWords[0].word;//在线诊疗
+				doc.getElementById("medicine-center").textContent = adWords[1].word;//个人病历
+				doc.getElementById("gene-check").textContent = adWords[2].word;//基因检测
+				doc.getElementById("vaccine-inoculate").textContent = adWords[3].word;//疫苗接种
+				//优秀名医
+				_.each(data.doctor || [],function(i,obj){
+					dl = doc.createElement("li");
+					dl.id = obj.uid;
+					var img = obj.thumbnail == ""?"images/default-doctor.png":imgserver+obj.avatar;
+					dl.innerHTML = '<img src="'+img+'" />'+
+								   		'<p class="mui-text-center mui-ellipsis font-size-16 font-color-333">'+obj.nickname+'&ensp;<span class="font-size-12 font-color-999">'+obj.officeName+'</span></p>'+
+								   		'<button type="button" class="mui-btn mui-btn-blue mui-btn-outlined">快速预约</button>';
+					docList.appendChild(dl);
+				})
+				//资讯
+				_.each(data.news,function(i,obj){
+					li = doc.createElement("li");
+					li.id = obj.nid;
+					var img = obj.thumbnail == ""?"images/default-news.png":imgserver+obj.thumbnail;
+					li.className = "mui-table-view-cell mui-media";
+					li.innerHTML = "<img class='mui-media-object mui-pull-left' data-lazyload='"+img+"'>"+
+									"<div class='mui-media-body'>"+
+										"<div class='mui-ellipsis-2 font-size-14 min-h'>"+obj.title+"</div>"+
+										"<p class='vac'>"+obj.tag+"<span class='mui-pull-right font-color-666'><i class='mui-icon mui-icon-person font-size-18'></i>"+obj.author+"&ensp;&ensp;"+(obj.createTime && obj.createTime.substr(0,10))+"</span></p>"+
+									"</div>";
+					infoList.appendChild(li);
+				})
+				_("#message-list").imageLazyload({
+					placeholder: 'images/default-news.png'
+				});
+			}
+			//在线诊疗
+			doc.getElementById("hospital").addEventListener('tap', function() {
+				w.openView("doctor/hospital_list.html")
+			});
+			//药品中心
+			doc.getElementById("medical").addEventListener('tap', function() {
+				w.openView("medicine_center/medicine_center.html");
+			});
+			//基因检测
+			doc.getElementById("check").addEventListener('tap', function() {
+				w.openView("gene_detect/gene_detect_list.html")
+			});
+			//疫苗接种
+			doc.getElementById("vaccine").addEventListener('tap', function() {
+				w.openView("vaccine/vaccine_kind.html")
+			});
+			//医生更多
+			doc.getElementById("doctor-more").addEventListener('tap', function() {
+				_.later(function(){w.toIndex(1);},300)
+			});
+			//医生详情
+			_('#doctor-list').on('tap', 'img', function() {
+				w.openView('doctor/doctor_detail.html',{docId:this.parentNode.id});
+			})
+			
+			//直接预约
+			_('#doctor-list').on('tap', '.mui-btn-outlined', function() {
+				if(!w.getUser()){
+					w.openView("userLogin.html");
+				}else{
+					var docId = this.parentNode.id;
+					var ex = {
+						type:2,
+						docId:docId
+					}
+					w.openView('doctor/order_register.html',ex);
+				}
+			})
+			//资讯更多
+			doc.getElementById("info-more").addEventListener('tap', function() {
+				w.openView("info/info_index.html")
+			});
+			//轮播图
+			_('.mui-slider-group').on('tap', '.mui-slider-item', function() {
+				w.openView('info/info_detail.html',{infoId:this.id});
+			})
+			//客服
+			doc.getElementById("service").addEventListener('tap', function() {
+				if(!w.getUser()){
+					w.openView("userLogin.html");
+				}else{
+					newContactNum.innerText = "";
+					newContactNum.className="mui-badge mui-badge-danger newContactNum m-undisplay";
+					w.openView("my_center/contactService.html");
+				}
+			});
+			//搜索
+			doc.getElementById("search").addEventListener('tap', function() {
+				w.openView("doctor/hospital_list.html")
+			});
+		})(mui,document,util,window)
+		
+		function getNewsNum(){
+			//消息列表条数
+			util.mypost("user_center/msgList",{privateToken:window.getItem("privateToken")},false,function(data){
+				count = data.data.count || 0;
+				var n = Number(count) - Number(localStorage.getItem("allNewsNum") || 0);
+				newNum.innerHTML = n>99?"99+":n;
+				if(n<=0){
+					newNum.className = "mui-badge mui-badge-danger newInfoNum m-undisplay";
+				}else{
+					newNum.className = "mui-badge mui-badge-danger newInfoNum";
+				}
+			},myerror);
+		}
+		/**
+	     * @description 提示客服消息
+	     */
+	    function newContactInfo(unreadNum){
+	    	var num = Number(newContactNum.innerHTML || '0') || 0;
+	   		unreadNum?num +=unreadNum:num++;
+	   		newContactNum.innerHTML = (num > 99)?"99+":num;
+	   		newContactNum.className = "mui-badge mui-badge-danger newContactNum";
+	  	}
+	</script>
+</html>

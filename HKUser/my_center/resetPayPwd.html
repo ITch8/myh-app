@@ -1,0 +1,107 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>重置支付密码</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../css/common-form.css" />
+		<link rel="stylesheet" href="../css/input.css" />
+		<style>
+			.mui-input-group .mui-input-row:after {
+				left: 0;
+			}
+			.mui-scroll {
+				width: 86%;
+				margin: 0 7%;
+			}
+			.mui-input-group {
+				margin: 30px 0 15px 0;
+			}
+			.mui-input-group input,
+			.mui-input-group .mui-input-row {
+				height: 50px;
+				padding: 0;
+			}
+			.mui-input-group:before {
+				height: 0;
+			}
+			.mui-icon.mui-icon-clear {
+				top: 14px !important;
+			}
+			.mui-row {
+				color: #999;
+				font-size: 14px;
+			}
+		</style>
+	</head>
+	<body>
+		<header class="header mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left main-font-color"></a>
+			<h1 class="mui-title main-font-color">重置支付密码</h1>
+		</header>	
+		<div class="mui-content mui-fullscreen mui-scroll-wrapper main-body-white">
+			<div class="mui-scroll">
+				<form class="mui-input-group">
+				    <div class="mui-input-row">
+				        <input type="password" class="mui-input-clear" placeholder="请设置您的新支付密码" id="newPwd">
+				    </div>
+				    <div class="code mui-input-row">
+				        <input type="password" class="mui-input-clear" placeholder="请重复您的新支付密码" id="reNewPwd">
+				    </div>
+				</form>
+				<div class="next">
+					<button id="next" type="button" class="mui-btn mui-btn-green">完成</button>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script src="../js/mui.min.js"></script>
+	<script type="text/javascript" src="../js/common.js" ></script>
+	<script type="text/javascript">
+		(function(_,doc,u,w){
+			_.init({swipeBack:true}),_(".mui-scroll-wrapper").scroll();
+			var pdata = {};
+			var newPwdObj = doc.getElementById("newPwd");
+			var reNewPwdObj = doc.getElementById("reNewPwd");
+			var nextObj = doc.getElementById("next");
+			var web = null;
+			var telephone = null;
+			_.plusReady(function(){
+				web = plus.webview.currentWebview();//新建页面
+				telephone = web.telephone;
+				pdata.telephone = telephone;
+				nextObj.addEventListener("tap",function(){
+					var pwd = newPwdObj.value.trim();
+					var rePwd = reNewPwdObj.value.trim();
+					pdata.pwd = pwd;
+					pdata.rePwd = rePwd;
+					pdata.flag = 1;
+					if(u.isNull(pwd)){
+						_.toast("请输入您的新支付密码");
+						return;
+					}else if(pwd.length < 6){
+						_.toast("请输入不少于6位数的密码");
+						return;
+					}else if(u.isNull(rePwd)){
+						_.toast("请再次输入您的新支付密码");
+						return;
+					}else if(rePwd != pwd){
+						_.toast("两次输入的密码不一致");
+						return;
+					}
+					u.mypost("api/reSetForgotPwd",pdata,true,function(data){
+						if(data.code == 0){
+							_.toast("密码重置成功!");
+							u.close();
+							newPwdObj.value = "";
+							reNewPwdObj.value = "";
+						}else{
+							_.toast(data.msg);
+						}
+					},myerror);
+				});
+			})
+		})(mui,document,util,window)
+	</script>
+</html>

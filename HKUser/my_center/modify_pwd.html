@@ -1,0 +1,121 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>修改登录密码</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link rel="stylesheet" href="../css/mui.min.css" />
+		<link rel="stylesheet" href="../css/common.css" />
+		<style>
+			.mui-content {
+				padding: 0 30px;
+				background: #fff;
+				margin-top: 20px;
+			}
+			
+			.pho-row {
+				border-bottom: 1px solid #DEDEDE;
+				height: 50px;
+				position: relative;
+			}
+			
+			.pho-row input {
+				border: none;
+				margin-top: 5px;
+				padding-left: 0;
+				font-size: 14px;
+				color: #333333;
+			}
+			
+			.pho-row button {
+				position: absolute;
+				right: 0;
+				top: 8px;
+				padding: 8px 10px;
+				font-size: 12px;
+				background: #33a2d7;
+				border: none;
+				color: #fff;
+			}
+			
+			.active {
+				background: #999;
+			}
+			
+			.save-btn {
+				width: 95%;
+				height: 33px;
+				margin: 0 auto;
+				border-radius: 20px;
+				line-height: 33px;
+				text-align: center;
+				background-color: #33A2D7;
+				color: #FFFFFF;
+				font-size: 16px;
+				margin: 20px 0;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-pull-left mui-action-back mui-icon mui-icon-left-nav"></a>
+			<h1 id="title" class="mui-title">修改登录密码</h1>
+		</header>
+		<div class="mui-content">
+			<form class="phoneform">
+				<div class="pho-row">
+					<input type="password" id="oldPwd" placeholder="请输入原密码" />
+				</div>
+				<div class="pho-row">
+					<input type="password" id="newPwd" placeholder="请输入新密码" />
+				</div>
+				<div class="pho-row">
+					<input type="password" id="reNewPwd" placeholder="请再次输入新密码" />
+				</div>
+				<div class="save-btn" id="btnOk">确定</div>
+			</form>
+		</div>
+	</body>
+	<script type="text/javascript" src="../js/mui.min.js"></script>
+	<script type="text/javascript" src="../js/common.js"></script>
+	<script type="text/javascript">
+		(function(_,doc,u,w){
+			_.init({swipeBack:true});
+			var pdata = {};
+			var privateToken = null;
+			var oldPwd = null,newPwd = null,reNewPwd = null;
+			var oldPwdObj = doc.getElementById("oldPwd");
+			var newPwdObj = doc.getElementById("newPwd");
+			var reNewPwdObj = doc.getElementById("reNewPwd");
+			_.plusReady(function(){
+				doc.getElementById("btnOk").addEventListener('tap', function() {
+					if(isEmojiCharacter(oldPwdObj.value) || isEmojiCharacter(newPwdObj.value) || isEmojiCharacter(reNewPwdObj.value)){
+						_.toast("不支持表情输入");
+						return;
+					}
+					privateToken = w.getItem("privateToken");
+					pdata.privateToken = privateToken;
+					oldPwd = oldPwdObj.value.trim();
+					newPwd = newPwdObj.value.trim();
+					reNewPwd = reNewPwdObj.value.trim();
+					pdata.oldPwd = oldPwd;
+					pdata.newPwd = newPwd;
+					pdata.reNewPwd = reNewPwd;
+					u.mypost("user_center/updatePwd",pdata,true,function(data){
+						if(data.code == 0){
+							w.openView("../userLogin.html");
+							_.toast("密码修改成功，请重新登录");
+							oldPwdObj.value = "";
+							newPwdObj.value = "";
+							reNewPwdObj.value = "";
+						}else{
+							_.toast(data.msg);
+						}
+					},myerror);
+				});
+			})
+		})(mui,document,util,window)
+	</script>
+</html>

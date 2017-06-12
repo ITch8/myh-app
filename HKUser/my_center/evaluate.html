@@ -1,0 +1,103 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>评价</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link rel="stylesheet" href="../css/mui.min.css" />
+		<link rel="stylesheet" href="../css/common.css" />
+		<style>
+			.mui-content{
+				background-color: #fff;
+			}
+			textarea{
+				margin-bottom: 0;
+				font-size: 12px;
+				padding: 10px 15px;
+				border-radius: 8px;
+			}
+			button{
+				width: 90%;
+				background: #33a2d7;
+				margin: 0 auto;
+				display: block;
+				border: none;
+				color: #fff;
+				height: 30px;
+				border-radius: 22px;
+				margin-top: 20px;
+				font-size: 14px;
+			}
+			.mui-input-row{
+				margin: 15px 15px 0px 15px;;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-pull-left mui-action-back mui-icon mui-icon-left-nav"></a>
+			<h1 id="title" class="mui-title">评价</h1>	
+		</header>
+		<div class="mui-content" >			
+			<div class="mui-input-row">
+				<textarea id="content" name="status" rows="5" placeholder="请输入评价"></textarea>
+				<p class="mui-pull-right"><span id="counter">0</span>\300</p>
+			</div>
+			<button id="submit">提交</button>
+		</div>
+	</body>
+	<script src="../js/mui.min.js"></script>
+	<script src="../js/common.js"></script>
+	<script> 
+		(function(_,doc,u,w){
+			var pdata = {},content = null,privateToken = null,web = null;
+			var contentObj = doc.getElementById("content"),state = null,targetWeb = null;
+			_.plusReady(function(){
+				web = plus.webview.currentWebview();
+				docId = web.docId;
+				pdata.docId = docId;
+				state = web.state;
+				switch (state){
+					case 1://问诊
+						targetWeb = "interview_details.html";
+						break;
+					case 2://预约
+						targetWeb = "order_detail.html";
+						break;
+					default:
+						break;
+				}
+				privateToken = w.getItem("privateToken");
+				doc.getElementById("submit").addEventListener('tap',function(){
+					if(u.isNull(contentObj.value)){
+						_.toast("请输入评价内容");
+						return;
+					}else if(contentObj.value.length > 300){
+						_.toast("评价内容不能超过300字");
+						return;
+					}else if(isEmojiCharacter(contentObj.value)){
+						_.toast("不支持表情输入");
+						return;
+					}
+					pdata.privateToken = privateToken;
+					pdata.content = contentObj.value.trim();
+					u.mypost("user_center/evaluate",pdata,true,function(data){
+						if(data.code == 0){
+							_.toast("评论提交成功");
+//							w.openView(targetWeb);
+							u.close();
+					    	contentObj.value = "";
+					    	doc.getElementById("counter").textContent = 0;
+						}else{
+							_.toast(data.msg);
+						}
+					},myerror);
+				});
+				contentObj.addEventListener('input',function(){
+					doc.getElementById("counter").textContent = contentObj.value.length;
+				})
+			}) 
+		})(mui,document,util,window)
+	</script> 
+</html>

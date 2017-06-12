@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="format-detection" content="telephone=no">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<title>详情</title>
+		<link rel="stylesheet" href="../css/mui.min.css" />
+		<link rel="stylesheet" href="../css/common.css" />
+		<link rel="stylesheet" href="../css/detail.css" />
+		<link rel="stylesheet" href="../css/iconfont.css"/>
+		<link rel="stylesheet" href="../css/info/info_detail.css" />
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">详情</h1>
+			<a class="mui-btn mui-btn-link mui-pull-right mui-btn-blue" id="share" href="#shareList"><img src="../images/transmit.png"></a>
+			<a class="mui-btn mui-btn-link mui-pull-right mui-btn-blue" id="collect"><img id="love" class="love"></a>
+		</header>
+		<div class="mui-content">
+			<div class="info-title" id="title"></div>
+			<div class="info-detail font-size-14"><span id="author"></span>&nbsp;&nbsp;&nbsp;<span id="createDate"></span></div>
+			<div class="info-content" id="content"></div>
+		</div>
+		<div id="shareList" class="mui-popover mui-popover-action mui-popover-bottom">
+			<div class="popover-title">分享</div>
+			<div class="popover-content">
+				<dl class="btnweixin">
+					<dt><img src="../images/wechat.png"></dt>
+					<dd>微信好友</dd>
+				</dl>
+				<dl class="btnpengyouquan">
+					<dt><img src="../images/circle.png"></dt>
+					<dd>朋友圈</dd>
+				</dl>
+				<dl class="btnsina">
+					<dt><img src="../images/xinlang.png"></dt>
+					<dd>新浪微博</dd>
+				</dl>
+				<dl class="btntengxunweibo">
+					<dt><img src="../images/copy.png"></dt>
+					<dd>复制链接</dd>
+				</dl>
+			</div>
+			<a href="#shareList">
+				<div class="popover-cancel">取消</div>
+			</a>
+		</div>
+	</body>
+	<script src="../js/mui.min.js"></script>
+	<script src="../js/common.js"></script>
+	<script src="../js/clipboard.min.js"></script>
+	<script>
+		(function(_,doc,u,w){
+			_.init({swipeBack:false}),_(".mui-scroll-wrapper").scroll();
+			var list = doc.getElementById('comment'),loveObj = doc.getElementById("love");
+			var web = null,title = null,author = null,createDate = null,content = null;
+			var pdata = {},infoId = null,detail = null,privateToken = null,isColl = true,collId = null;
+			//分享
+			var title_share = null,shares = {},weixinss = null,sinaweiboss=null,weixinShareSession = null,sinaweibo = null;
+			var href = null,newsData = null,thumbs = [],imgserver = null,isPengyouquan = false;
+			_.plusReady(function(){
+				privateToken = w.getItem("privateToken");
+				//更新分享服务
+				updateSerivces();
+				//点击按钮 点击微信好友分享
+				doc.querySelector(".btnweixin").addEventListener("tap",function(){
+					isPengyouquan = false;
+					shareAction(weixinShareSession,false);
+				});
+				//点击朋友圈分享
+				doc.querySelector(".btnpengyouquan").addEventListener("tap",function(){
+					isPengyouquan = true;
+					shareAction(weixinShare,false);
+				});
+				//点击新浪微博分享
+				doc.querySelector(".btnsina").addEventListener("tap",function(){
+					isPengyouquan = false;
+					shareAction(sinaweibo,false);
+				});
+				//点击复制链接
+				doc.querySelector(".btntengxunweibo").addEventListener("tap",function(){
+					isPengyouquan = false;
+					if(plus.os.name =='Android'){
+						copyToClipAndroid(href);
+					}else{
+						copyToClipIos(href);
+					}
+				});
+				infoId = plus.webview.currentWebview().infoId;
+				pdata.nid = infoId;
+				privateToken = w.getItem("privateToken");
+				pdata.privateToken = privateToken;
+				u.mypost("news/getNewsDetail",pdata,true,function(data){
+					if(data.code == 0){
+						imgserver = data.data.imgServer;
+						//分享链接
+						href = data.data.shareLink;
+						newsData = data.data.news;
+						isColl = "未收藏" == data.data.isColl?false:true;
+						isColl?addClass(loveObj,"love-detail"):'';
+						collId = data.data.collId;
+						title = newsData.title?newsData.title:'';
+						author = newsData.author?newsData.author:'';
+						createDate = newsData.createTime?newsData.createTime:'';
+						content = newsData.content?newsData.content:nodataHtmlInfo;
+						title_share = newsData.title;
+						thumbs = [imgserver+newsData.thumbnail+"_50x50.jpg" || ''];//缩略图
+						doc.getElementById("title").innerHTML = title;
+						doc.getElementById("author").innerHTML = "作者：" + author;
+						doc.getElementById("createDate").innerHTML = createDate;
+						doc.getElementById("content").innerHTML = content;
+					}else{
+						content = newsData.content?newsData.content:nodataHtmlInfo;
+					}
+				},myerror);
+			});
+			
+			//添加或是取消收藏
+			loveObj.addEventListener("tap",function(){
+				if(!w.getUser()){
+					w.openView("../userLogin.html");
+				}else{
+					var pdata = {};
+					privateToken = w.getItem("privateToken");
+					pdata.privateToken = privateToken;
+					var self = this;
+					//取消收藏
+					if(isColl){
+						var pdata ={
+							collId:collId,
+							privateToken:privateToken
+						}
+						u.mypost('user_center/delCollection',pdata, false, function(data) {
+							if (data.code  == 0) {
+								_.toast('取消成功');
+								isColl = false;
+								toggleClass(self,"love-detail");
+							} else {
+								_.toast('取消失败');
+							}
+						},myerror);
+					}else{
+						var pdata ={
+							nid:infoId,
+							privateToken:privateToken
+						}
+						//添加收藏
+						u.mypost("news/newsCollection",pdata,false,function(data){
+							if(data.code == 0){
+								u.mypost("news/getNewsDetail",pdata,true,function(data){
+									if(data.code == 0){
+										collId = data.data.collId;
+										_.toast("收藏成功");
+										isColl = true;
+										toggleClass(self,"love-detail");
+									}
+								},myerror);
+							}else{
+								_.toast(data.msg);
+							}
+						},myerror);
+					}
+				}
+			});
+			/**
+			 * 更新分享服务
+			 */
+			function updateSerivces() {
+				plus.share.getServices(function(s) {
+					shares = {};
+					for(var i in s) {
+						var t = s[i];
+						shares[t.id] = t;
+					}
+					//微信服务
+					weixinss = shares['weixin'];
+					//新浪服务
+					sinaweiboss = shares['sinaweibo'];
+					weixinShare ={
+						title: '微信朋友圈',
+						s: weixinss,
+						x: 'WXSceneTimeline'
+					}
+					weixinShareSession ={
+						title: '微信好友',
+						s: weixinss,
+						x: 'WXSceneSession'
+					}
+					sinaweibo = {
+						title: '新浪微博',
+						s: sinaweiboss
+					}
+				}, function(e) {
+					_.toast("获取分享服务列表失败：" + e.message);
+				});
+			}
+			
+			/**
+			 * 分享操作
+			 * @param {JSON} sb 分享操作对象s.s为分享通道对象(plus.share.ShareService)
+			 * @param {Boolean} bh 是否分享链接
+			 */
+			function shareAction(sb, bh) {
+				if(!sb || !sb.s) {
+					_.toast("无效的分享服务！");
+					return;
+				}
+				var msg = {
+					title:title_share,//分享的标题
+					href:href,
+					thumbs:thumbs,//缩略图
+					extra: {
+						scene: sb.x
+					}
+				};
+				// 发送分享
+				if(sb.s.authenticated) {
+					shareMessage(msg, sb.s);
+				} else {
+					sb.s.authorize(function(){
+						shareMessage(msg, sb.s);
+					}, function(e) {
+						_.toast("认证授权失败");
+					});
+				}
+			}
+			
+			/**
+			 * 发送分享消息
+			 * @param {JSON} msg
+			 * @param {plus.share.ShareService}
+			 */
+			function shareMessage(msg, s) {
+				var msgs = null;
+				if(isPengyouquan){
+					msgs = "朋友圈";
+				}else{
+					msgs = s.description || '';
+				}
+				s.send(msg, function() {
+					_.toast("分享到\"" + msgs + "\"成功！ ");
+				}, function(e) {
+					_.toast("分享到\"" + msgs + "\"失败！ ");
+				});
+			}
+		})(mui,document,util,window)
+	</script>
+</html>

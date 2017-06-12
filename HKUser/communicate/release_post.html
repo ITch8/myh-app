@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="format-detection" content="telephone=no">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<title>发布帖子</title>
+		<link rel="stylesheet" href="../css/mui.min.css" />
+		<link rel="stylesheet" href="../css/common.css" />
+		<link rel="stylesheet" href="../css/input.css" />
+		<link rel="stylesheet" href="../css/iconfont.css" />
+	</head>
+	<style>
+		.release-post {
+			width: 100%;
+			overflow: hidden;
+		}
+		
+		.release-post-item {
+			padding: 10px 20px 0 20px;
+		}
+		
+		.release-post-img {
+			padding: 10px 20px 10px 20px;
+			line-height: 24px;
+			border-bottom: 1px solid #DEDEDE;
+			color: #666;
+			font-size: 14px;
+		}
+		
+		.release-post-img>img{
+			width: 50px;
+			height: 50px;
+			border-radius: 3px;
+			margin-right: 10px;
+		}
+		
+		.release-post-checkbox {
+			padding: 10px 20px 15px 20px;
+			color: #666;
+			font-size: 14px;
+		}
+		.state-description {
+			width: 100%;
+			margin: 0 auto;
+		}
+		#sheet a {
+			color: #333333;
+		}
+	</style>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">发布帖子</h1>
+		</header>
+		<div class="mui-content mui-fullscreen mui-scroll-wrapper">
+			<div class="mui-scroll">
+				<div class="release-post">
+					<div class="release-post-item">
+						<input type="text" placeholder="输入标题（20字以内）" id="title" />
+						<textarea class="state-description" id="content" rows="5" placeholder="输入正文（300字以内）"></textarea>
+					</div>
+					<div class="release-post-img" id="releaseImg">
+						<img id="img1" addIndex = '1' src="../images/medical-add.png"/>
+						<img id="img2" addIndex = '2' src="../images/medical-add.png"/>
+						<img id="img3" addIndex = '3' src="../images/medical-add.png"/>
+						<div>图片最多只能上传3张，且每张图片不能超过2M</div>
+					</div>
+					<div class="release-post-checkbox">
+						<span id="res" style="color: #32A3D6;" class="mui-icon iconfont icon-weixuanzhong"></span>&nbsp;是否匿名发布
+					</div>
+				</div>
+				<div class="next"><button type="button" class="mui-btn save-btn" id="save">发布</button></div>
+			</div>
+		</div>
+		<div id="sheet" class="mui-popover mui-popover-bottom mui-popover-action ">
+			<!-- 可选择菜单 -->
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell">
+					<a >拍照上传</a>
+				</li>
+				<li class="mui-table-view-cell">
+					<a >从相册选择</a>
+				</li>
+			</ul>
+			<!-- 取消菜单 -->
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell">
+					<a href="#sheet1">取消</a>
+				</li>
+			</ul>
+		</div>
+	</body>
+	<script src="../js/mui.min.js"></script>
+	<script src="../js/common.js"></script>
+	<script>
+		(function(_,doc,u,w){
+			_.init({swipeBack:true,gestureConfig:{longtap: true}}),_(".mui-scroll-wrapper").scroll();
+			var saveObj = doc.getElementById("save"),titleObj = doc.getElementById("title"),contentObj = doc.getElementById("content");
+			var isAnonymous = 0,pdata = {};
+			var privateToken = null,imgs = new Array();
+			var imgobj = null;
+			var addIndex = '';
+			_.plusReady(function(){
+				privateToken = w.getItem("privateToken");
+				//选择上传图片
+				_(".release-post-img").on('tap',"img", function() {
+					imgObj = this;
+					addIndex = this.getAttribute("addIndex");
+					_('#sheet').popover('show');
+				})
+				_('#sheet').on('tap', 'li', function() {
+					_('#sheet').popover('hide');
+					if(~this.innerHTML.indexOf('拍照上传')) {
+						choiceCamera()
+					} else if(~this.innerHTML.indexOf('从相册选择')) {
+						choicePic()
+					}
+				});
+				function choiceCamera() {
+					var cmr = plus.camera.getCamera();
+					cmr.captureImage(function(p) {
+						plus.io.resolveLocalFileSystemURL(p, function(entry) {
+							var dst = "_doc/temp"+addIndex+".jpg";
+							plus.zip.compressImage({
+								src:entry.toLocalURL(),dst:dst,width:'50%',overwrite:true
+							},function(even){
+								setImg(even.target);
+							});
+						}, function(e) {});
+					}, function(e) {}, {
+						index: 1,
+						filename: "_doc/camera/"
+					});
+				}
+				function choicePic() {
+					plus.gallery.pick(function(path) {
+						var dst = "_doc/temp"+addIndex+".jpg";
+						plus.zip.compressImage({
+							src:path,dst:dst,width:'50%',overwrite:true
+						},function(even){
+							setImg(even.target);
+						});
+					}, function(e) {}, {
+						filter: 'image'
+					});
+				}
+				function setImg(src) {
+					imgObj.setAttribute("src",src);
+				}
+				//长按删除所选图片
+				_(".release-post-img").on("longtap","img",function(){
+					var self = this;
+					if("../images/medical-add.png" != self.src){
+						plus.nativeUI.confirm("确定移除所选图片吗",function(e){
+							if(0 == e.index){
+								self.src = "../images/medical-add.png";
+							}
+						},"警告",['确定','取消']);
+					}
+				})
+				function gettask(server, callback) {
+					return plus.uploader.createUpload(server, {
+						method: "POST"
+					}, callback);
+				}
+				//发布帖子
+				saveObj.addEventListener('tap', function() {
+					if(u.isNull(titleObj.value)){
+						_.toast("请输入标题");
+						return;
+					}else if(titleObj.value.length > 20){
+						_.toast("标题不能超过20个字");
+						return;
+					}else if(u.isNull(contentObj.value)){
+						_.toast("请输入正文");
+						return;
+					}else if(contentObj.value.length > 300){
+						_.toast("正文不能超过300个字");
+						return;
+					}else if(isEmojiCharacter(titleObj.value) || isEmojiCharacter(contentObj.value)){
+						_.toast("不支持表情输入");
+						return;
+					}
+					var title  = titleObj.value.trim();
+					var content = contentObj.value.trim();
+					var img1 = doc.getElementById("img1").src;
+					var img2 = doc.getElementById("img2").src;
+					var img3 = doc.getElementById("img3").src;
+					img1.indexOf("/images/medical-add.png") == -1?imgs.push(img1):"";
+					img2.indexOf("/images/medical-add.png") == -1?imgs.push(img2):"";
+					img3.indexOf("/images/medical-add.png") == -1?imgs.push(img3):"";
+					//提交问题
+					var waiting =  plus.nativeUI.showWaiting();//添加等待框
+					var task = gettask(ASKURL+'post/postAdd', function(t, status) {
+						//提交成功
+						if(status == 200){
+							var data = JSON.parse(t.responseText || '{}');
+							waiting?waiting.close():'';
+							if(data.code == 0){
+								_.toast("帖子发布成功");
+								u.close();
+							}else{
+								_.toast(data.msg);
+							}
+						}
+					});
+					task.addData('content', content);
+					task.addData('privateToken', privateToken);
+					task.addData('title', title);
+					task.addData('isAnonymous', isAnonymous+"");
+					task.addData('token',token);
+					if(imgs.length > 0){
+						for (var i = 0; i < imgs.length; i++) {
+							task.addFile(imgs[i],{key:"img"+i});
+						}
+						imgs = [];
+					}
+					task.start();
+				});
+			});
+			//选择是否匿名发布
+			doc.getElementById("res").addEventListener('tap', function() {
+				if(hasClass(this,"icon-xuanzhong")){
+					removeClass(this,"icon-xuanzhong");
+					addClass(this,"icon-weixuanzhong");
+					isAnonymous = 0;
+				}else{
+					removeClass(this,"icon-weixuanzhong");
+					addClass(this,"icon-xuanzhong");
+					isAnonymous = 1;
+				}
+			});
+			_("#releaseImg").on('tap',"img",function(){
+				doc.activeElement.blur();
+			})
+		})(mui,document,util,window)
+	</script>
+</html>

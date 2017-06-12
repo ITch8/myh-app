@@ -1,0 +1,65 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>关于软件</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link rel="stylesheet" href="../css/mui.min.css" />
+		<style>
+			body{
+				background: #fff;
+			}
+			header h1{
+				font-size: 18px;				
+			}
+			.mui-bar{
+				background: #fff;
+				box-shadow: none;
+				border-bottom:1px solid #dedede;				
+			}
+			.mui-bar h1{
+				color: #33a2d7;
+				font-size: 18px;
+			}
+			.mui-bar a{
+				color: #33a2d7;				
+			}			
+			.mui-content{				
+				background: #fff;
+				padding:15px ;				
+			}
+			.logo{
+				width: 100px;
+				margin: 20px 0 0;
+			}
+			.about-text{
+				margin-top: 15px;
+				font-size: 15px;
+				color: #666;
+			}
+		</style>
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-pull-left mui-action-back mui-icon mui-icon-left-nav"></a>
+			<h1 id="title" class="mui-title">关于软件</h1>
+		</header>
+		<div class="mui-content mui-text-center">			
+			<img class="logo" src="../images/logo-copyright.png">
+			<div class="about-text">名医肿瘤科&nbsp;&nbsp;VER&nbsp;<span id="version"></span></div>
+			<div class="about-text">名医汇医疗服务（深圳）有限公司</div>
+			<div class="about-text">Doctors Union Medical Service(Shenzhen) Co., LTD.</div>
+		</div>
+	</body>
+	<script src="../js/mui.min.js"></script>
+	<script src="../js/common.js"></script>
+	<script>
+		(function(_,doc){
+			_.plusReady(function(){
+				plus.runtime.getProperty(plus.runtime.appid, function(inf) {
+				    doc.getElementById("version").innerHTML = inf.version || '1.0';
+				});
+			});
+		})(mui,document)
+	</script>
+</html>

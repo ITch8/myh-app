@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="format-detection" content="telephone=no">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<title>医生详情</title>
+		<link rel="stylesheet" href="../css/mui.min.css" />
+		<link rel="stylesheet" href="../css/common.css" />
+		<link rel="stylesheet" href="../css/pullRefresh.css" />
+		<link rel="stylesheet" href="../css/iconfont.css" />
+		<link rel="stylesheet" href="../css/imagePreview.css" />
+		<link rel="stylesheet" href="../css/doctor/doctor_detail.css" />
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">医生详情</h1>
+		</header>
+		<div id="mui-scroll-wrapper" class="mui-content mui-fullscreen mui-scroll-wrapper">
+			<div id="cases" class="mui-scroll">	
+				<div class="doctor-introduce">
+					<div class="introduce-info">
+						<img src="../images/default-person.png" id="docImg" data-preview-src='' data-preview-group='1'/>
+						<div><span class="doctor-name" id="nickname"></span>&nbsp;&nbsp;( <span id="docLevel"></span> )</div>
+						<div><span id="hospitalName"></span>( <span id="officeName"></span> )</div>
+						<div>回答问题：<span class="answer-num" id="answerNum"></span></div>
+					</div>
+				</div>
+				<div class="introduce-info-btn">
+					<div id="segmentedControl" class="mui-segmented-control">
+						<a id="homepage" class="mui-control-item mui-active" href="#homepage-list">主页</a>
+						<a class="mui-control-item" id="commentBtn" href="#comment-list">评价</a>
+					</div>
+				</div>
+				<div id="homepage-list" class="homepage-list mui-control-content mui-active">
+					<ul class="mui-table-view">
+						<li class="mui-table-view-cell">
+							<div class="homepage-title">简介：</div>
+							<div class="mui-media-body homepage-content wrap-content" id="summary"></div>
+						</li>
+						<li class="mui-table-view-cell">
+							<div class="homepage-title">擅长：</div>
+							<div class="mui-media-body homepage-content wrap-content" id="goodAt"></div>
+						</li>
+						<li class="mui-table-view-cell">
+							<div id="ser" class="mui-media-body homepage-content">
+								<dl id="message_question_answer.html">
+									<dt><img src="../images/note.png"></dt>
+									<dd>留言问答</dd>
+								</dl>
+								<dl id="online_preliminary.html">
+									<dt><img src="../images/online.png"></dt>
+									<dd>在线问诊</dd>
+								</dl>
+								<dl class="flag" id="order_register.html">
+									<dt><img src="../images/appointment.png"></dt>
+									<dd>预约挂号</dd>
+								</dl>
+							</div>
+						</li>
+					</ul>
+				</div>
+				<div id="comment-list" class="comment-list mui-control-content">
+					<ul id="comment" class="mui-table-view"></ul>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script src="../js/mui.min.js"></script>
+	<script src="../js/mui.pullToRefresh.min.js"></script>
+	<script src="../js/mui.pullToRefresh.material.min.js"></script>
+	<script src="../js/mui.zoom.js"></script>
+	<script src="../js/mui.previewimage.js"></script>
+	<script src="../js/common.js"></script>
+	<script>
+		(function(_,doc,u,w){
+			_.init({swipeBack:false}),_(".mui-scroll-wrapper").scroll();
+			var list = doc.getElementById('comment');
+			var avatar = null,nickname = null,docLevel = null,hospitalName = null,officeName = null,answerNum = null,summary = null,goodAt = null;
+			var pdata={}, li = null,docId = null,detail = null,_pull = null;
+			var page = 0;
+			var imgserver = null;
+			_.plusReady(function(){
+				_('#mui-scroll-wrapper').scroll().scrollTo(0,0,100);
+				doc.getElementById("homepage").className = "mui-control-item mui-active";
+				doc.getElementById("commentBtn").className = "mui-control-item";
+				doc.getElementById("comment-list").className = "comment-list mui-control-content";
+				doc.getElementById("homepage-list").className = "homepage-list mui-control-content mui-active";
+				docId = plus.webview.currentWebview().docId;
+				pdata = {
+					docId:docId
+				}
+				u.mypost("doctor/getDoctorDetail",pdata,true,function(data){
+					answerNum = data.data.answerNum;
+					imgserver = data.data.imgServer;
+					if(data.code == 0){
+						doctorData = data.data.doctor[0];
+						avatar = doctorData?doctorData.avatar:'';
+						if(avatar == ""){
+							avatar = "../images/default-doctor.png";
+						}else{
+							avatar = imgserver+avatar;
+						}
+						nickname = doctorData?doctorData.nickname:'';
+						docLevel = doctorData?doctorData.docLevel:'';
+						hospitalName = doctorData?doctorData.hospitalName:'';
+						officeName = doctorData?doctorData.officeName:'';
+						summary = doctorData?doctorData.summary:'';
+						goodAt = doctorData?doctorData.goodAt:'';
+						doc.getElementById("docImg").src = avatar;
+						doc.getElementById("nickname").innerHTML = nickname;
+						doc.getElementById("docLevel").innerHTML = docLevel || '无';
+						doc.getElementById("hospitalName").innerHTML = hospitalName;
+						doc.getElementById("officeName").innerHTML = officeName;
+						doc.getElementById("summary").innerHTML = summary || '暂无简介';
+						doc.getElementById("goodAt").innerHTML = goodAt || '暂无介绍';
+						doc.getElementById("answerNum").innerHTML = answerNum;
+					}else{
+						detail = doctorData?doctorData.detail:nodataHtmlInfo;
+					}
+				},myerror);
+			})
+			doc.getElementById("homepage").addEventListener("tap",function(){
+				_('#mui-scroll-wrapper').scroll().scrollTo(0,0,100);
+			});
+			//评价
+			doc.getElementById("commentBtn").addEventListener("tap",function(){
+				_('#mui-scroll-wrapper').scroll().scrollTo(0,0,100);
+				//初始化显示5条数据
+				pdata.offset = 0;
+				pdata.limit = 5;
+				_pull = _('#cases').pullToRefresh({
+					down: {
+						callback: function() {
+							pdata.offset = 0;
+							u.mypost('doctor/getDoctorDetail',pdata, false, function(data) {
+								_pull.endPullDownToRefresh((data.data.evaluate || []).length == 5);
+								if (data.code == 0) {
+									page = 1;
+									u.emptyHtml(list), commentList(data.data || []);
+								}else{
+									_.toast(data.msg || '服务器异常');
+								}
+							}, function() {
+								_.toast('获取列表失败'), _pull.endPullDownToRefresh();
+							});
+						}
+					},up: {
+						callback: function() {
+							pdata.offset=(pdata.limit)*page;
+							u.mypost('doctor/getDoctorDetail',pdata, false, function(data) {
+								_pull.endPullUpToRefresh((data.data.evaluate || []).length < 5);
+								if (data.code == 0) {
+									page++;
+									commentList(data.data || []);
+								} else {
+									_.toast(data.msg ||'服务器异常');
+								}
+							}, function() {
+								_.toast('获取列表失败'), _pull.endPullUpToRefresh(true);
+							});
+						},auto: true
+					}
+				});
+			});
+			//评论列表
+			function commentList(data){
+				_.each(data.evaluate,function(i,obj){
+					li = doc.createElement("li");
+					li.id = obj.docId;
+					li.innerHTML = "<li class='mui-table-view-cell mui-media' style='border-bottom:1px solid #dedede;'>"+
+										"<img class='mui-media-object mui-pull-left' src='"+imgserver+obj.avatar+"'>"+
+										"<div class='mui-media-body'>"+
+											""+obj.username+"<span class='comment-date'>"+obj.evaluateTime+"</span>"+
+											"<p class='mui-ellipsis hos-img'>"+obj.content+"</p>"+
+										"</div>"+
+									"</li>";
+					list.appendChild(li);
+				})
+			}
+			//留言问答---在线问诊---预约挂号 跳转
+			_("#ser").on("tap","dl",function(e){
+				if(hasClass(this,"flag")){
+					if(!w.getUser()){
+						w.openView("../userLogin.html");
+					}else{
+						var ex = {
+							type:2,
+							docId:docId
+						}
+						w.openView(this.id,ex);
+					}
+				}else{
+					_.toast("该服务暂未开通")
+				}
+			})
+			_.previewImage();
+		})(mui,document,util,window)
+	</script>
+</html>

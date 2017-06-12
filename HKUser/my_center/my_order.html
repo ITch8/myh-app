@@ -1,0 +1,225 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>我的预约</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link rel="stylesheet" href="../css/mui.min.css" />
+		<link rel="stylesheet" href="../css/pullRefresh.css" />
+		<link rel="stylesheet" href="../css/common.css" />
+		<link rel="stylesheet" href="../css/pay/confirmCss.css" />
+		<link rel="stylesheet" href="../css/center/myorder.css" />
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-pull-left mui-action-back mui-icon mui-icon-left-nav"></a>
+			<h1 id="title" class="mui-title">我的预约</h1>
+		</header>
+		<div id="mui-scroll-wrapper" class="mui-content mui-fullscreen mui-scroll-wrapper">
+			<div id="cases" class="mui-scroll">
+				<ul id="order-list" class="mui-table-view"></ul>
+			</div>	
+		</div>
+	</body>
+	<script src="../js/mui.min.js"></script>
+	<script src="../js/mui.pullToRefresh.min.js"></script>
+	<script src="../js/mui.pullToRefresh.material.min.js"></script>
+	<script src="../js/common.js"></script>
+	<script type="text/javascript">
+		(function(_,doc,u,w){
+			_.init({swipeBack: true}),_(".mui-scroll-wrapper").scroll();
+			var pdata = {offset:0,limit:5};
+			var page = 0;
+			var li = null,privateToken = null,_pull = null,state = null;
+			var list = doc.getElementById('order-list');
+			_.plusReady(function() {
+				privateToken = w.getItem("privateToken");
+				pdata.privateToken = privateToken;
+				_pull = _('#cases').pullToRefresh({
+					down: {
+						callback: function() {
+							pdata.offset = 0;
+							u.mypost('user_center/appointList',pdata, false, function(data) {
+								_pull.endPullDownToRefresh((data.data[0] || []).length == 5);
+								if (data.code == 0) {
+									page = 1;
+									u.emptyHtml(list), orderList(data.data || []);
+								}else{
+									_.toast(data.msg || '服务器异常');
+								}
+							}, function() {
+								_.toast('获取列表失败'), _pull.endPullDownToRefresh();
+							});
+						}
+					},up: {
+						callback: function() {
+							pdata.offset=(pdata.limit)*page;
+							u.mypost('user_center/appointList',pdata, false, function(data) {
+								_pull.endPullUpToRefresh((data.data[0] || []).length < 5);
+								if (data.code  == 0) {
+									page++;
+									orderList(data.data || []);
+								} else {
+									_.toast(data.msg ||'服务器异常');
+								}
+							}, function() {
+								_.toast('获取列表失败'), _pull.endPullUpToRefresh(true);
+							});
+						},auto: true
+					}
+				});
+			});
+			function orderList(data){
+				var stateClass = "";
+				var stateClass_01 = "color_f99";
+				var stateClass_02 = "color_ff0";
+				var payBtn = "",pay = "",cancel = "",cancelBtn = "";
+				var payClass = "but",payText= "付款",cancelOrder = "取消",cancelClass = "cancel";
+				_.each(data[0],function(i,obj){
+					li = doc.createElement("li");
+					li.id = obj.id;
+					state = obj.status;
+					if(state == "待处理"){
+						stateClass = "";
+						payBtn = "";
+						pay = "";
+						cancel = "";
+						cancelBtn =　"";
+					}else if(state == "预约成功"){
+						stateClass = "";
+						payBtn = "";
+						pay = "";
+						cancel = "";
+						cancelBtn =　"";
+					}else if(state == "完成"){
+						stateClass = stateClass_01;
+						payBtn = "";
+						pay = "";
+						cancel = "";
+						cancelBtn =　"";
+					}else if(state == "预约失败"){
+						stateClass = stateClass_02;
+						payBtn = "";
+						pay = "";
+						cancel = "";
+						cancelBtn =　"";
+					}else if(state == "未支付"){
+						stateClass = stateClass_02;
+						payBtn = payClass;
+						pay = payText;
+						cancel = cancelOrder;
+						cancelBtn = cancelClass;
+					}
+					li.className = "mui-table-view-cell mui-media";
+					li.innerHTML = "<div class='mui-pull-left mui-col-sm-8 left'>"+
+				                    	"<span class='doctors'>"+obj.docName+"</span>"+
+				                    	"<span class='hospitals'>"+obj.hosName+"</span>"+
+				                    	"<span class='describe'>地址："+obj.address+"</span>"+
+				                   "</div>"+
+				                   "<div class='mui-pull-right mui-col-sm-4 right mui-text-right'>"+
+				                    	"<span class='state "+stateClass+"'>"+state+"</span>"+
+				                    	"<span class='cancel-order-btn'><p data='"+obj.price+"' class='mui-pull-right "+cancelBtn+"' id='"+obj.id+"'>"+cancel+"</p>&nbsp;<p data='"+obj.price+"' class='mui-pull-right "+payBtn+"' id='"+obj.id+"'>"+pay+"</p></span>"+
+				                    	"<span class='time'>"+obj.dateline+"</span>"+
+				                   "</div>";
+					list.appendChild(li);
+				})
+			}
+			function getData(){
+				mui('#mui-scroll-wrapper').scroll().scrollTo(0,0,100);
+				var stateClass = "";
+				var stateClass_01 = "color_f99";
+				var stateClass_02 = "color_ff0";
+				var payBtn = "",pay = "",cancel = "",cancelBtn = "";
+				var payClass = "but",payText= "付款",cancelOrder = "取消",cancelClass = "cancel";
+				list.innerHTML = "";//清空
+				var pdata = {offset:0,limit:5};
+				pdata.privateToken = privateToken;
+				u.mypost('user_center/appointList',pdata, true, function(data) {
+					_.each(data.data[0],function(i,obj){
+						li = doc.createElement("li");
+						li.id = obj.id;
+						state = obj.status;
+						if(state == "待处理"){
+							stateClass = "";
+							payBtn = "";
+							pay = "";
+							cancel = "";
+							cancelBtn =　"";
+						}else if(state == "预约成功"){
+							stateClass = "";
+							payBtn = "";
+							pay = "";
+							cancel = "";
+							cancelBtn =　"";
+						}else if(state == "完成"){
+							stateClass = stateClass_01;
+							payBtn = "";
+							pay = "";
+							cancel = "";
+							cancelBtn =　"";
+						}else if(state == "预约失败"){
+							stateClass = stateClass_02;
+							payBtn = "";
+							pay = "";
+							cancel = "";
+							cancelBtn =　"";
+						}else if(state == "未支付"){
+							stateClass = stateClass_02;
+							payBtn = payClass;
+							pay = payText;
+							cancel = cancelOrder;
+							cancelBtn = cancelClass;
+						}
+						li.className = "mui-table-view-cell mui-media";
+						li.innerHTML = "<div class='mui-pull-left mui-col-sm-8 left'>"+
+					                    	"<span class='doctors'>"+obj.docName+"</span>"+
+					                    	"<span class='hospitals'>"+obj.hosName+"</span>"+
+					                    	"<span class='describe'>地址："+obj.address+"</span>"+
+					                   "</div>"+
+					                   "<div class='mui-pull-right mui-col-sm-4 right mui-text-right'>"+
+					                    	"<span class='state "+stateClass+"'>"+state+"</span>"+
+					                    	"<span class='cancel-order-btn'><p data='"+obj.price+"' class='mui-pull-right "+cancelBtn+"' id='"+obj.id+"'>"+cancel+"</p>&nbsp;<p data='"+obj.price+"' class='mui-pull-right "+payBtn+"' id='"+obj.id+"'>"+pay+"</p></span>"+
+					                    	"<span class='time'>"+obj.dateline+"</span>"+
+					                   "</div>";
+						list.appendChild(li);
+					})
+				},myerror);
+			}
+			//预约详情
+			_('.mui-table-view').on('tap','li',function(){
+      			w.openView('order_detail.html',{orderId:this.id});
+	    	})
+			//付款
+			_('.mui-table-view').on('tap','.but',function(e){	
+				var price = this.getAttribute("data");
+				var orderId = this.id;
+		      	var ex = {
+					type:6,
+					order_type:"预约挂号定金",
+					orderId:orderId,
+					fee:price
+				}
+		      	w.openView('../doctor/pay.html',ex);
+		      	e.stopPropagation();
+			})
+			//取消订单
+			_('.mui-table-view').on('tap','.cancel',function(e){
+				e.stopPropagation();
+				pdata.privateToken = privateToken;
+				pdata.oid = this.id;
+				pdata.orderType = 3;
+				var btnArray = ['取消', '确认'];
+				_.confirm('<div>确定要取消吗？</div>', '<div class="btn-title">取消</div>',btnArray, function(e) {
+					if(e.index == 1){
+						u.mypost("user_center/orderCancel",pdata,true,function(data){
+							if(data.code == 0){
+								_.toast("取消成功");
+								getData();
+							}
+						},myerror);
+					}
+				},'div');
+			})
+		})(mui,document,util,window)
+	</script>
+</html>

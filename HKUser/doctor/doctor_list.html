@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="format-detection" content="telephone=no">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<title>医生</title>
+		<link rel="stylesheet" href="../css/mui.min.css" />
+		<link rel="stylesheet" href="../css/base.css" />
+		<link rel="stylesheet" href="../css/common.css" />
+		<link rel="stylesheet" href="../css/pullRefresh.css" />
+		<link rel="stylesheet" href="../css/main/doctorList.css"/>
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<h1 class="mui-title">医生</h1>
+		</header>
+		<div class="mui-content">
+			<form>
+				<div class="mui-input-row mui-search">
+					<input type="search" id="keyword" class="mui-input-clear mui-search" placeholder="点击搜索医生">
+				</div>
+			</form>
+			<dl class="retrie">
+				<dt><a id="area"><span>医院</span><i class="up-nav"></i></a><a id="wage"><span>科室</span><i class="up-nav"></i></a></dt>
+				<dd id="areaDown" class="area mui-hidden">
+					<ul id="hospital" class="slide downlist"></ul>
+				</dd>
+				<dd id="wageDown" class="wage mui-hidden">
+					<ul id="office" class="slide downlist"></ul>
+				</dd>
+			</dl>
+			<div class="mui-scroll-wrapper" id="mui-scroll-wrapper">
+				<div id="cases" class="mui-scroll">
+					<ul id="data-list" class="mui-table-view"></ul>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="../js/mui.min.js"></script>
+	<script type="text/javascript" src="../js/mui.pullToRefresh.min.js"></script>
+	<script type="text/javascript" src="../js/mui.pullToRefresh.material.min.js"></script>
+	<script type="text/javascript" src="../js/common.js"></script>
+	<script type="text/javascript" src="../js/util/util.js" ></script>
+	<script>
+		(function(_, doc, u, w) {
+			_.init({swipeBack: false}); 
+			var list = doc.getElementById('data-list'),keywordPro = doc.getElementById("keyword");
+			var pdata = {offset:0,limit:5}, li = null;
+			var _pull = null,page = 0,imgserver = null;
+			_.plusReady(function(){
+				_('#mui-scroll-wrapper').scroll().scrollTo(0,0,100);
+				_pull = _('#cases').pullToRefresh({
+//					down: {
+//						callback: function() {
+//							pdata.offset = 0;
+//							pdata.keyword = "";
+//							keywordPro.value = "";
+//							pdata.hid = "";
+//							pdata.officeId = "";
+//							doc.activeElement.blur();
+//							u.mypost('doctor/getDoctorList',pdata, false, function(data) {
+//								_pull.endPullDownToRefresh((data.data.doctors || []).length == 5);
+//								if (data.code == 0) {
+//									page = 1;
+//									u.emptyHtml(list), docList(data.data || []);
+//								}else{
+//									_.toast(data.msg || '服务器异常');
+//								}
+//							}, function() {
+//								_pull.endPullDownToRefresh();
+//							});
+//						}
+//					},
+					up: {
+						callback: function() {
+							pdata.offset=(pdata.limit)*page;
+							u.mypost('doctor/getDoctorList',pdata, false, function(data) {
+								_pull.endPullUpToRefresh((data.data.doctors || []).length < 5);
+								if (data.code  == 0) {
+									page++;
+									docList(data.data || []);
+								} else {
+									_.toast(data.msg ||'服务器异常');
+								}
+							}, function() {
+								_pull.endPullUpToRefresh(true);
+							});
+						}
+					}
+				});
+				setTimeout(function(){
+					getHospitalOffice();
+				},1000);
+			})
+			//获取医院列表和科室列表
+			function getHospitalOffice(){
+				var hopList = doc.getElementById('hospital'),officeList = doc.getElementById('office');
+				//医院名称列表
+				u.mypost("hospital/getAllHospital",pdata,false,function(data){
+					if(data.code == 0){
+						hopList.innerHTML = "<li>全部医院</li>";
+						_.each(data.data[0],function(i,obj){
+							hopList.innerHTML += "<li id='"+obj.hid+"'>"+obj.hospitalName+"</li>";
+						})
+					}
+				},myerror);
+				//科室列表
+				u.mypost("hospital/getAllOffices",pdata,false,function(data){
+					if(data.code == 0){
+						officeList.innerHTML = "<li>全部科室</li>";
+						_.each(data.data[0],function(i,obj){
+							officeList.innerHTML += "<li id='"+obj.officeId+"'>"+obj.officeName+"</li>";
+						})
+					}
+				},myerror);
+			}
+			
+			//医生列表
+			function docList(data){
+				_('#mui-scroll-wrapper').scroll().scrollTo(0,0,100);
+				imgserver = data.imgServer;
+				_.each(data.doctors,function(i,obj){
+					li = doc.createElement("li");
+					li.id = obj.uid;
+					var img = "../images/default-doctor.png";
+					img = obj.avatar == ""?"../images/default-doctor.png":imgserver+obj.avatar;
+					var hospitalName = obj.hospitalName?obj.hospitalName:"";
+					li.className = "mui-table-view-cell mui-media";
+					li.innerHTML = "<img class='mui-media-object mui-pull-left' src='"+img+"'>"+
+									"<div class='mui-media-body'>"+obj.nickname+"&nbsp;<span class='titles'>"+obj.docLevel+"</span>"+
+										"<p class='doc-img'><i class='icon-doctor-hos'></i>&nbsp;"+obj.hospitalName+"</p>"+
+										"<p class='doc-img'><i class='icon-doctor-type'></i>&nbsp;"+obj.officeName+"</p>"
+									"</div>";
+					list.appendChild(li);
+				})
+			}
+			//获取医生列表
+			function doGetData(pdata){
+				pdata.offset = 0;
+				u.mypost('doctor/getDoctorList',pdata, false, function(data) {
+					docList(data.data);
+				},myerror);
+			}
+			//搜索	
+			function searchKey(key) {
+				pdata.keyword = key;
+				pdata.offset = 0;
+				u.mypost('doctor/getDoctorList', pdata, true, function(data) {
+					if(data.code == 0) {
+						u.emptyHtml(list),docList(data.data || []);
+					} else {
+						_.toast(data.msg || '服务器异常');
+					}
+				}, function() {
+					_.toast('获取列表失败');
+				});
+			}
+			//根据关键字搜索医生
+			keywordPro.addEventListener('keypress',function(e){
+				if(isEmojiCharacter(keywordPro.value)){
+					_.toast("不支持表情输入");
+					e.preventDefault();// 阻止默认事件
+					return;
+				}
+				if(e.keyCode == "13"){
+					doc.activeElement.blur();
+					searchKey(keywordPro.value);
+					e.preventDefault();// 阻止默认事件
+				}
+			})
+			//进入医生详情页面
+			_('#data-list').on('tap', 'li', function() {
+				w.openView('doctor_detail.html',{docId:this.id});
+			})
+			
+			var areaObj = document.getElementById("area"),//医院
+			wageObj = document.getElementById("wage"),//科室
+			areaDownObj =document.getElementById("areaDown"),
+			wageDownObj = document.getElementById("wageDown");
+			areaObj.addEventListener("tap",function(){
+				doc.activeElement.blur();
+				if(hasClass(areaDownObj,"mui-hidden")){addClass(this,"up");}else{removeClass(this,"up");}
+				removeClass(wageObj,"up");
+				toggleClass(areaDownObj,"mui-hidden");
+				addClass(wageDownObj,"mui-hidden");
+			})
+			wageObj.addEventListener("tap",function(){
+				doc.activeElement.blur();
+				if(hasClass(wageObj,"mui-hidden")){addClass(this,"up");}else{removeClass(this,"up");}
+				toggleClass(this,"up");
+				removeClass(areaObj,"up");
+				toggleClass(wageDownObj,"mui-hidden");
+				addClass(areaDownObj,"mui-hidden");
+			})
+			//选择医院和科室
+			mui(".downlist").on("tap","li",function(){
+				doc.activeElement.blur();
+				var pls = this.parentNode.children;
+				for (var i = 0; i < pls.length; i++) {
+					removeClass(pls[i],"active");
+				}
+				addClass(this,"active");
+				addClass(this.parentNode.parentNode,"mui-hidden");
+			})
+			//根据医院搜索	
+			mui("#areaDown>.downlist").on("tap","li",function(){
+				doc.activeElement.blur();
+				areaObj.querySelector("span").innerHTML = this.innerHTML.substr(0,8);
+				_pull && _pull.endPullUpToRefresh(true);
+				_('#mui-scroll-wrapper').scroll().scrollTo(0,0);
+				_pull && _pull.refresh(true);
+				pdata.offset = 0;
+				page = 1;
+				keywordPro.value?pdata.keyword = keywordPro.value:'';
+				pdata.hid = this.id;
+				console.log("id==="+pdata.hid);
+				searchKey(keywordPro.value);
+			})
+			//根据科室搜索
+			mui("#wageDown>.downlist").on("tap","li",function(){
+				wageObj.querySelector("span").innerHTML = this.innerHTML;
+				_pull && _pull.endPullUpToRefresh(true);
+				_('#mui-scroll-wrapper').scroll().scrollTo(0,0);
+				_pull && _pull.refresh(true);
+				pdata.offset = 0;
+				page = 1;
+				keywordPro.value?pdata.keyword = keywordPro.value:'';
+				pdata.officeId = this.id;
+				console.log("id==="+pdata.officeId);
+				searchKey(keywordPro.value);
+			})
+		})(mui, document, util, window)
+		/**
+		 * @description 读取某个医院的医生列表
+		 */
+		var list = document.getElementById('data-list');
+		var pdata = {offset:0,limit:5}, li = null;
+		var _pull = null,page = 0,imgserver = null;
+		function getDocByHid(hid){
+			pdata.hid = hid;
+			util.mypost("doctor/getDoctorList",pdata,true,function(data){
+				imgserver = data.data.imgServer;
+				list.innerHTML = "";
+				mui.each(data.data.doctors,function(i,obj){
+					li = document.createElement("li");
+					li.id = obj.uid;
+					var img = "../images/default-doctor.png";
+					img = obj.avatar == ""?"../images/default-doctor.png":imgserver+obj.avatar;
+					li.className = "mui-table-view-cell mui-media";
+					li.innerHTML = "<img class='mui-media-object mui-pull-left' src='"+img+"'>"+
+									"<div class='mui-media-body'>"+
+										""+obj.nickname+"&nbsp;<span class='titles'>"+obj.docLevel+"</span>"+
+										"<p class='doc-img'><i class='icon-doctor-hos'></i>&nbsp;"+obj.hospitalName+"</p>"+
+										"<p class='doc-img'><i class='icon-doctor-type'></i>&nbsp;"+obj.officeName+"</p>"
+									"</div>";
+					list.appendChild(li);
+				})
+			},myerror);
+		}
+	</script>
+</html>

@@ -1,0 +1,191 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>充值</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link rel="stylesheet" href="../css/mui.min.css" />
+		<link rel="stylesheet" href="../css/my.css" />
+		<link rel="stylesheet" href="../css/common.css" />
+		<link rel="stylesheet" href="../css/center/recharge.css" />
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-pull-left mui-action-back mui-icon mui-icon-left-nav"></a>
+			<h1 id="title" class="mui-title">充值</h1>			
+		</header>
+		<div class="mui-content">
+			<div class="payment">
+				<span class="mui-pull-left">充值金额：¥&nbsp;&nbsp;</span><input type="text" id="total" value="" placeholder="10"/>
+			</div>
+			<div id="sheet" class="mui-popover-bottom mui-popover-action">
+				<div class="popover-title">选择支付方式</div>	
+			    <ul class="mui-table-view mui-table-view-radio">
+					<li id='1' class="mui-table-view-cell mui-selected">
+						<a class="mui-navigate-right">
+							<img class="mui-media-object mui-pull-left" src="../images/weixin.png">
+							<div class="mui-media-body mui-pull-left">微信支付</div>
+							<div class="mui-pull-right choice-img">
+								<span class="choose-pay-way on"></span>
+							</div>
+						</a>
+					</li>
+					<li id='2' class="mui-table-view-cell">
+						<a class="mui-navigate-right">
+							<img class="mui-media-object mui-pull-left" src="../images/zfb.png">
+							<div class="mui-media-body mui-pull-left">支付宝支付</div>
+							<div class="mui-pull-right choice-img">
+								<span class="choose-pay-way"></span>
+							</div>
+						</a>
+					</li>
+				</ul>
+			</div>
+			<button class="but" id="pay">支付</button>
+		</div>
+	</body>
+	<script type="text/javascript" src="../js/mui.min.js"></script>
+	<script type="text/javascript" src="../js/common.js"></script>
+	<script type="text/javascript">
+		(function(_,doc,u,w){
+			var privateToken = null,pdata = {},payType = null,amount = null,ways = null,self = null;
+			var totalObj = doc.getElementById("total");//支付金额
+			var payWay = 1, pays={},channel= null;//通道
+			_(doc).on("tap",".mui-table-view-cell",function(){
+				doc.activeElement.blur();
+				self = this;
+				ways = doc.querySelectorAll(".choose-pay-way");
+				if(ways && ways.length > 0){
+					_.each(ways,function(i,o){
+						if(o != self){
+							removeClass(this,"on");
+						}
+					});
+				}
+				toggleClass(this.querySelector(".choose-pay-way"),"on");
+			})
+			_.plusReady(function(){
+				//获取通道
+				plus.payment.getChannels(function(channels){
+			        channel=channels[0];
+			        for(var i in channels){
+						var channel=channels[i];
+						if(channel.id=='qhpay'||channel.id=='qihoo'){	// 过滤掉不支持的支付通道：暂不支持360相关支付
+							continue;
+						}
+						pays[channel.id]=channel;
+						checkServices(channel);
+					}
+			    },function(e){
+			        alert("获取支付通道失败："+e.message);
+			    });
+			    
+			    //点击支付
+				doc.getElementById("pay").addEventListener('tap',function(){
+					if(u.isNull(totalObj.value)){
+	                    _.toast("请输入支付金额");
+	                    return;
+	                }else if(!u.checkMoney(totalObj.value)){
+	                    _.toast("支付金额必须是数字");
+	                    return;
+	                }else if(isEmojiCharacter(totalObj.value)){
+	                    _.toast("不支持表情输入");
+	                    return;
+	                }
+					payWay = doc.querySelector(".mui-table-view-cell.mui-selected").id;
+					if(payWay==1){//微信支付
+						pay('wxpay');
+					}else if(payWay==2){//支付宝
+						pay('alipay');
+					}
+				});
+			})
+			//检查服务的加载
+			function checkServices(pc){
+				if(!pc.serviceReady){
+					var txt=null;
+					switch(pc.id){
+						case "alipay":
+						txt="检测到系统未安装“支付宝快捷支付服务”，无法完成支付操作，是否立即安装？";
+						break;
+						default:
+						txt="系统未安装“"+pc.description+"”服务，无法完成支付，是否立即安装？";
+						break;
+					}
+					plus.nativeUI.confirm(txt,function(e){
+						if(e.index==0){
+							pc.installService();
+						}
+					},pc.description);
+				}
+			}
+			//调用支付
+			function pay(id){
+				privateToken = w.getItem("privateToken");
+				pdata.privateToken = privateToken;
+		    	// 从服务器请求支付订单
+			    if(id=='alipay'){
+			    	pdata.payType = 2;
+			    }else if(id=='wxpay'){
+			    	pdata.payType = 1;
+			    }else{
+			        _.toast("不支持此支付通道！",null,"名医肿瘤科");
+			        return;
+			    }
+				pdata.amount = totalObj.value * 100;//支付金额(totalObj.value * 100)
+				u.mypost('user_pay/recharge',pdata, true, function(data) {
+					//支付宝支付
+					if(id=='alipay'){
+						plus.payment.request(pays[id],data.data.alipayReqStr,function(result){
+			                plus.nativeUI.alert("充值成功！",function(){
+			                	plus.webview.getWebviewById("mywallet").evalJS("walletData()");
+			                	w.openView("mywallet.html");
+			                });
+			            },function(error){
+			            	var errCode = error.message && error.message.substr(12,4);
+			            	if("8000" ==  errCode){
+			            		_.toast("正在处理中")
+			            	}else if("6001" ==  errCode){
+			            		_.toast("已取消支付")
+			            	}else if("6002" ==  errCode){
+			            		_.toast("网络连接出错")
+			            	}else if("4000" ==  errCode){
+			            		_.toast("订单支付失败")
+			            	}else{
+			            		_.toast("请求异常，请重试")
+			            	}
+			            });
+				    }else if(id=='wxpay'){//微信支付
+				    	_.ajax({
+							url: data.data.wxPayUrl,type: "get",data:null,timeout:60000,
+							success: function(data) {
+								data = JSON.parse(data);
+								plus.payment.request(pays[id],data,function(result){
+					                plus.nativeUI.alert("充值成功！",function(){
+					                	plus.webview.getWebviewById("mywallet").evalJS("walletData()");
+					                	w.openView("mywallet.html");
+					                });
+					            },function(error){
+					            	console.log("wx Error==="+JSON.stringify(error.message));
+					            	if("canceled" == error.message.substr(error.message.length-8,8)){
+					            		_.toast("已取消操作")
+					            	}else if("客户端未安装" == error.message.substr(0,6)){
+					            		_.toast("客户端未安装")
+					            	}else{
+					            		_.toast("支付异常，请重试")
+					            	}
+					            });
+							},
+							error: function(xhr) {
+								_.toast("请求异常，请重试")
+							}
+						});
+				    }else{
+				        _.toast("不支持此支付通道！",null,"名医肿瘤科");
+				        return;
+				    }
+				},myerror);
+			}
+		})(mui,document,util,window)
+	</script>
+</html>

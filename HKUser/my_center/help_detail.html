@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="format-detection" content="telephone=no">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<title>帮助详情</title>
+		<link rel="stylesheet" href="../css/mui.min.css" />
+		<link rel="stylesheet" href="../css/common.css" />
+		<link rel="stylesheet" href="../css/iconfont.css" />
+		<link 
+	</head>
+	<style>
+		.mui-content> .mui-table-view:first-child {
+			margin-top: 0px;
+			font-size: 14px;
+		}
+		
+		.help-question {
+			width: 100%;
+			overflow: hidden;
+			color: #33A2D7;
+			font-size: 15px;
+			background-color: #FFFFFF;
+			border-bottom: 1px solid #DEDEDE;
+			padding: 15px;
+		}
+		
+		.help-answer {
+			width: 100%;
+			white-space: normal;
+			font-size: 13px;
+		}
+	</style>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">帮助详情</h1>
+		</header>
+		<div class="mui-content">
+			<div class="help-question">
+				<span id="title"></span>
+				<p class='help-answer' id="helpDetail"></p>
+			</div>
+		</div>
+	</body>
+	<script src="../js/mui.min.js"></script>
+	<script src="../js/common.js"></script>
+	<script>
+		(function(_,doc,u,w){
+			_.init({swipeBack:true});
+			var pdata = {};
+			var helpId = null;
+			var title = null,helpDetail = null;
+			var data = null;
+			var web = null;
+			_.plusReady(function(){
+				web = plus.webview.currentWebview();
+				helpId = web.helpId;
+				pdata.id = helpId;
+				u.mypost("api/helpDetail",pdata,true,function(data){
+					if(data.code == 0){
+						data = data.data[0];
+						title = data?data.title:'';
+						helpDetail = data?data.description:'';
+						doc.getElementById("title").innerHTML = title;
+						doc.getElementById("helpDetail").innerHTML = helpDetail;
+					}else{
+						helpDetail = data?data.description:nodataHtmlInfo;
+					}
+				},myerror);
+			})
+		})(mui,document,util,window)
+	</script>
+</html>

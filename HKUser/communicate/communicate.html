@@ -1,0 +1,57 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../css/common.css" />
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+		    <a class="mui-icon mui-icon-left-nav mui-pull-left" id="go_back"></a>
+			<a class="mui-icon mui-icon-forward mui-pull-right main-font-color" id="go_forward"></a>
+			<h1 class="mui-title mui-action-back" id="close_page">交流圈</h1>
+		</header>
+	</body>
+	<script src="../js/mui.min.js"></script>
+	<script type="text/javascript">
+		mui.init();
+		mui.plusReady(function() {
+			var self = plus.webview.currentWebview();
+			var baiduWV = plus.webview.create("https://buluo.qq.com/mobile/barindex.html?_wv=1027&_bid=128&from=pc&bid=297520", "名医汇", {
+				top: "45px",
+				bottom: 0
+			});
+			self.append(baiduWV);
+			/**
+			 * 重写mui.back()方法
+			 */
+			/**
+			 * 监听子窗口对象是否可后退
+			 */
+			document.getElementById("go_back").addEventListener("tap", function() {
+				baiduWV.canBack(function(event) {
+					var canBack = event.canBack;
+					if(canBack) {
+						baiduWV.back();
+					}
+				});
+			});
+
+			// 右上角前进icon的事件
+			document.getElementById("go_forward").addEventListener("tap", function() {
+				/**
+				 * 监听子窗口对象是否可前进
+				 */
+				baiduWV.canForward(function(event) {
+					var canForward = event.canForward;
+					if(canForward) {
+						baiduWV.forward();
+					}
+				});
+			});
+		});
+	</script>
+</html>

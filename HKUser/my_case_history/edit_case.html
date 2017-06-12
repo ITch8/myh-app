@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="format-detection" content="telephone=no">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<title>编辑病历</title>
+		<link rel="stylesheet" href="../css/mui.min.css" />
+		<link rel="stylesheet" href="../css/common.css" />
+		<link rel="stylesheet" href="../css/input.css" />
+		<link rel="stylesheet" href="../css/case.css" />
+		<link rel="stylesheet" href="../css/mui.picker.min.css" />
+		<link rel="stylesheet" href="../css/mui.poppicker.css" />
+		<link rel="stylesheet" href="../css/center/edit_case.css" />
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">编辑病历</h1>
+			<a class="mui-btn mui-btn-link mui-pull-right" id="save">保存</a>
+		</header>
+		<div class="mui-content">
+			<form class="mui-input-group">
+				<div class="mui-input-row">
+					<label class="label">病历名称：</label>
+					<input type="text" placeholder="请输入病历名称" id="illName" value="">
+				</div>
+				<div class="mui-input-row">
+					<label class="label">姓名：</label>
+					<input type="text" class="mui-input-clear" placeholder="请输入姓名" id="realName" value="">
+				</div>
+				<div class="mui-input-row">
+					<label class="label">年龄：</label>
+					<input type="text" class="mui-input-clear" placeholder="请输入年龄" id="age" value="">
+				</div>
+				<div class="mui-input-row">
+					<label class="label">性别：</label>
+					<div class="mui-card">
+						<div class="mui-input-row mui-radio mui-left" id="maleRadio">
+							<input name="radio1" type="radio" checked id="male" value="1">
+							<label class="label">男</label>
+						</div>
+						<div class="mui-radio mui-left" id="femaleRadio">
+							<input name="radio1" type="radio" id="female" value="2">
+							<label class="label">女</label>
+						</div>
+					</div>
+				</div>
+				<div class="mui-input-row">
+					<label class="label">过敏史：</label>
+					<input type="text" class="mui-input-clear" placeholder="以往过敏史，10字以内" id="allergyHistory" value="" maxlength="10">
+				</div>
+				<div class="mui-input-row">
+					<label class="label">诊断结果：</label>
+					<input type="text" class="zhenduan-result" id="result" value="">
+				</div>
+				<div class="mui-input-row">
+					<label class="label">分期：</label>
+					<input id="stages" class="fenqi" type="text" readonly="readonly">
+				</div>
+				<div class="mui-input-row" id="base">
+					<label class="label">基本病情：</label>
+					<textarea class="base-state-edit" id="situation" rows="5" placeholder="描述病情300字以内" maxlength="300"></textarea>
+				</div>
+			</form>
+			<div class="case-record">
+				<div class="case-record-item">病历记录</div>
+				<div class="case-record-add" id="add-record">添加+</div>
+			</div>
+			<!--病历记录-->
+			<div id="del-record"></div>
+		</div>
+		<div id="sheet" class="mui-popover mui-popover-bottom mui-popover-action">
+			<!-- 可选择菜单 -->
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell">
+					<a>拍照上传</a>
+				</li>
+				<li class="mui-table-view-cell">
+					<a>从相册选择</a>
+				</li>
+			</ul>
+			<!-- 取消菜单 -->
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell">
+					<a href="#sheet1" style="color: #666;">取消</a>
+				</li>
+			</ul>
+		</div>
+	</body>
+	<script src="../js/mui.min.js"></script>
+	<script src="../js/mui.picker.min.js"></script>
+	<script src="../js/mui.poppicker.js"></script>
+	<script src="../js/common.js"></script>
+	<script type="text/javascript">
+		(function(_,doc,u,w){
+			_.init({swipeBack:false,gestureConfig:{longtap: true}});
+			var pdata = {},privateToken = null,data = null,illId = null,div = null,imgServer = null;
+			var illName = null,realName = null,age = null,sex = null,allergyHistory = null,result = null,stages = null,situation = null;
+			var saveObj = doc.getElementById("save"),
+				illNameObj = doc.getElementById("illName"),
+				nameObj = doc.getElementById("realName"),
+				ageObj = doc.getElementById("age"),
+				sexObj = doc.getElementsByName("radio1"),
+				allergyHistoryObj = doc.getElementById("allergyHistory"),
+				resultObj = doc.getElementById("result"),
+				stagesObj = doc.getElementById("stages"),
+				situationObj = doc.getElementById("situation"),list = doc.getElementById('del-record');
+			var img1Html = "",img2Html = "",img3Html = "",imghtmls = null;
+			var remarkIdsArr = new Array();//记录id
+			var addIndex = '';
+			_.plusReady(function(e){
+				privateToken = w.getItem("privateToken");
+				pdata.privateToken = privateToken;
+               	web = plus.webview.currentWebview();//新建页面
+                illId = web.illId;
+                pdata.illId = illId;
+				getData();
+				//删除记录
+				_('#del-record').on('tap', '.delete-record', function(event) {
+					var elem = this;
+					var delDiv = elem.parentNode;
+					var pdata = {remarkId:this.id,privateToken:privateToken};
+					_.confirm('确认删除该条病历记录吗？', '提示',['确认', '取消'], function(e) {
+						if (e.index == 0) {
+							u.mypost("medical/delRemark",pdata,true,function(data){
+								_.toast(data.msg);
+								if(data.code == 0){
+									delDiv.parentNode.removeChild(delDiv);
+								}
+							},myerror);
+						} 
+					});
+				});
+				//添加记录
+				doc.getElementById("add-record").addEventListener('tap', function() {
+					w.openView("add_record.html",{illId:illId});
+				});
+				_(doc).on('tap',"img", function() {
+					imgobj = this;
+//					addIndex = this.getAttribute("addIndex");
+					addIndex = new Date().getTime();
+					_('#sheet').popover('show');
+				})
+				//编辑保存病历
+				saveObj.addEventListener('tap',function(){
+					if(u.isNull(illNameObj.value)){
+						_.toast("请输入病历名称");
+						return;
+					}else if(u.isNull(nameObj.value)){
+						_.toast("请输入姓名");
+						return;
+					}else if(u.isNull(ageObj.value)){
+						_.toast("请输入年龄");
+						return;
+					}else if(!u.checkAge(ageObj.value)){
+						_.toast("请输入正确的年龄");
+						return;
+					}else if(u.isNull(allergyHistoryObj.value)){
+						_.toast("请输入过敏史");
+						return;
+					}else if(allergyHistoryObj.value.length > 10){
+						_.toast("过敏史必须在10个字以内");
+						return;
+					}else if(u.isNull(resultObj.value)){
+						_.toast("请输入诊断结果");
+						return;
+					}else if(u.isNull(stagesObj.value)){
+						_.toast("请选择分期");
+						return;
+					}else if(u.isNull(situationObj.value)){
+						_.toast("请输入基本病情");
+						return;
+					}else if(situationObj.value.length > 300){
+						_.toast("基本病情必须在300个字以内");
+						return;
+					}else if(isEmojiCharacter(illNameObj.value) || isEmojiCharacter(nameObj.value) || isEmojiCharacter(ageObj.value) 
+					|| isEmojiCharacter(allergyHistoryObj.value) || isEmojiCharacter(resultObj.value) || isEmojiCharacter(situationObj.value)){
+						_.toast("不支持表情输入");
+						return;
+					}
+					//病历详情
+					var illName = illNameObj.value.trim(),
+						name = nameObj.value.trim(),
+						age = ageObj.value.trim(),
+						sex = getRadioBoxValue(sexObj),
+						allergyHistory = allergyHistoryObj.value.trim(),
+						result = resultObj.value.trim(),
+						stages1 = stagesObj.value,
+						situation = situationObj.value.trim();
+					var s = null;
+					if(stages1 == "Ⅰ期"){
+						s = 1;
+					}else if(stages1 == "Ⅱ期"){
+						s = 2;
+					}else if(stages1 == "Ⅲ期"){
+						s = 3;
+					}else if(stages1 == "Ⅳ期"){
+						s = 4;
+					}else if(stages1 == "无"){
+						s = 0;
+					}
+					//病历记录详情
+					var visitDateObjs = doc.getElementsByClassName("treatDate"),
+						stagesObjs = doc.getElementsByClassName("stage"),//记录类型
+						contentObjs = doc.getElementsByClassName("illRecord");//病情记录
+					var img1Objs = doc.getElementsByClassName("img1");
+					var img2Objs = doc.getElementsByClassName("img2");
+					var img3Objs = doc.getElementsByClassName("img3");
+					//编辑病历
+					var waiting =  plus.nativeUI.showWaiting();//添加等待框
+					var task = gettask(ASKURL+'medical/editIllness', function(t, status) {
+						var data = JSON.parse(t.responseText || '{}');
+						//保存成功
+						if(status == 200){
+							waiting?waiting.close():'';
+							if(data.code == 0){
+								_.toast(data.msg);
+								plus.webview.getWebviewById("case_detail").evalJS("getCaseDetail()");
+								w.openView("case_detail.html",{illId:illId});
+							}else{
+								_.toast(data.msg);
+							}
+						}
+					});
+					task.addData('token',token);
+					task.addData('privateToken', privateToken);
+					task.addData('illId', illId);
+					task.addData('illName', illName);
+					task.addData('realName', name);
+					task.addData('age', age);
+					task.addData('sex', sex);
+					task.addData('allergyHistory', allergyHistory);
+					task.addData('result', result);
+					task.addData('stages', s+"");
+					task.addData('situation', situation);
+					task.addData("remarkIds",remarkIdsArr.join('-'));//记录ids
+					//日期
+					for (var i = 0; i < visitDateObjs.length; i++) {
+						task.addData('visitDate_'+remarkIdsArr[i], visitDateObjs[i].value);
+					}
+					//内容
+					for (var i = 0; i < contentObjs.length; i++) {
+						task.addData("content_"+remarkIdsArr[i],contentObjs[i].value);
+					}
+					//类型
+					for (var i = 0; i < stagesObjs.length; i++) {
+						task.addData("stages_"+remarkIdsArr[i],stagesObjs[i].value);
+					}
+					//图片1
+					for (var i = 0; i < img1Objs.length; i++) {
+						console.log("img1=="+img1);
+						var img1 = img1Objs[i].getAttribute("src");
+						if(img1&&img1.indexOf("../images/medical-add.png") == -1&&img1.indexOf("https") == -1){
+							task.addFile(img1,{key:"img1_"+remarkIdsArr[i]});
+						}
+					}					
+					//图片2
+					for (var i = 0; i < img2Objs.length; i++) {
+						var img2 = img2Objs[i].getAttribute("src");
+						console.log("img2==="+img2);
+						if(img2&&img2.indexOf("../images/medical-add.png") == -1&&img2.indexOf("https") == -1){
+							task.addFile(img2,{key:"img2_"+remarkIdsArr[i]});
+						}
+					}
+					//图片3
+					for (var i = 0; i < img3Objs.length; i++) {
+						var img3 = img3Objs[i].getAttribute("src");
+						if(img3&&img3.indexOf("../images/medical-add.png") == -1&&img3.indexOf("https") == -1){
+							task.addFile(img3,{key:"img3_"+remarkIdsArr[i]});
+							console.log("img3==="+img3);
+						}
+					}
+					task.start();
+				})
+			})
+			w.addEventListener("event",function(e){
+				pdata.illId = e.detail.illId;
+				getData();
+			});
+			var stagePicker = new _.PopPicker();
+			stagePicker.setData([{
+				value: 'Ⅰ期',
+				text: 'Ⅰ期'
+			}, {
+				value: 'Ⅱ期',
+				text: 'Ⅱ期'
+			}, {
+				value: 'Ⅲ期',
+				text: 'Ⅲ期'
+			}, {
+				value: 'Ⅳ期',
+				text: 'Ⅳ期'
+			}, {
+				value: '无',
+				text: '无'
+			}]);
+			//普通示例
+			var treatPicker = new _.PopPicker();
+			treatPicker.setData([{
+				value: '初诊',
+				text: '初诊'
+			}, {
+				value: '复诊',
+				text: '复诊'
+			}, {
+				value: '入院',
+				text: '入院'
+			}, {
+				value: '出院',
+				text: '出院'
+			}, {
+				value: '手术',
+				text: '手术'
+			}, {
+				value: '化验',
+				text: '化验'
+			},{
+				value: '影像',
+				text: '影像'
+			},{
+				value: '体征',
+				text: '体征'
+			},{
+				value: '病历',
+				text: '病历'
+			},{
+				value: '处方',
+				text: '处方'
+			}]);
+			//分期
+			stagesObj.addEventListener('tap', function(event) {
+				stagePicker.show(function(items) {
+					var v = JSON.stringify(items[0].value);
+					v = v.substr(1,v.length-2);
+					if(0 != v){
+						stagesObj.value = v;
+					}
+				});
+			}, false);
+			_('#sheet').on('tap', 'li', function() {
+				_('#sheet').popover('hide');
+				if(~this.innerHTML.indexOf('拍照上传')) {
+					choiceCamera()
+				} else if(~this.innerHTML.indexOf('从相册选择')) {
+					choicePic()
+				}
+			});
+			function choiceCamera() {
+				var cmr = plus.camera.getCamera();
+				cmr.captureImage(function(p) {
+					plus.io.resolveLocalFileSystemURL(p, function(entry) {
+						var dst = "_doc/temp"+addIndex+".jpg";
+						plus.zip.compressImage({
+							src:entry.toLocalURL(),dst:dst,width:'50%',overwrite:true
+						},function(even){
+							setImg(even.target);
+						});
+					}, function(e) {});
+				}, function(e) {}, {
+					index: 1,
+					filename: "_doc/camera/"
+				});
+			}
+			function choicePic() {
+				plus.gallery.pick(function(path) {
+					var dst = "_doc/temp"+addIndex+".jpg";
+					plus.zip.compressImage({
+						src:path,dst:dst,width:'50%',overwrite:true
+					},function(even){
+						setImg(even.target);
+					});
+				}, function(e) {}, {
+					filter: 'image'
+				});
+			}
+			function setImg(src) {
+				imgobj.src = src;
+			}
+			//创建上传任务
+			function gettask(server, callback) {
+				return plus.uploader.createUpload(server, {
+					method: "POST"
+				}, callback);
+			}
+			//就诊类型
+			_(doc).on('tap', '.stage', function(event) {
+				var self = this;
+				treatPicker.show(function(items) {
+					var v = JSON.stringify(items[0].value);
+					v = v.substr(1,v.length-2);
+					if( 0 == v){
+					}else{
+						self.value = v;
+					}
+				});
+				doc.activeElement.blur();
+			}, false);
+			//就诊日期
+			var picker = null,endYear = 2017,endMonth = 1,endDay = 1,self = null;
+			endYear = getCurrentYear();
+			endMonth = getCurrentMouth();
+			endDay = getCurrentDay();
+			_(doc).on('tap', '.treatDate', function() {
+				self = this;
+				picker = new _.DtPicker({"type":"date","beginYear":2010,"endYear":endYear,"endMonth":endMonth,"endDay":endDay});
+				picker.show(function(rs) {
+					self.value = rs.text;
+					picker.dispose();
+				});
+				doc.activeElement.blur();
+			});
+			//病历记录
+			_(doc).on('tap', '.illRecord', function(event) {
+				picker?picker.hide():'';
+				treatPicker?treatPicker.hide():'';
+			});
+			//获取当前年份
+			function getCurrentYear() {
+				return new Date().getFullYear();
+			}
+			//获取当前月份
+			function getCurrentMouth() {
+				return new Date().getMonth() + 1;
+				
+			}//获取当前日
+			function getCurrentDay() {
+				return new Date().getDate();
+			}
+			//获取单选按钮
+			function getRadioBoxValue(obj){
+				var value = 0;
+                for(i=0; i<obj.length;i++){
+                    if(obj[i].checked){ 
+                        value = obj[i].value;
+                    } 
+	            }         
+             	return value;
+			}
+			
+			//长按删除所选图片
+			_(doc).on("longtap","img",function(){
+				var self = this;
+				console.log(self.src);
+				if(self.src.indexOf("medical-add.png") == -1){
+					plus.nativeUI.confirm("确定移除所选图片吗",function(e){
+						if(0 == e.index){
+							self.src = "../images/medical-add.png";
+						}
+					},"警告",['确定','取消']);
+				}
+			})
+			_(doc).on('tap',"img",function(){
+				doc.activeElement.blur();
+			})
+			stagesObj.addEventListener('tap', function() {
+				doc.activeElement.blur();
+			});
+			
+			function getData(){
+				//读取病历信息
+				u.mypost("medical/editIllnessView",pdata,true,function(data){
+					if(data.code == 0){
+						list.innerHTML = "";
+						var dataIll = data.data.illnessHistory;
+						imgServer = data.data.imgServer;//图片
+						illName = dataIll.illName;
+						age = dataIll.age;
+						sex = dataIll.sex;
+						realName = dataIll.realname;
+						allergyHistory = dataIll.allergyHistory;
+						result = dataIll.result;
+						stages = dataIll.stages;
+						situation = dataIll.situation;
+						//分期
+						if(stages == 1){
+							stagesObj.value = "Ⅰ期";
+						}else if(stages == 2){
+							stagesObj.value = "Ⅱ期";
+						}else if(stages == 3){
+							stagesObj.value = "Ⅲ期";
+						}else if(stages == 4){
+							stagesObj.value = "Ⅳ期";
+						}else if(stages == 0){
+							stagesObj.value = "无";
+						}
+						//性别
+						if(sex == 1){
+							doc.getElementById("male").checked = true;
+						}else if(sex == 2){
+							doc.getElementById("female").checked = true;
+						}
+						doc.getElementById("illName").value = illName;
+						doc.getElementById("realName").value = realName;
+						doc.getElementById("age").value = age;
+						doc.getElementById("allergyHistory").value = allergyHistory;
+						doc.getElementById("result").value = result;
+						doc.getElementById("situation").value = situation;
+						_.each(data.data.remarks,function(i,obj){
+							remarkIdsArr.push(obj.id);
+							img1Html = "";
+							img2Html = "";
+							img3Html = "";
+							div = doc.createElement("div");
+							div.id = obj.id;//记录id
+							if(obj.img){
+								if(obj.img.img1){
+									img1Html += "<img class='img1' src='"+imgServer+obj.img.img1+"' />";
+								}else{
+									img1Html += "<img class='img1' src='../images/medical-add.png'/>";
+								}
+								if(obj.img.img2){
+									img2Html += "<img class='img2' src='"+imgServer+obj.img.img2+"' />";
+								}else{
+									img2Html += "<img class='img2' src='../images/medical-add.png'/>";
+								}
+								if(obj.img.img3){
+									img3Html += "<img class='img3' src='"+imgServer+obj.img.img3+"' />";
+								}else{
+									img3Html += "<img class='img3' src='../images/medical-add.png'/>";
+								}
+								imghtmls = img1Html+img2Html+img3Html;
+							}else{
+								imghtmls = "<img class='img1' src='../images/medical-add.png'/><img class='img2' src='../images/medical-add.png'/><img class='img3' src='../images/medical-add.png'/>";
+							}
+							div.innerHTML = "<div class='case-record-content'>"+
+												"<div class='treatment-choice'>"+
+													"<div class='treatment-title'>就诊日期</div>"+
+													"<input class='treatment-type treatDate' value='"+obj.visitDate+"' readonly='readonly' name='appDate' type='text'>"+
+													"<input class='treatment-type stage' type='text' value='"+obj.stage+"' readonly='readonly'>"+
+												"</div>"+
+												"<div class='treatment-choice'>"+
+													imghtmls+
+													"<p>图片最多只能上传3张，且每张图片不能超过2M</p>"+
+												"</div>"+
+												"<div class='treatment-choice'>"+
+													"<div class='state-record'>病情记录</div>"+
+													"<textarea class='state-description illRecord' rows='5' placeholder='描述病情300字以内' maxlength='300'>"+obj.content+"</textarea>"+
+												"</div>"+
+												"<div class='delete-record' id='"+obj.id+"'>删除</div>"+
+											"</div>";
+							list.appendChild(div);
+						})
+					}
+				},myerror);
+			}
+		})(mui,document,util,window)
+	</script>
+</html>

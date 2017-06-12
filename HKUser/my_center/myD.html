@@ -1,0 +1,240 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>个人中心</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link rel="stylesheet" href="../css/mui.min.css" />
+		<link rel="stylesheet" href="../css/my.css" />
+		<link rel="stylesheet" href="../css/common.css" />
+		<link rel="stylesheet" href="../css/imagePreview.css" />
+		<link rel="stylesheet" href="../css/center/myD.css" />
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<h1 id="title" class="mui-title">个人中心</h1>
+			<a class="mui-pull-right mui-icon-gear mui-icon mui-icon-left-nav" id="setting"></a>
+		</header>
+		<div class="mui-content mui-scroll-wrapper">
+			<div class="mui-scroll">
+				<div id="head-bg">
+					<div class="head-img">
+						<div class="mui-content-padded">
+							<img id="headImg" src="../images/default-person.png" data-preview-src="" data-preview-group="1"/>
+						</div>
+						<span class="photo" id="photo">
+							<img src="../img/photo.png">
+						</span>
+						<span class="modify" id="modify">
+							<img src="../img/modify.png">
+						</span>
+					</div>
+					<div id="centerImg">
+						<div id="username" class="title"></div>
+					</div>
+				</div>
+				<ul class="icon-lists table-lists" style="background: #fff">
+					<li id="myInterview.html">
+						<div class="my-icon"><img src="../img/inquiry.png"></div>
+						<div class="icon-name">我的问诊</div>
+					</li>
+					<li id="my_order.html">
+						<div class="my-icon"><img src="../img/appointment.png"></div>
+						<div class="icon-name">我的预约</div>
+					</li>
+					<li id="qa_record.html">
+						<div class="my-icon"><img src="../img/question-record.png"></div>
+						<div class="icon-name">问答记录</div>
+					</li>
+					<li id="buy_record.html" style="border: none;">
+						<div class="my-icon"><img src="../img/purchase-record.png"></div>
+						<div class="icon-name">我的订单</div>
+					</li>
+				</ul>
+				<ul class="width-line mui-table-view mui-table-view-chevron">
+					<li class=" myAddr mui-table-view-cell" id="../my_case_history/case_list.html">
+						<div class="mui-navigate-right">
+							<span class="my-icon1"><img src="../img/medical-record.png"></span>我的病历
+						</div>
+					</li>
+					<li class="mui-table-view-cell" id="mywallet.html">
+						<div class="mui-navigate-right">
+							<span class="my-icon1"><img src="../img/wallet.png"></span>我的钱包
+						</div>
+					</li>
+					<!--<li class="mui-table-view-cell" id="tab_post.html">
+						<div class="mui-navigate-right">
+							<span class="my-icon1"><img src="../img/note.png"></span>我的评论
+						</div>
+					</li>-->
+					<li class="mui-table-view-cell" id="swipe.html">
+						<div class="mui-navigate-right">
+							<span class="my-icon1"><img src="../img/collection.png"></span>我的收藏
+						</div>
+					</li>
+					<li class="mui-table-view-cell" id="about.html">
+						<div class="mui-navigate-right">
+							<span class="my-icon1"><img src="../img/about.png"></span>关于我们
+						</div>
+					</li>
+					<li class="mui-table-view-cell" id="contactService.html" style="margin: 5px 0 0;">
+						<div class="mui-navigate-right">
+							<span class="my-icon1"><img src="../img/service.png"></span>联系客服
+						</div>
+					</li>
+				</ul>
+			</div>
+		</div>
+
+		<div id="sheet" class="mui-popover mui-popover-bottom mui-popover-action ">
+			<!-- 可选择菜单 -->
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell">
+					<a >拍照上传</a>
+				</li>
+				<li class="mui-table-view-cell">
+					<a >从相册选择</a>
+				</li>
+			</ul>
+		</div>
+	</body>
+	<script type="text/javascript" src="../js/mui.min.js"></script>
+	<script type="text/javascript" src="../js/common.js"></script>
+	<script type="text/javascript" src="../js/mui.zoom.js"></script>
+	<script type="text/javascript" src="../js/mui.previewimage.js"></script>
+	<script type="text/javascript">
+		(function(_,doc,u,w){
+			_.init({swipeBack: false}),_(".mui-scroll-wrapper").scroll();
+			var imgobj = null;	
+			var pdata = {};
+			var showPhoto = doc.getElementById("headImg");
+			var photo = null,nickName = null;
+			var privateToken = null;
+			var imgServer = null;
+			var personData = null;
+			_.plusReady(function(){
+				privateToken = w.getItem("privateToken");
+				pdata.privateToken = privateToken;
+				u.mypost("user_center/userCenterIndex",pdata,true,function(data){
+					if(data.code == 0){
+						personData = data.data.userInfo;
+						imgServer = data.data.imgServer;
+						photo = personData.avatar?personData.avatar:'';
+						if(personData.avatar == ""){
+							photo = "../images/default-person.png";
+						}else{
+							photo = imgServer + photo;
+						}
+						nickName = personData.nickname?personData.nickname:'';
+						doc.getElementById("headImg").src = photo;
+						doc.getElementById("username").innerHTML = nickName;
+					}
+				},myerror)
+				//拍照
+				doc.getElementById("photo").addEventListener('tap', function() {
+					if(!w.getUser()){
+						_('#sheet').hide();
+						w.openView("../userLogin.html");
+					}else{
+//						imgobj = showPhoto;
+						_('#sheet').popover('show');
+					}
+				})
+				_('#sheet').on('tap', 'li', function() {
+					_('#sheet').popover('hide');
+					if(~this.innerHTML.indexOf('拍照上传')) {
+						choiceCamera();
+					} else if(~this.innerHTML.indexOf('从相册选择')) {
+						choicePic();
+					}
+				});
+				function choiceCamera() {
+					var cmr = plus.camera.getCamera();
+					cmr.captureImage(function(p) {
+						plus.io.resolveLocalFileSystemURL(p, function(entry) {
+							setImg(entry.toLocalURL());
+						}, function(e) {});
+					}, function(e) {}, {
+						index: 1,
+						filename: "_doc/camera/"
+					});
+				}
+
+				function choicePic() {
+					plus.gallery.pick(function(path) {
+						setImg(path);
+					}, function(e) {}, {
+						filter: 'image'
+					});
+				}
+				function setImg(src) {
+					privateToken = w.getItem("privateToken");
+					pdata.privateToken = privateToken;
+					showPhoto.src = src;
+					var task = gettask(ASKURL+'user_center/avatarUpload', function(t, status) {
+						if(status == 200){
+							var data = JSON.parse(t.responseText || '{}');
+							if(data.code == 0){
+								showPhoto.src = src;
+								_.toast(data.msg);
+							}else{
+								_.toast(data.msg);
+							}
+						}
+					});
+					task.addData('privateToken',privateToken);
+					task.addData('token',token);
+					plus.zip.compressImage({
+						src:src,dst:'_doc/temp.jpg',width:'50%',overwrite:true
+					},function(even){
+						task.addFile(even.target, {key:"avatar"});
+						task.start();
+					},function(){
+						_.alert('文件异常');
+					});
+				}
+				function gettask(server, callback) {
+					return plus.uploader.createUpload(server, {
+						method: "POST"
+					}, callback);
+				}
+			});
+			
+			_(document).on('tap', 'li', function() {
+	            if(!w.getUser() && !(this.id == "about.html")){
+					w.openView("../userLogin.html");
+				}else{
+					w.openView(this.id);
+				}
+	       	})
+			doc.getElementById("setting").addEventListener('tap', function() {
+				w.openView("setting.html")
+			});
+			doc.getElementById("modify").addEventListener('tap', function() {
+				if(!w.getUser()){
+					w.openView("../userLogin.html");
+				}else{
+					w.openView('myinfo.html');
+				}
+			});
+			_.previewImage();
+		})(mui,document,util,window)
+		//获取个人信息
+		function getMyInfo(){
+			util.mypost("user_center/userCenterIndex",{privateToken:window.getItem("privateToken")},true,function(data){
+				if(data.code == 0){
+					personData = data.data.userInfo;
+					imgServer = data.data.imgServer;
+					photo = personData.avatar?personData.avatar:'';
+					nickName = personData.nickname?personData.nickname:'';
+					document.getElementById("headImg").src = imgServer+photo;
+					document.getElementById("username").textContent = nickName;
+				}
+			},myerror)
+		}
+		function clearAvatar(){
+			document.getElementById("headImg").src = "../images/default-person.png";
+			document.getElementById("username").textContent = '';
+		}
+	</script>
+</html>

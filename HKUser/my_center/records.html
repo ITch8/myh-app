@@ -1,0 +1,76 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>交易记录</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link rel="stylesheet" href="../css/mui.min.css" />
+		<link rel="stylesheet" href="../css/pullRefresh.css" />
+		<link rel="stylesheet" href="../css/common.css" />
+		<link rel="stylesheet" href="../css/center/records.css" />
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-pull-left mui-action-back mui-icon mui-icon-left-nav"></a>
+			<h1 id="title" class="mui-title">交易记录</h1>	
+		</header>
+		<div id="mui-scroll-wrapper" class="mui-content mui-fullscreen mui-scroll-wrapper">
+			<div id="cases" class="mui-scroll">			
+				<ul id="record-list" class="mui-table-view"></ul>
+			</div>
+		</div>
+	</body>
+	<script src="../js/mui.min.js"></script>
+	<script src="../js/mui.pullToRefresh.min.js"></script>
+	<script src="../js/mui.pullToRefresh.material.min.js"></script>
+	<script src="../js/common.js"></script>
+	<script type="text/javascript">
+		(function(_,doc,u,w){
+			_.init({swipeBack: false}),_(".mui-scroll-wrapper").scroll();
+			var pdata = {},privateToken = null,page = 0;
+			var list = doc.getElementById("record-list");
+			_.plusReady(function(){
+				privateToken = w.getItem("privateToken");
+				pdata.privateToken = privateToken;
+				//刷新
+				_pull = _('#cases').pullToRefresh({
+					down: {
+						callback: function() {
+							u.mypost('user_center/tradeLog',pdata, false, function(data) {
+								_pull.endPullDownToRefresh((data.data || []).length == 10);
+								if (data.code == 0) {
+									page = 1;
+									u.emptyHtml(list),getData(data.data || []);
+								}else{
+									_.toast(data.msg || '服务器异常');
+								}
+							}, function() {
+								_.toast('获取列表失败'), _pull.endPullDownToRefresh();
+							});
+						}
+					}
+				});
+				u.mypost("user_center/tradeLog",pdata,true,function(data){
+					if(data.code == 0){
+						getData(data.data);
+					}else{
+						list.innerHTML = nodataHtmlInfo;
+					}
+				},myerror);
+			})
+			function getData(data){
+				var li = null,mark = "";
+				_.each(data[0],function(i,obj){
+					li = doc.createElement("li");
+					mark = "-";//标记是"+"还是"-"
+					if(obj.tradeType == "充值" || obj.tradeType == "预约挂号退款" || obj.tradeType == "电话问诊退款"){
+						mark = "+";
+					}
+					li.innerHTML = "<li class='mui-table-view-cell'><div class='mui-pull-left mui-col-sm-6'><span class='tit'>"+obj.tradeDesc+"</span><span class='time'>"+obj.tradeTime+"</span></div><span class='mui-pull-right mui-col-sm-6 worth'>"+mark+""+obj.tradeVolume+"</span></li>";
+					list.appendChild(li);
+				})
+			}
+		})(mui,document,util,window)
+	</script>
+</html>

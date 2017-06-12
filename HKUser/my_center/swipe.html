@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>我的收藏</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../css/mui.min.css">	
+		<link rel="stylesheet" href="../css/pullRefresh.css"/>
+		<link rel="stylesheet" href="../css/common.css" />
+		<link rel="stylesheet" href="../css/center/swipe.css" />
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">我的收藏</h1>
+		</header>
+		<div id="mui-scroll-wrapper" class="mui-content mui-fullscreen mui-scroll-wrapper">
+			<div id="cases" class="mui-scroll">				
+				<ul id="list" class="mui-table-view"></ul>
+			</div>
+		</div>
+	</body>
+	<script src="../js/mui.min.js"></script>
+	<script src="../js/mui.pullToRefresh.min.js"></script>
+	<script src="../js/mui.pullToRefresh.material.min.js"></script>
+	<script src="../js/common.js"></script>
+	<script type="text/javascript">
+		(function(_,doc,u,w){
+			_.init({swipeBack: false}),_(".mui-scroll-wrapper").scroll();
+			var pdata = {offset:0,limit:5};
+			var privateToken = null,_pull = null,page = 0;
+			var list = doc.getElementById('list');
+			_.plusReady(function() {
+				privateToken = w.getItem("privateToken");
+				pdata.privateToken = privateToken;
+				_pull = _('#cases').pullToRefresh({
+					down: {
+						callback: function() {
+							pdata.offset = 0;
+							u.mypost('doctor_center/myCollections',pdata, false, function(data) {
+								_pull.endPullDownToRefresh((data.data.collections || []).length == 5);
+								if (data.code == 0) {
+									page = 1;
+									u.emptyHtml(list), collectionList(data.data || []);
+								}else{
+									_.toast(data.msg || '服务器异常');
+								}
+							}, function() {
+								_.toast('获取列表失败'), _pull.endPullDownToRefresh();
+							});
+						}
+					},up: {
+						callback: function() {
+							pdata.offset=(pdata.limit)*page;
+							u.mypost('doctor_center/myCollections',pdata, false, function(data) {
+								_pull.endPullUpToRefresh((data.data.collections || []).length < 5);
+								if (data.code  == 0) {
+									page++;
+									collectionList(data.data || []);
+								} else {
+									_.toast(data.msg ||'服务器异常');
+								}
+							}, function() {
+								_.toast('获取列表失败'), _pull.endPullUpToRefresh(true);
+							});
+						},auto: true
+					}
+				});
+			});
+			function collectionList(data){
+				var li = null,imgServer = null;
+				imgServer = data.imgServer;
+				_.each(data.collections || [],function(i,obj){
+					var img = obj.thumbnail == "" ? "images/default-news.png" : imgServer + obj.thumbnail;
+					li = doc.createElement("li");
+					li.id = obj.nid;
+					li.className = "mui-table-view-cell mui-media";
+					li.innerHTML = "<div class='mui-slider-right mui-disabled'><a id="+obj.collId+" class='mui-btn'><i class='icon-collection'></i></a></div>"+
+									"<div class='mui-slider-handle'><img class='mui-media-object mui-pull-left' src='" + img + "'>" +
+											"<div class='mui-media-body'><div class='mui-ellipsis-2 font-size-14 min-h'>" + obj.title + "</div>" +
+											"<p>"+(obj.dateline && obj.dateline.substr(0, 10))+"</p></div></div>";
+					list.appendChild(li);
+				})
+			}
+			//我的收藏详情
+			_('.mui-table-view').on('tap','li',function(){	      		
+	      		w.openView('../info/info_detail.html',{infoId:this.id});
+	    	})
+			//删除收藏
+			_('#list').on('tap', '.mui-btn', function() {
+				var elem = this,btnArray = ['确认', '取消'];
+				var li = elem.parentNode.parentNode;
+				_.confirm('确认移除该条收藏？', '提示', btnArray, function(e) {
+					if (e.index == 0) {
+						u.mypost("user_center/delCollection",{collId:elem.id,privateToken:privateToken},true,function(data){
+							_.toast(data.msg);
+							if(data.code == 0){
+								li.parentNode.removeChild(li);
+							}
+						},myerror);
+					}else{
+						_.swipeoutClose(li);
+					}
+				});
+			});
+		})(mui,document,util,window)
+	</script>
+</html>

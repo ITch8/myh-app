@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="format-detection" content="telephone=no">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<title>留言问答</title>
+		<link rel="stylesheet" href="../css/mui.min.css" />
+		<link rel="stylesheet" href="../css/common.css" />
+		<link rel="stylesheet" href="../css/input.css" />
+		<link rel="stylesheet" href="../css/iconfont.css" />
+	</head>
+	<style>
+		.message-info {
+			width: 100%;
+			border-bottom: 1px solid #DEDEDE;
+			background-color: #FFFFFF;
+			font-size: 15px;
+		}
+		
+		.message-info div {
+			height: 35px;
+			line-height: 35px;
+			padding-left: 15px;
+		}
+		
+		.message-title {
+			color: #666;
+		}
+		
+		.consult-money {
+			color: #33A2D7;
+		}
+		
+		.message-content {
+			width: 100%;
+			background-color: #FFFFFF;
+			margin-top: 15px;
+		}
+		
+		.message-textarea {
+			border-bottom: 1px solid #DEDEDE;
+		}
+		
+		.message-textarea textarea {
+			border: 0;
+		}
+		
+		.message-img {
+			width: 100%;
+			overflow: hidden;
+			border-bottom: 1px solid #DEDEDE;
+			padding: 8px 20px 0 20px;
+		}
+		
+		.add-img {
+			width: 50px;
+			height: 50px;
+			border-radius: 3px;
+			margin-right: 10px;
+		}
+		
+		.argee {
+			width: 100%;
+			overflow: hidden;
+			/*line-height: 30px;*/
+			padding-top: 10px;
+			padding-left: 15px;
+			color: #999;
+			font-size: 14px;
+		}
+		.doctor-answer{
+			padding-top: 5px;
+		}
+		#sheet li{
+			color: #333333;
+		}
+		.choice-case-select {
+			width: 60% !important;
+			height: 30px !important;
+			border: 1px solid #DEDEDE !important;
+			margin: 2px;
+			float: left !important;
+		}
+		.myicon {
+			position: absolute;
+			top: 11px;
+			width: 25px;
+		}
+		.contact-icon {
+			content: url(../images/service-1.png);
+			right: 13px;
+		}
+		.newContactNum{
+			position: absolute;
+			right: 5px;
+			top: 3px;
+		}
+		.m-undisplay {
+			display: none;
+		}
+	</style>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">留言问答</h1>
+			<span id="service" class="mui-pull-right">
+				<span class="myicon contact-icon"></span>
+				<span id="newContactNum" class="mui-badge mui-badge-danger newContactNum m-undisplay">0</span>
+			</span>
+		</header>
+		<div class="mui-content">
+			<div class="message-info">
+				<div class="message-title">医生：<span id="docName"></span></div>
+				<div class="message-title">科室：<span id="officeName"></span></div>
+				<div class="message-title">咨询费：<span class="consult-money">¥<span id="price"></span></span></div>
+				<div class="mui-input-row">
+					<label style="width:27%;padding: 10px 0px 11px 0;color: #666;">选择病历：</label>
+					<select id="illnessSelect" class="choice-case-select" style="font-size: 14px;"></select>
+				</div>
+			</div>
+			<div class="message-content">
+				<div class="message-textarea">
+					<textarea rows="5" placeholder="输入你想询问的问题（300字以内）" class="textarea" id="content"></textarea>
+				</div>
+				<div id="message-img" class="message-img">
+					<img id="img1" addIndex = '1' src="../images/medical-add.png" class="add-img"/>
+					<img id="img2" addIndex = '2' src="../images/medical-add.png" class="add-img"/>
+					<img id="img3" addIndex = '3' src="../images/medical-add.png" class="add-img"/>
+					<p>图片最多只能上传3张，且每张图片不能超过2M</p>
+				</div>
+			</div>
+			<div class="argee">
+				<div><span id="res" style="color: #32A3D6;" class="mui-icon iconfont icon-xuanzhong"></span>&nbsp;<span id="user-manual">同意《用户使用手册》</span></div>
+				<div class="doctor-answer"><span style="color: red;">*</span>医生会在24小时内回答您的问题，24小时内未回答自动退款。</div>
+			</div>
+			<div class="next">
+				<button class="mui-btn save-btn" id="commit-question" disabled="disabled">提交问题</button>
+			</div>
+		</div>
+		<div id="sheet" class="mui-popover mui-popover-bottom mui-popover-action">
+			<!-- 可选择菜单 -->
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell">
+					拍照上传
+				</li>
+				<li class="mui-table-view-cell">
+					从相册选择
+				</li>
+			</ul>
+			<!-- 取消菜单 -->
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell">
+					<a href="#sheet1">取消</a>
+				</li>
+			</ul>
+		</div>
+	</body>
+	<script type="text/javascript" src="../js/mui.min.js" ></script>
+	<script type="text/javascript" src="../js/common.js" ></script>
+	<script type="text/javascript">
+		var newContactNum = null;
+		(function(_,doc,u,w){
+			_.init({swipeBack:true,gestureConfig:{longtap:true}});
+			var docId = null,price = null,pdata = {},privateToken = null;
+			var submitObj = doc.getElementById("commit-question"),illnessSelectObj = doc.getElementById("illnessSelect");
+			var imgs = new Array(),imgIndex = 0;
+			var contentObj = doc.getElementById("content");
+			var web = null;
+			var messageData = null;
+			var addIndex = '';
+			newContactNum = doc.getElementById("newContactNum");
+			var illnessHistory = null;
+			w.addEventListener("event",function(e){
+				privateToken = w.getItem("privateToken");
+				pdata.privateToken = privateToken;
+				docId = e.detail.docId;//提交问题获取docId
+				pdata.docId = docId;
+				doc.getElementById("content").value = "";
+				doc.getElementById("img1").src = "../images/medical-add.png";
+				doc.getElementById("img2").src = "../images/medical-add.png";
+				doc.getElementById("img3").src = "../images/medical-add.png";
+				u.mypost("leaving_msg/leavingMsgView",pdata,true,function(data){
+					if(data.code == 0){
+						messageData = data.data.doctor[0];
+						price = data.data.leavFee?data.data.leavFee[0].leavMsgFee:' 0 ';
+						doc.getElementById("docName").textContent = messageData?messageData.docName:'';
+						doc.getElementById("price").textContent = price;
+						doc.getElementById("officeName").textContent = messageData?messageData.officeName:'';
+						illnessSelectObj.innerHTML = "";
+						illnessHistory = data.data.illnessHistory;
+						if(illnessHistory && illnessHistory.length > 0){
+							_.each(illnessHistory,function(i,o){
+								illnessSelectObj.innerHTML +="<option value='"+o.illId+"'>"+o.illName+"</option>";
+							})
+						}
+					}
+				},myerror);
+			});
+			illnessSelectObj.addEventListener("tap",function(){
+				if(illnessHistory.length == undefined){
+					this.setAttribute("disabled","disabled");
+					_.toast("您还没有病历，请先添加病历");
+					return;
+				}
+			});
+			_.plusReady(function(){
+				var imgObj = null;
+				privateToken = w.getItem("privateToken");
+				_(".message-content").on("tap","img",function(){
+					imgObj = this;
+					addIndex = this.getAttribute("addIndex");
+					_('#sheet').popover('show');
+				})
+				_('#sheet').on('tap', 'li', function() {
+					_('#sheet').popover('hide');
+					if(~this.innerHTML.indexOf('拍照上传')) {
+						choiceCamera()
+					} else if(~this.innerHTML.indexOf('从相册选择')) {
+						choicePic()
+					}
+				});
+				function choiceCamera() {
+					var cmr = plus.camera.getCamera();
+					cmr.captureImage(function(p) {
+						plus.io.resolveLocalFileSystemURL(p, function(entry) {
+							var dst = "_doc/temp"+addIndex+".jpg";
+							plus.zip.compressImage({
+								src:entry.toLocalURL(),dst:dst,width:'50%',overwrite:true
+							},function(even){
+								setImg(even.target);
+							});
+						}, function(e) {});
+					}, function(e) {}, {
+						index: 1,
+						filename: "_doc/camera/"
+					});
+				}
+				function choicePic() {
+					plus.gallery.pick(function(path) {
+						var dst = "_doc/temp"+addIndex+".jpg";
+						plus.zip.compressImage({
+							src:path,dst:dst,width:'50%',overwrite:true
+						},function(even){
+							setImg(even.target);
+						});
+					}, function(e) {}, {
+						filter: 'image'
+					});
+				}
+				function setImg(src) {
+					imgObj.setAttribute("src",src);
+				}
+				//长按删除所选图片
+				_("#message-img").on("longtap","img",function(){
+					var self = this;
+					if("../images/medical-add.png" != self.src){
+						plus.nativeUI.confirm("确定移除所选图片吗",function(e){
+							if(0 == e.index){
+								self.src = "../images/medical-add.png";
+							}
+						},"警告",['确定','取消']);
+					}
+				})
+				
+				function gettask(server, callback) {
+					return plus.uploader.createUpload(server, {
+						method: "POST"
+					}, callback);
+				}
+				submitObj.addEventListener('tap', function(e) {
+					privateToken = w.getItem("privateToken");
+					if(u.isNull(contentObj.value)){
+						_.toast("请输入你想询问的问题");
+						return;
+					}else if(contentObj.value.length > 300){
+						_.toast("问题内容不能超过300字");
+						return;
+					}else if(isEmojiCharacter(contentObj.value)){
+						_.toast("不支持表情输入");
+						return;
+					}
+					var content = doc.getElementById("content").value;
+					var illId = illnessSelectObj.value;
+					var img1 = doc.getElementById("img1").src;
+					var img2 = doc.getElementById("img2").src;
+					var img3 = doc.getElementById("img3").src;
+					img1.indexOf("/images/medical-add.png") == -1?imgs.push(img1):"";
+					img2.indexOf("/images/medical-add.png") == -1?imgs.push(img2):"";
+					img3.indexOf("/images/medical-add.png") == -1?imgs.push(img3):"";
+					//提交问题
+					var waiting =  plus.nativeUI.showWaiting();//添加等待框
+					var task = gettask(ASKURL+'leaving_msg/commitStepFrt', function(t, status) {
+						//提交成功
+						if(status == 200){
+							var data = JSON.parse(t.responseText || '{}');
+							waiting?waiting.close():'';
+							_.toast(data.msg);
+							if(data.code == 0){
+								var ex = {
+									type:5,
+									order_type:"留言问答定金",//代表是留言问答
+									orderId:data.data.orderId,
+									fee:price
+								}
+								setTimeout(function(){
+									//到支付页面
+									w.openView("pay.html",ex);
+									doc.getElementById("content").value = "";
+									doc.getElementById("img1").src = "../images/medical-add.png";
+									doc.getElementById("img2").src = "../images/medical-add.png";
+									doc.getElementById("img3").src = "../images/medical-add.png";
+								},500)
+							}
+						}
+					});
+					task.addData('content', content);
+					task.addData('privateToken', privateToken);
+					task.addData('price', price);
+					task.addData('illId', illId);
+					task.addData('docId', docId);
+					task.addData('token',token);
+					if(imgs.length > 0){
+						for (var i = 0; i < imgs.length; i++) {
+							task.addFile(imgs[i],{key:"img"+i});
+						}
+						imgs = [];
+					}
+					task.start();
+				});
+			});
+			
+			doc.getElementById("res").addEventListener("tap",function(){
+				if(hasClass(this,"icon-xuanzhong")){
+					removeClass(this,"icon-xuanzhong");
+					addClass(this,"icon-weixuanzhong");
+					submitObj.setAttribute("disabled","disabled");
+				}else{
+					removeClass(this,"icon-weixuanzhong");
+					addClass(this,"icon-xuanzhong");
+					submitObj.removeAttribute("disabled","disabled");
+				}
+			})
+			doc.getElementById("service").addEventListener('tap',function(){
+				newContactNum.innerText = "";
+				newContactNum.className="mui-badge mui-badge-danger newContactNum m-undisplay";
+				w.openView("../my_center/contactService.html")
+			});
+			doc.getElementById("user-manual").addEventListener('tap',function(){
+				w.openView("../user_manual.html")
+			});
+			doc.getElementById("content").addEventListener("input",function(){
+				if(this.value.length > 0){
+					submitObj.removeAttribute("disabled");
+				}else{
+					submitObj.setAttribute("disabled","disabled");
+				}
+			});
+			var oldBack = _.back;
+			_.back = function() {
+				doc.activeElement.blur();
+				oldBack();
+			};
+			_("#message-img").on('tap',"img",function(){
+				doc.activeElement.blur();
+			})
+		})(mui,document,util,window) 
+	</script>
+</html>

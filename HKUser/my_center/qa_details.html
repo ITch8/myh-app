@@ -1,0 +1,300 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>问答详情</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link rel="stylesheet" href="../css/mui.min.css" />
+		<link rel="stylesheet" href="../css/my.css" />
+		<link rel="stylesheet" href="../css/common.css" />
+		<style>
+			.detail-content,.outline{
+				padding: 15px 15px 0 15px;
+				border-bottom: 1px solid #DEDEDE;
+				margin-bottom: 10px;
+				background: #fff;
+			}
+			label{
+				color: #666666;
+				width: 75px;
+				text-align: left;
+				display: inline-block;
+			}
+			
+			.detail-content span{
+				color: #333333;
+			}
+			.outline{
+				padding: 0;
+				margin-bottom: 10px;
+			}
+			.tit{
+				height: 30px;
+				line-height: 30px;
+				font-size: 14px;
+				border-bottom: 1px solid #DEDEDE;
+				padding: 0 15px;
+				color: #333333;
+			}
+			.outline p{
+				padding: 15px 15px;
+				margin-bottom: 0;	
+				white-space: pre-wrap;	/*中文换行*/
+				word-break: break-all;/*英文换行*/
+			}
+			.mui-content-padded{
+				border-top: 1px solid #DEDEDE;
+				padding: 15px;
+			}
+			.mui-content-padded img{
+				width: 50px;
+				height: auto;
+				margin-right: 15px;
+			}
+			/*图片预览*/
+			.mui-content-padded p{
+				display: block;
+			}
+			.mui-preview-image.mui-fullscreen {
+				position: fixed;
+				z-index: 20;
+				background-color: #000;
+			}
+			.mui-preview-header,
+			.mui-preview-footer {
+				position: absolute;
+				width: 100%;
+				left: 0;
+				z-index: 10;
+			}
+			.mui-preview-header {
+				height: 44px;
+				top: 0;
+			}
+			.mui-preview-footer {
+				height: 50px;
+				bottom: 0px;
+			}
+			.mui-preview-header .mui-preview-indicator {
+				display: block;
+				line-height: 25px;
+				color: #fff;
+				text-align: center;
+				margin: 15px auto 4;
+				width: 70px;
+				background-color: rgba(0, 0, 0, 0.4);
+				border-radius: 12px;
+				font-size: 16px;
+			}
+			.mui-preview-image {
+				display: none;
+				-webkit-animation-duration: 0.5s;
+				animation-duration: 0.5s;
+				-webkit-animation-fill-mode: both;
+				animation-fill-mode: both;
+			}
+			.mui-preview-image.mui-preview-in {
+				-webkit-animation-name: fadeIn;
+				animation-name: fadeIn;
+			}
+			.mui-preview-image.mui-preview-out {
+				background: none;
+				-webkit-animation-name: fadeOut;
+				animation-name: fadeOut;
+			}
+			.mui-preview-image.mui-preview-out .mui-preview-header,
+			.mui-preview-image.mui-preview-out .mui-preview-footer {
+				display: none;
+			}
+			.mui-zoom-scroller {
+				position: absolute;
+				display: -webkit-box;
+				display: -webkit-flex;
+				display: flex;
+				-webkit-box-align: center;
+				-webkit-align-items: center;
+				align-items: center;
+				-webkit-box-pack: center;
+				-webkit-justify-content: center;
+				justify-content: center;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				top: 0;
+				width: 100%;
+				height: 100%;
+				margin: 0;
+				-webkit-backface-visibility: hidden;
+			}
+			.mui-zoom {
+				-webkit-transform-style: preserve-3d;
+				transform-style: preserve-3d;
+			}
+			.mui-slider .mui-slider-group .mui-slider-item img {
+				width: auto;
+				height: auto;
+				max-width: 100%;
+				max-height: 100%;
+			}
+			.mui-android-4-1 .mui-slider .mui-slider-group .mui-slider-item img {
+				width: 100%;
+			}
+			.mui-android-4-1 .mui-slider.mui-preview-image .mui-slider-group .mui-slider-item {
+				display: inline-table;
+			}
+			.mui-android-4-1 .mui-slider.mui-preview-image .mui-zoom-scroller img {
+				display: table-cell;
+				vertical-align: middle;
+			}
+			.mui-preview-loading {
+				position: absolute;
+				width: 100%;
+				height: 100%;
+				top: 0;
+				left: 0;
+				display: none;
+			}
+			.mui-preview-loading.mui-active {
+				display: block;
+			}
+			.mui-preview-loading .mui-spinner-white {
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				margin-left: -25px;
+				margin-top: -25px;
+				height: 50px;
+				width: 50px;
+			}
+			.mui-preview-image img.mui-transitioning {
+				-webkit-transition: -webkit-transform 0.5s ease, opacity 0.5s ease;
+				transition: transform 0.5s ease, opacity 0.5s ease;
+			}
+			@-webkit-keyframes fadeIn {
+				0% {
+					opacity: 0;
+				}
+				100% {
+					opacity: 1;
+				}
+			}
+			@keyframes fadeIn {
+				0% {
+					opacity: 0;
+				}
+				100% {
+					opacity: 1;
+				}
+			}
+			@-webkit-keyframes fadeOut {
+				0% {
+					opacity: 1;
+				}
+				100% {
+					opacity: 0;
+				}
+			}
+			@keyframes fadeOut {
+				0% {
+					opacity: 1;
+				}
+				100% {
+					opacity: 0;
+				}
+			}
+			p img {
+				max-width: 100%;
+				height: auto;
+			}
+			.m-display{
+				display: none;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-pull-left mui-action-back mui-icon mui-icon-left-nav"></a>
+			<h1 id="title" class="mui-title">问答详情</h1>	
+		</header>
+		<div class="mui-content" >			
+			<div class="detail-content">
+				<p><label>患者名：</label><span id="name"></span></p>
+				<p><label>指定医生：</label><span id="docName"></span></p>
+				<p><label>联系手机：</label><span id="askerPone"></span></p>
+				<p><label>留言时间：</label><span id="dateline"></span></p>
+			</div>
+			<div class="outline">
+				<div class="tit">
+					询问问题：
+				</div>
+				<p id="askerContent"></p>
+				<div class="mui-content-padded" id="imgList"></div>
+			</div>
+			<div class="outline m-display" id="reply">
+				<div class="tit">
+					医生回复：
+				</div>
+				<p id="replyContent"></p>
+			</div>
+		</div>
+	</body>
+	<script src="../js/mui.min.js"></script>
+	<script src="../js/mui.zoom.js"></script>
+	<script src="../js/mui.previewimage.js"></script>
+	<script src="../js/common.js"></script>
+	<script>
+		(function(_,doc,u,w){
+			var web = null;
+			var recordId = null,recordState = null;
+			var privateToken = null;
+			var pdata = {};
+			var name = null,docName = null,askerPone = null,dateline = null,askerContent = null,replyContent = null,img = null,imgServer = null;
+			var imgList = doc.getElementById("imgList");
+			_.plusReady(function(){
+				privateToken = w.getItem("privateToken");
+				recordId = plus.webview.currentWebview().recordId;
+				pdata.id = recordId;
+				pdata.privateToken = privateToken;
+				u.mypost("user_center/askAnswerDetail",pdata,true,function(data){
+					if(data.code == 0){
+						askData = data.data.askDetail;//问
+						replyData = data.data.reply[0];//回复
+						imgServer = data.data.imgServer;//图片
+						name = askData.name?askData.name:'';
+						docName = askData.docName?askData.docName:'';
+						askerPone = askData.askerPone?askData.askerPone:'';
+						dateline = askData.dateline?askData.dateline:'';
+						askerContent = askData.askerContent?askData.askerContent:'';
+						img = askData.img?askData.img:'';
+						replyContent = "";
+						doc.getElementById("reply").className = "m-display";
+						if(replyData != null){
+							replyContent = replyData.replyContent?replyData.replyContent:'';
+							doc.getElementById("reply").className = "outline";
+						}
+						doc.getElementById("name").innerHTML = name;
+						doc.getElementById("docName").innerHTML = docName;
+						doc.getElementById("askerPone").innerHTML = askerPone;
+						doc.getElementById("dateline").innerHTML = dateline;
+						doc.getElementById("askerContent").innerHTML = askerContent;
+						doc.getElementById("replyContent").innerHTML = replyContent;
+						imgList.innerHTML = "";//清空
+						if(img){
+							if(img.img0){
+								imgList.innerHTML += "<img src='"+imgServer+img.img0+"' data-preview-src='' data-preview-group='1' />";
+							}
+							if(img.img1){
+								imgList.innerHTML += "<img src='"+imgServer+img.img1+"' data-preview-src='' data-preview-group='1' />";
+							}
+							if(img.img2){
+								imgList.innerHTML += "<img src='"+imgServer+img.img2+"' data-preview-src='' data-preview-group='1' />";
+							}
+						}
+					}
+				},myerror);
+			})
+			_.previewImage();
+		})(mui,document,util,window)
+	</script>
+</html>

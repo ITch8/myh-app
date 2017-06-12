@@ -1,0 +1,192 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>预约详情</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link rel="stylesheet" href="../css/mui.min.css" />
+		<link rel="stylesheet" href="../css/common.css" />
+		<link rel="stylesheet" href="../css/order/order_detail.css" />
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-pull-left mui-action-back mui-icon mui-icon-left-nav"></a>
+			<h1 id="title" class="mui-title">预约详情</h1>	
+		</header>
+		<div class="mui-content" >			
+			<div class="detail-content">
+				<p><label>患者名字：</label><span id="contacts"></span></p>
+				<p><label>患者性别：</label><span id="sex"></span></p>
+				<p><label>指定医生：</label><span id="docName"></span></p>
+				<p><label>挂号时间：</label><span id="appointTime"></span></p>
+				<p><label>联系手机：</label><span id="appointTel"></span></p>
+				<p><label>已付定金：</label><span id="price"></span></p>
+				<p><label>医院地址：</label><span id="hosAddr"></span></p>
+				<p><label>订单状态：</label><span class="order-state" id="order-state"></span></p>
+			</div>
+			<button id="stateBtn"></button>
+			<button id="cancel" class="m-display">取消</button>
+		</div>
+	</body>
+	<script type="text/javascript" src="../js/mui.min.js"></script>
+	<script type="text/javascript" src="../js/common.js" ></script>
+	<script type="text/javascript">
+		(function(_,doc,u,w){
+			var state = null,btn = null,pdata = {},orderId = null,privateToken = null,status = null,sexType = null,web = null;
+			var contacts = null,sex = null,docName = null,docId = null,appointTime = null,appointTel = null,price = null,hosAddr = null,officeName = null,hosName = null;		
+			_.plusReady(function(){
+				orderId = plus.webview.currentWebview().orderId;
+				pdata = {
+					id:orderId
+				}
+                privateToken = w.getItem("privateToken");
+				pdata.privateToken = privateToken;
+				u.mypost("user_center/appointDetail",pdata,true,function(data){
+					if(data.code == 0){
+						data = data.data[0];
+						id = data.id?data.id:'';
+						status = data.status?data.status:'';
+						contacts = data.contacts?data.contacts:'';
+						sex = data.sex?data.sex:'';
+						docName = data.docName?data.docName:'';
+						docId = data.docId?data.docId:'';
+						appointTime = data.appointTime?data.appointTime:'';
+						appointTel = data.appointTel?data.appointTel:'';
+						price = data.price?data.price:'';
+						hosAddr = data.hosAddr?data.hosAddr:'';
+						officeName = data.officeName?data.officeName:'';
+						hosName = data.hosName?data.hosName:'';
+						if(sex == 1){
+							sexType = "男";
+						}else if(sex == 2){
+							sexType = "女";
+						}
+						doc.getElementById("contacts").innerHTML = contacts;
+						doc.getElementById("sex").innerHTML = sexType;
+						doc.getElementById("docName").innerHTML = docName;
+						doc.getElementById("appointTime").innerHTML = appointTime;
+						doc.getElementById("appointTel").innerHTML = appointTel;
+						doc.getElementById("price").innerHTML = price;
+						doc.getElementById("hosAddr").innerHTML = hosAddr;
+					}
+					if(status == "待处理"){
+						state = "待处理";
+						btn = "取消预约";
+						doc.getElementById("order-state").innerHTML = state;
+						doc.getElementById("stateBtn").innerHTML = btn;
+						doc.getElementById("cancel").className = "m-display";
+					}else if(status == "预约成功"){
+						state = "预约成功";
+//						btn = "取消预约";
+						doc.getElementById("order-state").innerHTML = state;
+						doc.getElementById("stateBtn").className = "m-undisplay";
+						doc.getElementById("cancel").className = "m-undisplay";
+					}else if(status == "完成"){
+						state = "完成";
+						btn = "评论";
+						doc.getElementById("order-state").innerHTML = state;
+						doc.getElementById("stateBtn").innerHTML = btn;
+						doc.getElementById("cancel").className = "m-display";
+					}else if(status == "预约失败"){
+						state = "预约失败";
+						btn = "重新预约";
+						doc.getElementById("order-state").innerHTML = state;
+						doc.getElementById("stateBtn").innerHTML = btn;
+						doc.getElementById("cancel").className = "m-display";
+					}else if(status == "未支付"){
+						state = "未支付";
+						btn = "支付";
+						doc.getElementById("order-state").innerHTML = state;
+						doc.getElementById("stateBtn").innerHTML = btn;
+						doc.getElementById("cancel").className = "cancel-display";
+					}
+					doc.getElementById("stateBtn").addEventListener('tap', function(e) {
+						if(status == "待处理"){
+							var exs ={
+								types:2,
+								hospital:hosName,
+								apartment:officeName,
+								doctor:docName,
+								time:appointTime
+							}
+							var btnArray = ['取消', '确认'];
+							_.confirm('<div>提前一星期退全款</div><div>提前三天退一半</div><div>提前一天不可退款</div>', '<div class="btn-title">取消预约</div>',btnArray, function(e) {
+								if(e.index == 1){
+									u.mypost("user_center/appointCancel",pdata,true,function(data){
+										if(data.code == 0){
+											w.openView("../doctor/cancel_succeed.html",exs);
+										}
+									},myerror);
+								}
+							},'div');
+						}else if(status == "预约成功"){
+							var exs ={
+								types:2,
+								hospital:hosName,
+								apartment:officeName,
+								doctor:docName,
+								time:appointTime
+							}
+							var btnArray = ['取消', '确认'];
+							_.confirm('<div>提前一星期退全款</div><div>提前三天退一半</div><div>提前一天不可退款</div>', '<div class="btn-title">取消预约</div>',btnArray, function(e) {
+								if(e.index == 1){
+									u.mypost("user_center/appointCancel",pdata,true,function(data){
+										if(data.code == 0){
+											w.openView("../doctor/cancel_succeed.html",exs);
+										}else{
+											_.toast(data.msg)
+										}
+									},myerror);
+								}
+							},'div');
+						}else if(status == "完成"){
+							var evaluate = {
+								state:2,
+								docId:docId
+							}
+							w.openView("evaluate.html",evaluate);
+						}else if(status == "预约失败"){
+							var ex ={
+								type:1,
+								docId:docId,
+								appointId:id
+							}
+							pdata.appointId = id;
+							u.mypost("reg_num/reAppointView",pdata,true,function(data){
+								if(data.code == 0){
+									w.openView("../doctor/order_register.html",ex);
+								}
+							},myerror);
+						}else if(status == "未支付"){
+							var ex = {
+								type:6,
+								order_type:"预约挂号定金",
+								orderId:orderId,
+								fee:price
+							}
+							w.openView("../doctor/pay.html",ex);
+						}
+					});
+					doc.getElementById("cancel").addEventListener('tap', function(e) {
+						pdata.privateToken = privateToken;
+						pdata.oid = id;
+						pdata.orderType = 3;
+						var btnArray = ['取消', '确认'];
+						_.confirm('<div>确定要取消吗？</div>', '<div class="btn-title">取消</div>',btnArray, function(e) {
+							if(e.index == 1){
+								u.mypost("user_center/orderCancel",pdata,true,function(data){
+									if(data.code == 0){
+										_.toast("取消成功");
+										u.close("order_detail");
+									}else{
+										
+									}
+								},myerror);
+							}
+						},'div');
+					});
+				},myerror);
+			})
+		})(mui,document,util,window)
+	</script>
+</html>

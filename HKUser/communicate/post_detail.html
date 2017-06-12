@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="format-detection" content="telephone=no">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<title>帖子详情</title>
+		<link rel="stylesheet" href="../css/mui.min.css" />
+		<link rel="stylesheet" href="../css/common.css" />
+		<link rel="stylesheet" href="../css/input.css" />
+		<link rel="stylesheet" href="../css/pullRefresh.css" />
+		<link rel="stylesheet" href="../css/iconfont-icon.css" />
+	</head>
+	<style>
+		body,.mui-content{
+			background-color: #FFFFFF;
+		}
+		.post-list {
+			width: 100%;
+			overflow: hidden;
+			padding: 15px;
+			border-bottom: 1px solid #DEDEDE;
+		}
+		.doc-img {
+			color: #999;
+			font-size: 13px;
+			line-height: 25px;
+		}
+		.great {
+			color: #666;
+			font-size: 14px;
+			height: auto;
+			white-space: pre-wrap;	/*中文换行*/
+			word-break: break-all;/*英文换行*/
+		}
+		
+		.post-title {
+			overflow: hidden;
+		}
+		
+		.post-title-con {
+			width: 70%;
+			float: left;
+			font-size: 15px;
+		}
+		
+		.praise-img {
+			width: 30%;
+			font-size: 14px;
+			color: #33A2D7;
+			float: right;
+			text-align: right;
+		}
+		
+		.praise-img img {
+			width: 20px;
+		}
+		
+		.mui-pull-left {
+			width: 65px;
+			margin-right: 15px;
+		}
+		
+		.post-comment {
+			width: 100%;
+			overflow: hidden;
+			padding-top: 10px;
+		}
+		
+		.post-input {
+			width: 100%;
+			border-bottom: 1px solid #DEDEDE;
+			float: right;
+			padding-top: 5px;
+			padding-left: 10px;
+			font-size: 14px;
+		}
+		
+		.post-input input {
+			width: 74%;
+			height: 35px;
+			font-size: 12px;
+			border-radius: 3px;
+			border: 1px solid #dedede;
+		}
+		
+		.comment-btn {
+		    width: 20%;
+		    height: 34px;
+		    display: inline-block;
+		    margin-left: 10px;
+		    line-height: 22px;
+		    text-align: center;
+		    background-color: #33A2D7;
+		    color: #FFFFFF;
+		    border-radius: 5px;
+		}
+		
+		.comment-content {
+			width: 100%;
+			height: 35px;
+			line-height: 35px;
+			clear: both;
+			padding-left: 15px;
+			font-size: 14px;
+		}
+		
+		.comment-list {
+			width: 100%;
+			overflow: hidden;
+		}
+		
+		.comment-list-item {
+			width: 95%;
+			border-radius: 5px;
+			border: 1px solid #DEDEDE;
+			margin: 0px auto;
+			overflow: hidden;
+			padding: 10px 0 10px 10px;
+			margin-bottom: 5px;
+		}
+		
+		.comment-list-img {
+			width: 20%;
+			text-align: center;
+			float: left;
+			color: #999;
+			font-size: 15px;
+		}
+		
+		.comment-list-img img {
+			width: 50px;
+			height: 50px;
+			border-radius: 100%;
+			text-align: center;
+		}
+		
+		.comment-list-con {
+			width: 75%;
+			float: left;
+			margin-left: 10px;
+		}
+		
+		.comment-list-time {
+			color: #999;
+			font-size: 15px;
+		}
+		
+		.comment-list-content {
+			color: #666;
+			font-size: 14px;
+		}
+		.m-praise{
+			position: relative;
+		    top: 2px;
+		    width: 25px;
+		}
+		.praise.m-active{
+			content: url(../images/praise-after.png) !important;
+		}
+		.praise{
+			content: url(../images/praise-before.png) !important;
+		}
+		.mui-row{
+			border-bottom: 1px solid #DEDEDE;
+		}
+		.mui-row img{
+			width: 100%;
+			height: 80px;
+			padding: 5px;
+		}
+		.space{
+			height: 10px;
+			background-color: #F6F6F6;
+		}
+		/*图片预览*/
+		.mui-content-padded p{
+			display: block;
+		}
+		.mui-preview-image.mui-fullscreen {
+			position: fixed;
+			z-index: 20;
+			background-color: #000;
+		}
+		.mui-preview-header,
+		.mui-preview-footer {
+			position: absolute;
+			width: 100%;
+			left: 0;
+			z-index: 10;
+		}
+		.mui-preview-header {
+			height: 44px;
+			top: 0;
+		}
+		.mui-preview-footer {
+			height: 50px;
+			bottom: 0px;
+		}
+		.mui-preview-header .mui-preview-indicator {
+			display: block;
+			line-height: 25px;
+			color: #fff;
+			text-align: center;
+			margin: 15px auto 4;
+			width: 70px;
+			background-color: rgba(0, 0, 0, 0.4);
+			border-radius: 12px;
+			font-size: 16px;
+		}
+		.mui-preview-image {
+			display: none;
+			-webkit-animation-duration: 0.5s;
+			animation-duration: 0.5s;
+			-webkit-animation-fill-mode: both;
+			animation-fill-mode: both;
+		}
+		.mui-preview-image.mui-preview-in {
+			-webkit-animation-name: fadeIn;
+			animation-name: fadeIn;
+		}
+		.mui-preview-image.mui-preview-out {
+			background: none;
+			-webkit-animation-name: fadeOut;
+			animation-name: fadeOut;
+		}
+		.mui-preview-image.mui-preview-out .mui-preview-header,
+		.mui-preview-image.mui-preview-out .mui-preview-footer {
+			display: none;
+		}
+		.mui-zoom-scroller {
+			position: absolute;
+			display: -webkit-box;
+			display: -webkit-flex;
+			display: flex;
+			-webkit-box-align: center;
+			-webkit-align-items: center;
+			align-items: center;
+			-webkit-box-pack: center;
+			-webkit-justify-content: center;
+			justify-content: center;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			top: 0;
+			width: 100%;
+			height: 100%;
+			margin: 0;
+			-webkit-backface-visibility: hidden;
+		}
+		.mui-zoom {
+			-webkit-transform-style: preserve-3d;
+			transform-style: preserve-3d;
+		}
+		.mui-slider .mui-slider-group .mui-slider-item img {
+			width: auto;
+			height: auto;
+			max-width: 100%;
+			max-height: 100%;
+		}
+		.mui-android-4-1 .mui-slider .mui-slider-group .mui-slider-item img {
+			width: 100%;
+		}
+		.mui-android-4-1 .mui-slider.mui-preview-image .mui-slider-group .mui-slider-item {
+			display: inline-table;
+		}
+		.mui-android-4-1 .mui-slider.mui-preview-image .mui-zoom-scroller img {
+			display: table-cell;
+			vertical-align: middle;
+		}
+		.mui-preview-loading {
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			top: 0;
+			left: 0;
+			display: none;
+		}
+		.mui-preview-loading.mui-active {
+			display: block;
+		}
+		.mui-preview-loading .mui-spinner-white {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			margin-left: -25px;
+			margin-top: -25px;
+			height: 50px;
+			width: 50px;
+		}
+		.mui-preview-image img.mui-transitioning {
+			-webkit-transition: -webkit-transform 0.5s ease, opacity 0.5s ease;
+			transition: transform 0.5s ease, opacity 0.5s ease;
+		}
+		@-webkit-keyframes fadeIn {
+			0% {
+				opacity: 0;
+			}
+			100% {
+				opacity: 1;
+			}
+		}
+		@keyframes fadeIn {
+			0% {
+				opacity: 0;
+			}
+			100% {
+				opacity: 1;
+			}
+		}
+		@-webkit-keyframes fadeOut {
+			0% {
+				opacity: 1;
+			}
+			100% {
+				opacity: 0;
+			}
+		}
+		@keyframes fadeOut {
+			0% {
+				opacity: 1;
+			}
+			100% {
+				opacity: 0;
+			}
+		}
+		p img {
+			max-width: 100%;
+			height: auto;
+		}
+	</style>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">帖子详情</h1>
+			<a class="mui-btn mui-btn-link mui-pull-right" id="collect"><img src="../images/release.png"></a>
+		</header>
+		<div id="mui-scroll-wrapper" class="mui-content mui-fullscreen mui-scroll-wrapper">
+			<div id="cases" class="mui-scroll">
+				<div class="post-list">
+					<div class="post-list-img">
+						<img id="avatar" style="width: 60px;height: 60px;border-radius: 100%;" class="mui-media-object mui-pull-left" src="" data-preview-src='' data-preview-group='1'>
+					</div>
+					<div class="mui-media-body">
+						<div class="post-title">
+							<div id="postTitle" class="post-title-con"></div>
+							<div class="praise-img"><img id="praise" class="praise"/>&nbsp;<span id="likeCount">0</span></div>
+						</div>
+						<div class='doc-img'><span id="postNickname">用户名称</span>&emsp;时间：<span id="postDate"></span></div>
+						<div id="postContent" class="great"></div>
+					</div>
+				</div>
+				<div id="imgs" class="mui-row"></div>
+				<div class="space"></div>
+				<div class="post-comment">
+					<div class="post-input">
+						<input type="text" id="to-comment"/>
+						<button type="button" class="comment-btn" id="comment" disabled="disabled">评论</button>
+					</div>
+					<div class="comment-content">评论</div>
+					<div id="comment-list" class="comment-list"></div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script src="../js/mui.min.js"></script>
+	<script src="../js/mui.pullToRefresh.min.js"></script>
+	<script src="../js/mui.pullToRefresh.material.min.js"></script>
+	<script src="../js/mui.zoom.js"></script>
+	<script src="../js/mui.previewimage.js"></script>
+	<script src="../js/common.js"></script>
+	<script>
+		(function(_,doc,u,w){
+			_.init({swipeBack: false}),_(".mui-scroll-wrapper").scroll();
+			var list = doc.getElementById('comment-list');
+			var submitObj = doc.getElementById("comment"),toCommentObj = doc.getElementById("to-comment");
+			var postId = null,currentWeb = null,pdata = {offset:0,limit:5};
+			var privateToken = null;
+			var isClickLike = true;
+			var likeCountData = null;
+			var imgServer = null;
+			var praiseObj = doc.getElementById("praise");
+			var likeCount = 0;
+			var item = null;
+			var page = null;
+			var imgs =doc.getElementById("imgs");
+			var countLen = null;
+			_.plusReady(function(){
+				privateToken = w.getItem("privateToken");
+				var _pull = null;
+				_pull = _('#cases').pullToRefresh({
+					up: {
+						callback: function() {
+							pdata.offset=(pdata.limit)*page;
+							u.mypost('post/detailPost',pdata, false, function(data) {
+								_pull.endPullUpToRefresh((data.data.commentList || []).length == 5);
+								if (data.code  == 0) {
+									page++;
+									loadList(data.data || []);
+								} else {
+									_.toast(data.msg ||'服务器异常');
+								}
+							}, function() {
+								_.toast('获取列表失败'), _pull.endPullUpToRefresh(true);
+							});
+						},auto: true
+					}
+				});
+			});
+			w.addEventListener("event",function(e){
+				mui('#mui-scroll-wrapper').scroll().scrollTo(0,0,100);
+				page = 0;
+				pdata.offset = 0;
+				postId =  e.detail.postId;
+				privateToken = w.getItem("privateToken");
+				pdata.privateToken = w.getItem("privateToken");
+				pdata.postId = postId;
+				u.mypost("post/detailPost",pdata,true,function(data){
+					if(data.code == 0){
+						page++;
+						list.innerHTML = "";//清空评论列表
+						//清空点赞状态
+						removeClass(praiseObj,"m-active");
+						addClass(praiseObj,"praise");
+						likeCountData = data.data;//点赞数
+						isClickLike = "未点赞" == data.data.isClickLike?false:true;//是否已点赞
+						isClickLike?addClass(praiseObj,"m-active"):'';
+						imgServer = data.data.imgServer;//图片
+						var post = data.data.post[0];	//帖子详情
+						var isAnonymous = post.isAnonymous;
+						if(isAnonymous == 0){
+							doc.getElementById("postNickname").innerHTML = post.postNickname;
+						}else if(isAnonymous == 1){
+							doc.getElementById("postNickname").innerHTML = "匿名";
+						}
+						var clickCount = null;
+						countLen = likeCountData.likeCount.toString().length;
+						if(countLen <= 4){
+							clickCount = likeCountData.likeCount;
+						}else if(countLen == 5){
+							clickCount = likeCountData.likeCount.substring(0,1)
+							clickCount = clickCount + "万";
+						}else if(countLen == 6){
+							clickCount = likeCountData.likeCount.substring(0,2);
+							clickCount = clickCount + "万";
+						}else if(countLen == 7){
+							clickCount = likeCountData.likeCount.substring(0,3);
+							clickCount = clickCount + "万";
+						}else if(countLen == 8){
+							clickCount = o.clickCount.substring(0,4);
+							clickCount = clickCount + "万";
+						}
+						doc.getElementById("avatar").setAttribute("src",imgServer+post.avatar);
+						doc.getElementById("postTitle").innerHTML = post.postTitle;
+						
+						doc.getElementById("postDate").innerHTML = post.postDate;
+						doc.getElementById("postContent").innerHTML = post.postContent;
+						doc.getElementById("likeCount").innerHTML = clickCount;
+						likeCount = likeCountData.likeCount || 0;
+						imgs.innerHTML = "";
+						if(post.img){
+							if(post.img.img0){
+								imgs.innerHTML += "<div class='mui-col-xs-4'><img src='"+imgServer+post.img.img0+"' data-preview-src='' data-preview-group='1'/></div>";
+							}
+							if(post.img.img1){
+								imgs.innerHTML += "<div class='mui-col-xs-4'><img src='"+imgServer+post.img.img1+"' data-preview-src='' data-preview-group='1'/></div>";
+							}
+							if(post.img.img2){
+								imgs.innerHTML += "<div class='mui-col-xs-4'><img src='"+imgServer+post.img.img2+"' data-preview-src='' data-preview-group='1'/></div>";
+							}
+						}
+						_.each(data.data.commentList,function(i,o){
+							item = doc.createElement("div");
+							item.className = "comment-list-item";
+							item.innerHTML = "<div class='comment-list-img'>"+
+								"<img src='"+imgServer+o.avatar+"' data-preview-src='' data-preview-group='1'><br/>"+o.recmdNickname+"</div>"+
+								"<div class='comment-list-con'>"+
+								"<div class='comment-list-time'>时间："+o.recmdDate+"</div>"+
+								"<div class='comment-list-content'>"+o.recmdContent+"</div>"+
+							"</div>";
+							list.appendChild(item);
+						});
+					}
+				},myerror);
+			});
+			//点赞或取消点赞
+			praiseObj.addEventListener("tap",function(){
+				if(!w.getUser()){
+					w.openView("../userLogin.html");
+				}else{
+					var self = this;
+					//取消点赞
+					if(isClickLike){
+						var pdata ={
+							postId:postId,
+							privateToken:privateToken
+						}
+						u.mypost('post/cancelLike',pdata, false, function(data) {
+							if (data.code  == 0) {
+								_.toast("取消成功");
+								isClickLike = false;
+								toggleClass(self,"m-active");
+								//只有原有点赞数在四位数以内才改变数量
+								if(countLen <= 4){
+									likeCount--;
+									doc.getElementById("likeCount").innerHTML = likeCount;
+								}
+							} else {
+								_.toast("取消失败");
+							}
+						},myerror);
+					}else{
+						var pdata ={
+							postId:postId,
+							privateToken:privateToken
+						}
+						//点赞
+						u.mypost("post/clickLike",pdata,false,function(data){
+							if(data.code == 0){
+								u.mypost("post/detailPost",pdata,true,function(data){
+									if(data.code == 0){
+										_.toast("点赞成功");
+										isClickLike = true;
+										toggleClass(self,"m-active");
+										//只有原有点赞数在四位数以内才改变数量
+										if(countLen <= 4){
+											likeCount++;
+											doc.getElementById("likeCount").innerHTML = likeCount;
+										}
+									}
+								},myerror);
+							}else{
+								_.toast("点赞失败");
+							}
+						},myerror);
+					}
+				}
+			});
+			
+			function loadList(data){
+				var commentList = data.commentList;
+				if(commentList && commentList.length > 0){
+					_.each(commentList,function(i,o){
+						item = doc.createElement("div");
+						item.className = "comment-list-item";
+						item.innerHTML = "<div class='comment-list-img'>"+
+							"<img src='"+imgServer+o.avatar+"'><br/>"+o.recmdNickname+"</div>"+
+							"<div class='comment-list-con'>"+
+							"<div class='comment-list-time'>时间："+o.recmdDate+"</div>"+
+							"<div class='comment-list-content'>"+o.recmdContent+"</div>"+
+						"</div>";
+						list.appendChild(item);
+					});
+				}
+			}
+			//写帖子
+			doc.getElementById("collect").addEventListener('tap', function() {
+				if(!w.getUser()){
+					w.openView("../userLogin.html");
+				}else{
+					w.openView("release_post.html");
+				}
+			});
+			//提交评论
+			submitObj.addEventListener('tap', function() {
+				if(!w.getUser()){
+					w.openView("../userLogin.html");
+				}else{
+					var content  = toCommentObj.value;
+					pdata.postId = postId;
+					pdata.privateToken = privateToken;
+					pdata.content = content;
+					if(u.isNull(toCommentObj.value)){
+						_.toast("请输入评论内容");
+						return;
+					}else if(isEmojiCharacter(toCommentObj.value)){
+						_.toast("不支持表情输入");
+						return;
+					}
+					u.mypost("post/addComment",pdata,true,function(data){
+						if(data.code == 0){
+							_.toast(data.msg);
+							toCommentObj.value = "";
+							submitObj.setAttribute("disabled","disabled");
+						}else{
+							_.toast(data.msg);
+						}
+					},myerror);
+				}
+			});
+			//若是评论内容为空 无法点击评论按钮
+			toCommentObj.addEventListener("input",function(){
+				if(this.value.length > 0){
+					submitObj.removeAttribute("disabled");
+				}else{
+					submitObj.setAttribute("disabled","disabled");
+				}
+			});
+			_.previewImage();
+		})(mui,document,util,window)
+	</script>
+</html>

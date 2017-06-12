@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="format-detection" content="telephone=no">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<title>疫苗详情</title>
+		<link rel="stylesheet" href="../css/mui.min.css" />
+    	<link rel="stylesheet" href="../css/common.css" />
+    	<link rel="stylesheet" href="../css/detail.css" />
+    	<link rel="stylesheet" href="../css/iconfont.css" />
+    	<link rel="stylesheet" href="../css/medicine/vaccine_detail.css" />
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">疫苗详情</h1>
+			<span id="service" class="mui-pull-right">
+				<span class="myicon contact-icon"></span>
+				<span id="newContactNum" class="mui-badge mui-badge-danger newContactNum m-undisplay">0</span>
+			</span>
+		</header>
+		<div class="mui-bar mui-bar-tab">
+			<div class="detail-btn">
+				<div class="detail-btn-know">
+					<div class="know-agree">
+						<span id="res" class="mui-icon iconfont icon-xuanzhong font-size-14 main-font-color"></span>
+						<span id="know-agree">&ensp;知情同意书</span>
+					</div>
+					<div class="pay-money">
+						<span class="pay-title">定金：</span><span class="RMB">¥</span>
+						<span id="price"></span>
+						<button type="button" class="mui-pull-right mui-btn but" id="pay" disabled="disabled">付款</button>
+					</div>
+					<div class="pay-money">
+						<span class="pay-title">剩余款项<span class="paytoHK">（到港支付）</span>：</span>
+						<span class="RMB">¥</span>
+						<span id="price2"></span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="mui-content mui-fullscreen mui-scroll-wrapper">
+			<div class="mui-scroll">
+				<div id="name" class="info-title"></div>
+				<div class="info-content" id="detail"></div>
+			</div>
+		</div>
+	</body>
+	<script src="../js/mui.min.js"></script>
+	<script src="../js/common.js"></script>
+	<script>
+		var newContactNum = null;
+		(function(_,doc,u,w){
+			_.init(),_(".mui-scroll-wrapper").scroll();
+			var payObj = doc.getElementById("pay"),detailObj = doc.getElementById("detail");
+			var pdata = {},vaccinumId = null,price =null,remainAmount = null;
+			var orderId = null,web = null,privateToken = null;
+			newContactNum = doc.getElementById("newContactNum");
+			_.plusReady(function(){
+				privateToken = w.getItem("privateToken");
+				web = plus.webview.currentWebview();
+				vaccinumId = web.vaccinumId;
+				pdata.vaccinumId = vaccinumId;
+				u.mypost("vaccinum/vaccinumDetail",pdata,true,function(data){
+					if(data.code == 0){
+						orderId = data.data.orderId;
+						data = data.data[0][0];
+						name = data.name?data.name:'';
+						detail = data.detail?data.detail:nodataHtmlInfo;
+						data.detail?payObj.removeAttribute("disabled"):'';
+						price = data.price?data.price:'0.0';
+						remainAmount = data.remainAmount?data.remainAmount:'0.0';
+						doc.getElementById("name").innerHTML = name;
+						doc.getElementById("price").innerHTML = price;
+						doc.getElementById("price2").innerHTML = remainAmount;
+						detailObj.innerHTML = detail;
+					}else{
+						detail = data.detail?data.detail:nodataHtmlInfo;
+					}
+				},myerror);
+			})
+			doc.getElementById("res").addEventListener('tap', function() {
+				if(hasClass(this,"icon-xuanzhong")){
+					removeClass(this,"icon-xuanzhong");
+					addClass(this,"icon-weixuanzhong");
+					payObj.setAttribute("disabled","disabled");
+				}else{
+					removeClass(this,"icon-weixuanzhong");
+					addClass(this,"icon-xuanzhong");
+					payObj.removeAttribute("disabled");
+				}
+			});
+			
+			payObj.addEventListener('tap',function(){
+				if(!w.getUser()){
+					w.openView("../userLogin.html");
+				}else{
+					pdata.privateToken = privateToken;
+					pdata.vaccinumId = vaccinumId;
+					u.mypost("vaccinum/payView",pdata,true,function(data){
+						if(data.code == 0){
+							orderId = data.data.orderId;
+							var ex = {
+								type:2,
+								order_type:"疫苗接种定金",
+								orderId:orderId,
+								fee:price
+							}
+							w.openView("../doctor/pay.html",ex);//1代表直接支付，并跳转到购买成功
+						}
+					},myerror);
+				}
+			});
+			//联系客服
+			doc.getElementById("service").addEventListener('tap',function(){
+				if(!w.getUser()){
+					w.openView("../userLogin.html");
+				}else{
+					w.openView("../my_center/contactService.html");
+				}
+			});
+			//知情通知书
+			doc.getElementById("know-agree").addEventListener('tap',function(){
+				w.openView("../know_agree.html");
+			});
+		})(mui,document,util,window)
+	</script>
+</html>

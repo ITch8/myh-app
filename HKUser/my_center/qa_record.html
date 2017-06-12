@@ -1,0 +1,99 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>问答记录</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link rel="stylesheet" href="../css/mui.min.css" />
+		<link rel="stylesheet" href="../css/pullRefresh.css" />
+		<link rel="stylesheet" href="../css/common.css" />
+		<link rel="stylesheet" href="../css/order/qa_record.css" />
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-pull-left mui-action-back mui-icon mui-icon-left-nav"></a>
+			<h1 id="title" class="mui-title">问答记录</h1>	
+		</header>
+		<div id="mui-scroll-wrapper" class="mui-content mui-fullscreen mui-scroll-wrapper">
+			<div id="cases" class="mui-scroll">	
+				<ul id="record-list" class="mui-table-view"></ul>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="../js/mui.min.js"></script>
+	<script type="text/javascript" src="../js/mui.pullToRefresh.min.js" ></script>
+	<script type="text/javascript" src="../js/mui.pullToRefresh.material.min.js" ></script>
+	<script type="text/javascript" src="../js/common.js"></script>
+	<script type="text/javascript">
+		(function(_,doc,u,w){
+			_.init({swipeBack: true}),_(".mui-scroll-wrapper").scroll();
+			var pdata = {offset:0,limit:5},page = 0,privateToken = null;
+			var _pull = null,list = doc.getElementById('record-list');
+			_.plusReady(function() {
+				privateToken = w.getItem("privateToken");
+				pdata.privateToken = privateToken;
+				_pull = _('#cases').pullToRefresh({
+					down: {
+						callback: function() {
+							pdata.offset = 0;
+							u.mypost('user_center/askAnswerList',pdata, false, function(data) {
+								_pull.endPullDownToRefresh((data.data[0] || []).length == 5);
+								if (data.code == 0) {
+									page = 1;
+									u.emptyHtml(list), qaList(data.data || []);
+								}else{
+									_.toast(data.msg || '服务器异常');
+								}
+							}, function() {
+								_.toast('获取列表失败'), _pull.endPullDownToRefresh();
+							});
+						}
+					},
+					up: {
+						callback: function() {
+							pdata.offset=(pdata.limit)*page;
+							u.mypost('user_center/askAnswerList',pdata, false, function(data) {
+								_pull.endPullUpToRefresh((data.data[0] || []).length < 5);
+								if (data.code  == 0) {
+									page++;
+									qaList(data.data || []);
+								} else {
+									_.toast(data.msg ||'服务器异常');
+								}
+							}, function() {
+								_.toast('获取列表失败'), _pull.endPullUpToRefresh(true);
+							});
+						},auto: true
+					}
+				});
+			});
+			function qaList(data){
+				var li = null,state = null;
+				_.each(data[0],function(i,obj){
+					li = doc.createElement("li");
+					li.id = obj.id;
+					state = obj.state;
+					var stateClass = "",stateClass_01 = "color_f99";
+					if(state == "已支付"){
+						stateClass = stateClass_01;
+					}else if(state == "已回复"){
+						stateClass = "";
+					}
+					li.className = "mui-table-view-cell mui-media";
+					li.innerHTML = "<div class='mui-pull-left mui-col-sm-8 left'>"+
+                						"<div class='font-color-333'>"+(obj.docName || '-')+"</div>"+
+                						"<div class='font-size-12 font-color-999'>"+(obj.dateline || '-')+"</div>"+
+                						"<div class='describe'>"+ (obj.content || '-')+"</div></div>"+
+               							"<div class='mui-pull-right mui-col-sm-4 right mui-text-right'>"+
+               							"<span class='state "+stateClass+"'>"+state+"</span>"+
+              						"</div>";
+					list.appendChild(li);
+				})
+			}
+			//问答详情
+			_('.mui-table-view').on('tap','li',function(){
+	      		w.openView('qa_details.html',{recordId:this.id});
+	    	})
+		})(mui,document,util,window)
+	</script>
+</html>

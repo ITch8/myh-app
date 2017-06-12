@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="format-detection" content="telephone=no">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<title>药品中心</title>
+		<link rel="stylesheet" href="../css/mui.min.css" />
+		<link rel="stylesheet" href="../css/common.css" />
+		<link rel="stylesheet" href="../css/pullRefresh.css" />
+		<link rel="stylesheet" href="../css/base.css" />
+		<link rel="stylesheet" href="../css/medicine/medicine_center.css" />
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">药品中心</h1>
+		</header>
+		<div class="mui-content">
+			<form>
+				<div class="mui-input-row mui-search">
+					<input type="search" id="keyword" class="mui-input-clear mui-search" placeholder="搜索">
+				</div>
+			</form>
+			<dl class="retrie">
+				<dt><a id="area"><span id="areaTitle" class="font-size-18">全部癌种</span><i class="up-nav"></i></a></dt>
+				<dd id="dCategory" class="area mui-hidden">
+					<ul id="category" class="downlist"></ul>
+				</dd>
+			</dl>
+			<div id="mui-scroll-wrapper" class="mui-scroll-wrapper">
+				<div id="cases" class="mui-scroll">
+					<ul id="medicineList" class="doctor-list mui-table-view"></ul>
+				</div>
+			</div>
+		</div>
+		<div id="backdrop"></div>
+	</body>
+	<script type="text/javascript" src="../js/mui.min.js"></script>
+	<script type="text/javascript" src="../js/mui.pullToRefresh.min.js"></script>
+	<script type="text/javascript" src="../js/mui.pullToRefresh.material.min.js"></script>
+	<script type="text/javascript" src="../js/common.js"></script>
+	<script type="text/javascript" src="../js/util/util.js" ></script>
+	<script>
+		(function(_, doc, u, w) {
+			_.init({swipeBack: false}),_(".mui-scroll-wrapper").scroll();
+			var medicineList = doc.getElementById('medicineList'),categoryList = doc.getElementById('category'),keywordPro = doc.getElementById("keyword");
+			var pdata = {offset:0,limit:5}, li = null,_pull = null,page = 0,imgserver = null;
+			var backDropObj = document.getElementById("backdrop"),areaObj =document.getElementById("area"),upObj = areaObj.querySelector(".up-nav"),dCategoryObj =document.getElementById("dCategory"),areaTitleObj =document.getElementById("areaTitle");
+			//监听癌种选择
+			areaObj.addEventListener("tap",function(){
+				if(hasClass(dCategoryObj,"mui-hidden")){addClass(this,"up");}else{removeClass(this,"up");}
+				toggleClass(dCategoryObj,"mui-hidden");
+				toggleBackDrop(backDropObj);
+			})
+			backDropObj.addEventListener("tap",function(){
+				removeBackDrop(this);
+				addClass(dCategoryObj,"mui-hidden");
+			})
+			
+			//选择癌种-获取药品
+			_("#category").on("tap","li",function(){
+				var pls = this.parentNode.children;
+				for (var i = 0; i < pls.length; i++) {
+					removeClass(pls[i],"active");
+				}
+				addClass(this,"active");
+				addClass(this.parentNode.parentNode,"mui-hidden");
+				removeClass(backDropObj,'mui-backdrop');
+				areaTitleObj.innerHTML = this.innerHTML;
+				_('#mui-scroll-wrapper').scroll().scrollTo(0,0);
+				pdata.cid = this.id || '';
+				getMedData();
+			})
+			
+			_.plusReady(function(){
+				_('#mui-scroll-wrapper').scroll().scrollTo(0,0);
+				_pull = _('#cases').pullToRefresh({
+//					down: {
+//						callback: function() {
+//							pdata.offset = 0;
+//							pdata.cid = '';
+//							pdata.keyword = '';
+//							keywordPro.value = '';
+//							doc.activeElement.blur();
+//							u.mypost('medicine/medicineList',pdata, false, function(data) {
+//								_pull.endPullDownToRefresh((data.data.medicine || []).length == 5);
+//								if (data.code == 0) {
+//									page = 1;
+//									u.emptyHtml(medicineList), medicineListData(data.data || []);
+//								}else{
+//									_.toast(data.msg || '服务器异常');
+//								}
+//							}, function() {
+//								_.toast('获取列表失败'), _pull.endPullDownToRefresh();
+//							});
+//						}
+//					},
+					up: {
+						callback: function() {
+							pdata.offset=(pdata.limit)*page;
+							u.mypost('medicine/medicineList',pdata, false, function(data) {
+								_pull.endPullUpToRefresh((data.data.medicine || []).length < pdata.limit);
+								if (data.code  == 0) {
+									page++;
+									medicineListData(data.data || []);
+								} else {
+									_.toast(data.msg ||'服务器异常');
+								}
+							}, function() {
+								_.toast('获取列表失败'), _pull.endPullUpToRefresh(true);
+							});
+						},auto: true
+					}
+				});
+			})
+			//赋值药品列表和癌种列表
+			function medicineListData(data){
+				imgserver = data.imgServer;
+				_pull && _pull.refresh((data.medicine || []).length == pdata.limit);
+				_pull && _pull.endPullUpToRefresh((data.medicine || []).length < pdata.limit);
+				//药品列表
+				_.each(data.medicine || [],function(i,obj){
+					li = doc.createElement("li");
+					li.id = obj.mid;
+					var img = obj.thumbnail == ""?"../images/default-news.png":imgserver+obj.thumbnail;
+					li.className = "mui-table-view-cell mui-media";
+					li.innerHTML = "<img class='mui-media-object mui-pull-left' src='"+img+"'>"+
+									"<div class='mui-media-body font-color-333'>"+obj.medicineName+"</div><div class='mui-media-body font-size-12 font-color-666'>"+(obj.outline || '')+"</div>";
+					medicineList.appendChild(li);
+				})
+				//癌种列表
+				if("" == categoryList.innerHTML){
+					_.later(function(){
+						console.log("category=="+JSON.stringify(data.category));
+						categoryList.innerHTML = "<li>全部癌种</li>";
+						_.each(data.category || [],function(i,obj){
+							categoryList.innerHTML += "<li id='"+obj.cid+"'>"+(obj.cateName || '-')+"</li>";
+						})
+					},300);
+				}
+			}
+			//搜索	
+			function getMedData() {
+				pdata.keyword = keywordPro.value;
+				pdata.offset = 0;
+				u.mypost('medicine/medicineList', pdata, true, function(data) {
+					if(data.code == 0) {
+						u.emptyHtml(medicineList),medicineListData(data.data || []);
+					} else {
+						_.toast(data.msg || '服务器异常');
+					}
+				}, function() {
+					_.toast('获取列表失败');
+				});
+			}
+			
+			//根据关键字搜索药品
+			keywordPro.addEventListener('keypress',function(e){
+				if(isEmojiCharacter(keywordPro.value)){
+					_.toast("不支持表情输入");
+					e.preventDefault();// 阻止默认事件
+					return;
+				}
+				if(e.keyCode == "13"){
+					doc.activeElement.blur();
+					getMedData();
+					e.preventDefault();// 阻止默认事件
+				}
+			})
+			//药品详情
+			_('.mui-table-view').on('tap','li',function(){
+				w.openView("medicine_detail.html",{mid:this.id});
+			})
+		})(mui, document, util, window)
+	</script>
+</html>

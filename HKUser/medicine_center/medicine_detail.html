@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="format-detection" content="telephone=no">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<title>药品详情</title>
+		<link rel="stylesheet" href="../css/mui.min.css" />
+    	<link rel="stylesheet" href="../css/common.css" />
+    	<link rel="stylesheet" href="../css/detail.css" />
+    	<link rel="stylesheet" href="../css/medicine/medicine_detail.css" />
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">药品详情</h1>
+			<a class="mui-btn mui-btn-link mui-pull-right" id="add" ><img src="../images/m-add.png" class="add"></a>
+		</header>
+		<div class="mui-content mui-fullscreen mui-scroll-wrapper">
+			<div class="mui-scroll">
+				<div id="slider" class="mui-slider">
+					<div id="banner" class="mui-slider-group mui-slider-loop"></div>
+				</div>
+				<div class="medicine-title" id="medicineName"></div>
+				<div class="medicine-content" id="medicineDetail"></div>
+			</div>
+		</div>
+		<nav class="mui-bar mui-bar-tab">
+			<a class="mui-tab-item">
+				<button class="telToService" id="telTo">电话咨询</button>
+			</a>
+			<a class="mui-tab-item">
+				<button class="onlineService" id="online">在线客服</button>
+			</a>
+		</nav>
+	</body>
+	<script type="text/javascript" src="../js/mui.min.js"></script>
+	<script type="text/javascript" src="../js/common.js"></script>
+	<script>
+		(function(_,doc,u,w){
+			_.init({swipeBack:true}),_(".mui-scroll-wrapper").scroll();
+			var pdata = {};
+			var sliderObj = doc.getElementById("slider"),bannerObj = doc.getElementById("banner");
+			_.plusReady(function(){
+				mid = plus.webview.currentWebview().mid;
+				pdata.mid = mid;
+				u.mypost("medicine/medicineDetail",pdata,true,function(data){
+					var arrBanner = new Array(),imgserver = null,bannerList = null;
+					bannerObj.innerHTML = "";
+					imgserver = data.data.imgServer;
+					bannerList = data.data.detail.banner;
+					if(bannerList){
+						if(bannerList.banner_1){
+							arrBanner.push(bannerList.banner_1);
+						}
+						if(bannerList.banner_2){
+							arrBanner.push(bannerList.banner_2);
+						}
+						if(bannerList.banner_3){
+							arrBanner.push(bannerList.banner_3);
+						}
+						if(bannerList.banner_4){
+							arrBanner.push(bannerList.banner_4);
+						}
+						if(bannerList.banner_5){
+							arrBanner.push(bannerList.banner_5);
+						}
+					}else{
+						bannerObj.innerHTML += "<div class='mui-slider-item mui-slider-item-duplicate'><img src='../images/default-banner.png'></div>";
+					}
+					if(arrBanner &&  arrBanner.length > 0){
+                          var len = arrBanner.length;
+                          var indicatorItem = null;
+                          bannerObj.innerHTML = "<div class='mui-slider-item mui-slider-item-duplicate'><img src='"+imgserver+arrBanner[len-1]+"'></div>";
+                          _.each(arrBanner,function(i,obj){
+                              indicatorItem = doc.createElement("div");
+                              bannerObj.innerHTML+="<div class='mui-slider-item'><img src='"+imgserver+arrBanner[i]+"'></div>";
+                          })
+                          bannerObj.innerHTML += "<div class='mui-slider-item mui-slider-item-duplicate'><img src='"+imgserver+arrBanner[0]+"'></div>";
+					}
+					_(sliderObj).slider({interval: 3000});
+					var bodyWidth = document.body.clientWidth;
+					doc.getElementsByClassName("mui-slider-item")[0].querySelector("img").setAttribute("height",bodyWidth && bodyWidth/15*7);
+					if(data.code == 0){
+						detailData = data.data.detail;
+						doc.getElementById("medicineName").innerHTML = detailData.name?detailData.name:'';
+						doc.getElementById("medicineDetail").innerHTML = detailData.content?detailData.content:nodataHtmlInfo;
+					}
+				},myerror);
+			})
+			//致电客服
+			doc.getElementById("telTo").addEventListener('tap',function(){
+				var tel = null,btnArray = ['致电', '取消'];;
+				tel = sessionStorage.getItem("kfTel");
+				if(!tel){
+					u.mypost('api/customerTel',pdata, true, function(data) {
+						if(data.code == 0){
+							tel = data.data.tel || null;
+							tel && sessionStorage.setItem("kfTel",tel);
+							_.confirm(tel, '<div class="btn-title"></div>',btnArray, function(e) {
+								if(e.index == 0){
+									plus.device.dial(tel, false);
+								}
+							},'div');
+						}
+					},myerror);	
+				}else{
+					_.confirm(tel, '<div class="btn-title"></div>',btnArray, function(e) {
+						if(e.index == 0){
+							plus.device.dial(tel, false);
+						}
+					},'div');
+				}
+			})
+			
+			//在线客服
+			doc.getElementById("online").addEventListener('tap',function(){
+				checkLogin("../my_center/contactService.html");
+			})
+			//病历管理
+			doc.getElementById("add").addEventListener('tap',function(){
+				checkLogin("../my_case_history/case_list.html");
+			})
+			//检查登录
+			function checkLogin(url){
+				if(!w.getUser()){
+					w.openView("../userLogin.html");
+				}else{
+					w.openView(url);
+				}
+			}
+		})(mui,document,util,window)
+	</script>
+</html>

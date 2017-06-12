@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>检测服务</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../css/mui.min.css">
+		<link rel="stylesheet" href="../css/pullRefresh.css" />
+		<link rel="stylesheet" href="../css/common.css" />
+		<link rel="stylesheet" href="../css/list.css" />
+		<style type="text/css">
+			dt img{min-height:120px;}
+			.gene-content {
+				margin-top: 5px;
+			}
+		</style>
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">检测服务</h1>
+		</header>
+		<div id="mui-scroll-wrapper" class="mui-content mui-fullscreen mui-scroll-wrapper">
+			<div id="cases" class="mui-scroll">
+				<div id="gene-list" class="gene-content"></div>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="../js/mui.min.js" ></script>
+	<script type="text/javascript" src="../js/mui.pullToRefresh.min.js" ></script>
+	<script type="text/javascript" src="../js/mui.pullToRefresh.material.min.js" ></script>
+	<script type="text/javascript" src="../js/mui.lazyload.js" ></script>
+	<script type="text/javascript" src="../js/mui.lazyload.img.js" ></script>
+	<script type="text/javascript" src="../js/common.js" ></script>
+	<script>
+		(function(_, doc, u, w) {
+			_.init({swipeBack:true}),_(".mui-scroll-wrapper").scroll();
+			var list = doc.getElementById('gene-list');
+			var dl = null,imgserver = null,_pull=null;
+			var pdata = {offset:0 ,limit:6};
+			var page = 0;
+			_.plusReady(function() {
+				_pull = _('#cases').pullToRefresh({
+					down: {
+						callback: function() {
+							pdata.offset = 0;
+							u.mypost('gene_check/geneCheckList',pdata, false, function(data) {
+								_pull.endPullDownToRefresh((data.data.GeneList || []).length == 6);
+								if (data.code == 0) {
+									page = 1;
+									u.emptyHtml(list), renderList(data.data || []);
+								}else{
+									_.toast(data.msg || '服务器异常');
+								}
+							}, function() {
+								_.toast('获取列表失败'), _pull.endPullDownToRefresh();
+							});
+						}
+					},up: {
+						callback: function() {
+							pdata.offset=(pdata.limit)*page;
+							u.mypost('gene_check/geneCheckList',pdata, false, function(data) {
+								_pull.endPullUpToRefresh((data.data.GeneList || []).length < 6);
+								if (data.code  == 0) {
+									page++;
+									renderList(data.data || []);
+								} else {
+									_.toast(data.msg ||'服务器异常');
+								}
+							}, function() {
+								_.toast('获取列表失败'), _pull.endPullUpToRefresh(true);
+							});
+						},auto: true
+					}
+				});
+			});
+			/**
+			 * @des 设置数据
+			 * @param data 列表数据
+			 * **/
+			function renderList(data){
+				if(data.GeneList && data.GeneList.length > 0){
+					imgserver = data.imgServer;
+					_.each(data.GeneList,function(i,obj){
+						dl = doc.createElement("dl");
+						dl.id = obj.id;
+						var img = null;
+						if(obj.thumbnail == ""){
+							img = "../images/default-record.png";
+						}else{
+							img = imgserver+obj.thumbnail;
+						}
+						dl.innerHTML = "<dt><img data-lazyload='"+img+"'></dt>"+
+						"<dd><div class='gene-content-title mui-ellipsis-2'>"+obj.name+"</div>"+
+							"<div class='gene-content-money'>￥"+obj.price+"</div>"+
+						"</dd>";
+						list.appendChild(dl);
+					})
+					_("#gene-list").imageLazyload({
+						placeholder: '../images/default-news.png'
+					});
+				}
+			}
+			//跳转到详情页面
+			_('.gene-content').on('tap', 'dl', function() {
+				w.openView('gene_detect_detail.html',{geneId:this.id});
+			})
+		})(mui, document, util, window)
+	</script>
+</html>

@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="format-detection" content="telephone=no">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<title>添加病历</title>
+		<link rel="stylesheet" href="../css/mui.min.css" />
+		<link rel="stylesheet" href="../css/common.css" />
+		<link rel="stylesheet" href="../css/input.css" />
+		<link rel="stylesheet" href="../css/case.css" />
+		<link rel="stylesheet" href="../css/mui.picker.min.css" />
+		<link rel="stylesheet" href="../css/mui.poppicker.css" />
+		<link rel="stylesheet" href="../css/center/add_case.css" />
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">添加病历</h1>
+			<a class="mui-btn mui-btn-link mui-pull-right" id="save">保存</a>
+		</header>
+		<div class="mui-content">
+			<form class="mui-input-group">
+				<div class="mui-input-row">
+					<label class="label">病历名称：</label>
+					<input type="text" placeholder="请输入病历名称" id="illName">
+				</div>
+				<div class="mui-input-row">
+					<label class="label">姓名：</label>
+					<input type="text" class="mui-input-clear" placeholder="请输入姓名" id="name">
+				</div>
+				<div class="mui-input-row">
+					<label class="label">年龄：</label>
+					<input type="text" class="mui-input-clear" placeholder="请输入年龄" id="age">
+				</div>
+				<div class="mui-input-row">
+					<label class="label">性别：</label>
+					<div class="mui-card">
+						<div class="mui-input-row mui-radio mui-left" id="maleRadio">
+							<input value="1" name="radio1" type="radio" checked>
+							<label class="label">男</label>
+						</div>
+						<div class="mui-radio mui-left" id="femaleRadio">
+							<input value="2" name="radio1" type="radio">
+							<label class="label">女</label>
+						</div>
+					</div>
+				</div>
+				<div class="mui-input-row">
+					<label class="label">过敏史：</label>
+					<input type="text" class="mui-input-clear" placeholder="以往过敏史，10字以内" id="allergyHistory">
+				</div>
+				<div class="mui-input-row">
+					<label class="label">诊断结果：</label>
+					<input type="text" class="zhenduan-result" id="result">
+				</div>
+				<div class="mui-input-row">
+					<label class="label">分期：</label>
+					<input id="stages" class="fenqi" type="text" readonly="readonly">
+				</div>
+				<div class="mui-input-row" id="base">
+					<label class="label">基本病情：</label>
+					<textarea class="textarea" rows="5" placeholder="描述病情300字以内" id="situation"></textarea>
+				</div>
+			</form>
+		</div>
+	</body>
+	<script src="../js/mui.min.js"></script>
+	<script src="../js/mui.picker.min.js"></script>
+	<script src="../js/mui.poppicker.js"></script>
+	<script src="../js/common.js"></script>
+	<script>
+		(function(_,doc,u,w){
+			var pdata = {};
+			var privateToken = null;
+			var saveObj = doc.getElementById("save"),
+				illNameObj = doc.getElementById("illName"),//病历名称
+				nameObj = doc.getElementById("name"),//姓名
+				ageObj = doc.getElementById("age"),//年龄
+				sexObj = doc.getElementsByName("radio1"),//性别
+				allergyHistoryObj = doc.getElementById("allergyHistory"),//过敏史
+				resultObj = doc.getElementById("result"),//诊断结果
+				situationObj = doc.getElementById("situation");//基本病情
+			var stagesObj = doc.getElementById("stages"); //分期
+			_.plusReady(function(){
+				privateToken = w.getItem("privateToken");
+			});
+			saveObj.addEventListener('tap', function() {
+				if(u.isNull(illNameObj.value)){
+					_.toast("请输入病历名称");
+					return;
+				}else if(u.isNull(nameObj.value)){
+					_.toast("请输入姓名");
+					return;
+				}else if(u.isNull(ageObj.value)){
+					_.toast("请输入年龄");
+					return;
+				}else if(!u.checkAge(ageObj.value)){
+					_.toast("请输入正确的年龄");
+					return;
+				}else if(u.isNull(allergyHistoryObj.value)){
+					_.toast("请输入过敏史");
+					return;
+				}else if(allergyHistoryObj.value.length > 10){
+					_.toast("过敏史必须在10个字以内");
+					return;
+				}else if(u.isNull(resultObj.value)){
+					_.toast("请输入诊断结果");
+					return;
+				}else if(u.isNull(stagesObj.value)){
+					_.toast("请选择分期");
+					return;
+				}else if(u.isNull(situationObj.value)){
+					_.toast("请输入基本病情");
+					return;
+				}else if(situationObj.value.length > 300){
+					_.toast("基本病情必须在300个字以内");
+					return;
+				}else if(isEmojiCharacter(illNameObj.value) || isEmojiCharacter(nameObj.value) || isEmojiCharacter(ageObj.value) 
+				|| isEmojiCharacter(allergyHistoryObj.value) || isEmojiCharacter(resultObj.value) || isEmojiCharacter(situationObj.value)){
+					_.toast("不支持表情输入");
+					return;
+				}
+				var illName  = illNameObj.value.trim(),
+					name = nameObj.value.trim(),
+					age = ageObj.value.trim(),
+					sex = getRadioBoxValue(sexObj),
+					allergyHistory = allergyHistoryObj.value.trim(),
+					result = resultObj.value.trim(),
+					situation = situationObj.value.trim(),
+					selectVal = stagesObj.value;
+				if(selectVal == "Ⅰ期"){
+					pdata.stages = 1;
+				}else if(selectVal == "Ⅱ期"){
+					pdata.stages = 2;
+				}else if(selectVal == "Ⅲ期"){
+					pdata.stages = 3;
+				}else if(selectVal == "Ⅳ期"){
+					pdata.stages = 4;
+				}else if(selectVal == "无"){
+					pdata.stages = 0;
+				}
+				pdata.privateToken = privateToken;
+				pdata.illName  = illName;
+				pdata.realName = name;
+				pdata.age = age;
+				pdata.sex = sex;
+				pdata.allergyHistory = allergyHistory;
+				pdata.result = result;
+				pdata.situation = situation;
+				u.mypost("medical/addIllnessHistory",pdata,true,function(data){
+					if(data.code == 0){
+						_.toast("病历添加成功");
+						plus.webview.getWebviewById("case_list").evalJS("getCaseList()");
+						w.openView("case_list.html");
+						illNameObj.value = "";
+						nameObj.value = "";
+						allergyHistoryObj.value = "";
+						resultObj.value = "";
+						situationObj.value = "";
+						ageObj.value = "";
+						stagesObj.value = "";
+					}else{
+						_.toast(data.msg);
+					}
+				},myerror);
+			});
+			
+			//获取单选按钮
+			function getRadioBoxValue(obj){
+				var value =0;
+                for(i=0; i<obj.length;i++){
+                    if(obj[i].checked){ 
+                        value = obj[i].value; 	                       
+                    } 
+	            }         
+             	return value;
+			}
+			var stagePicker = new _.PopPicker();
+			stagePicker.setData([{
+				value: 'Ⅰ期',
+				text: 'Ⅰ期'
+			}, {
+				value: 'Ⅱ期',
+				text: 'Ⅱ期'
+			}, {
+				value: 'Ⅲ期',
+				text: 'Ⅲ期'
+			}, {
+				value: 'Ⅳ期',
+				text: 'Ⅳ期'
+			}, {
+				value: '无',
+				text: '无'
+			}]);
+			stagesObj.addEventListener('tap', function(event) {
+				stagePicker.show(function(items) {
+					var v = JSON.stringify(items[0].value);
+					v = v.substr(1,v.length-2);
+					if( 0 == v){
+					}else{
+						stagesObj.value = v;
+					}
+				});
+			}, false);
+			stagesObj.addEventListener('tap', function() {
+				doc.activeElement.blur();
+			});
+		})(mui,document,util,window)
+	</script>
+</html>
