@@ -190,7 +190,11 @@
 					"img/icon_index_doctors.png",
 					"img/icon_index_info.png",
 					"img/btn_more.png",
-					"images/default-person.png"
+					"images/default-person.png",
+					"images/index/icon_2.png",
+					"images/index/icon_5.png",
+					"images/index/icon_01.png",
+					"images/index/icon_4.png"
 				],
 				"refer": [
 					"info/info_detail.html",
@@ -337,7 +341,8 @@
 					"js/mui.poppicker.js",
 					"css/mui.poppicker.css",
 					"fonts/iconfont-nodata.ttf",
-					"css/mui.min.css"
+					"css/mui.min.css",
+					"css/center/edit_case.css"
 				],
 				"refer": [
 					"my_case_history/add_record.html",
@@ -417,7 +422,8 @@
 					"fonts/iconfont-nodata.ttf",
 					null,
 					"fonts/iconfont.ttf",
-					"css/info/info_detail.css"
+					"css/info/info_detail.css",
+					"css/mui.min.css"
 				],
 				"refer": [
 					"userLogin.html"
@@ -528,7 +534,9 @@
 					"images/default-person.png",
 					"images/default-doctor.png",
 					"js/mui.zoom.js",
-					"fonts/iconfont.ttf"
+					"fonts/iconfont.ttf",
+					"css/doctor/doctor_detail.css",
+					"css/imagePreview.css"
 				],
 				"refer": [
 					"doctor/message_question_answer.html",
@@ -619,7 +627,8 @@
 					"css/input.css",
 					"fonts/iconfont-nodata.ttf",
 					"images/medical-add.png",
-					null
+					null,
+					"css/order_register.css"
 				],
 				"refer": [
 					"doctor/pay.html",
@@ -764,7 +773,8 @@
 					"fonts/iconfont.ttf",
 					"fonts/iconfont-nodata.ttf",
 					null,
-					"css/mui.min.css"
+					"css/mui.min.css",
+					"css/medicine/gene_detect_detail.css"
 				],
 				"refer": [
 					"doctor/pay.html",
@@ -1222,7 +1232,8 @@
 					"images/qq.png",
 					null,
 					"images/icon_120x120.png",
-					"css/login/userLogin.css"
+					"css/login/userLogin.css",
+					"img/icon_close.png"
 				],
 				"refer": [
 					"index.html",
@@ -1259,7 +1270,8 @@
 					"js/mui.min.js",
 					"css/mui.min.css",
 					"js/apphandle.js",
-					"css/input.css"
+					"css/input.css",
+					"css/login/forgetPwd.css"
 				],
 				"refer": [
 					"resetPwd.html"
@@ -1441,7 +1453,8 @@
 					"css/common.css",
 					"images/bank.png",
 					null,
-					"fonts/iconfont-nodata.ttf"
+					"fonts/iconfont-nodata.ttf",
+					"css/center/recharge.css"
 				],
 				"refer": [
 					"my_center/mywallet.html"
@@ -1875,7 +1888,8 @@
 					"js/common.js",
 					"js/mui.min.js",
 					"css/mui.min.css",
-					"fonts/mui.ttf"
+					"fonts/mui.ttf",
+					"css/login/guide.css"
 				],
 				"refer": [],
 				"priority": 0

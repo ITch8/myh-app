@@ -14,6 +14,7 @@
 			dt img{min-height:120px;}
 			.gene-content {
 				margin-top: 5px;
+				text-align: center;
 			}
 		</style>
 	</head>
@@ -24,7 +25,8 @@
 		</header>
 		<div id="mui-scroll-wrapper" class="mui-content mui-fullscreen mui-scroll-wrapper">
 			<div id="cases" class="mui-scroll">
-				<div id="gene-list" class="gene-content"></div>
+				<div id="gene-list" class="mui-row gene-content">
+				</div>
 			</div>
 		</div>
 	</body>
@@ -41,6 +43,7 @@
 			var dl = null,imgserver = null,_pull=null;
 			var pdata = {offset:0 ,limit:6};
 			var page = 0;
+			var bodyWidth = document.body.clientWidth;
 			_.plusReady(function() {
 				_pull = _('#cases').pullToRefresh({
 					down: {
@@ -81,21 +84,29 @@
 			 * @param data 列表数据
 			 * **/
 			function renderList(data){
+				var img = null,imgWith = 0,imgHeight = 100;
+				//大屏
+				if(bodyWidth >= 400){
+					imgWith = (bodyWidth / 3 - 25);
+				}else{
+					imgWith = (bodyWidth / 2 - 25);
+				}
+				imgHeight = imgWith / 1.48;
 				if(data.GeneList && data.GeneList.length > 0){
 					imgserver = data.imgServer;
 					_.each(data.GeneList,function(i,obj){
-						dl = doc.createElement("dl");
+						dl = doc.createElement("div");
+						dl.className ="mui-col-xs-6 mui-col-sm-4";
 						dl.id = obj.id;
-						var img = null;
 						if(obj.thumbnail == ""){
 							img = "../images/default-record.png";
 						}else{
 							img = imgserver+obj.thumbnail;
 						}
-						dl.innerHTML = "<dt><img data-lazyload='"+img+"'></dt>"+
-						"<dd><div class='gene-content-title mui-ellipsis-2'>"+obj.name+"</div>"+
-							"<div class='gene-content-money'>￥"+obj.price+"</div>"+
-						"</dd>";
+						dl.innerHTML = "<dl><dt><img style='height:"+imgHeight+"px;' data-lazyload='"+img+"'></dt>"+
+						"<dd><span class='gene-content-title mui-ellipsis-2'>"+obj.name+"</span>"+
+							"<span class='gene-content-money'>￥"+obj.price+"</span>"+
+						"</dd></dl>";
 						list.appendChild(dl);
 					})
 					_("#gene-list").imageLazyload({
@@ -104,7 +115,7 @@
 				}
 			}
 			//跳转到详情页面
-			_('.gene-content').on('tap', 'dl', function() {
+			_('.gene-content').on('tap', '.mui-col-xs-6.mui-col-sm-4', function() {
 				w.openView('gene_detect_detail.html',{geneId:this.id});
 			})
 		})(mui, document, util, window)

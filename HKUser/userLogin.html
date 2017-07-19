@@ -11,8 +11,8 @@
 	<body class="login-body">
 		<div class="mui-fullscreen mui-scroll-wrapper">
 			<div class="mui-scroll">
-				<div class="login-pass">
-					<button type="button" id="skip" class="mui-btn mui-btn-link" style="color: #32A3D6;padding-right: 0;">跳过>></button>
+				<div  id="skip"  class="login-pass">
+					<img src="img/icon_close.png" />
 				</div>
 				<div class="login-logo">
 					<div class="login-logo-bg">
@@ -160,6 +160,7 @@
 										u.mypost("api/checkBind",pdata,true,function(data){
 											if(data.code == 5){
 												var oid = auth.authResult.openid;
+												console.log("oid=="+oid);
 												w.openView("my_center/boundpho.html",{openId:oid,oId:auth.id});
 											}else if(data.code == -1){
 												_.toast(data.msg ||'');

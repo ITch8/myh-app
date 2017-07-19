@@ -12,119 +12,8 @@
 		<link rel="stylesheet" href="../css/iconfont.css" />
 		<link rel="stylesheet" href="../css/input.css" />
 		<link rel="stylesheet" href="../css/common.css" />
+		<link rel="stylesheet" href="../css/order_register.css" />
 	</head>
-	<style>
-		.person-info {
-			width: 100%;
-			overflow: hidden;
-			margin: 0 0 35px 0;
-			font-size: 14px;
-		}
-		
-		#maleRadio {
-			width: 75px;
-			overflow: hidden;
-			float: left;
-		}
-		
-		#femaleRadio {
-			width: 75px !important;
-			overflow: hidden !important;
-		}
-		
-		.state-brief {
-			width: 100%;
-			margin-top: 5px;
-		}
-		
-		.state-brief-title {
-			width: 100%;
-			height: 35px;
-			font-size: 14px;
-			border-bottom: 1px solid #DEDEDE;
-			line-height: 35px;
-			background-color: #FFFFFF;
-			padding-left: 15px;
-			color: #666;
-		}
-		
-		.state-brief textarea {
-			border: 0;
-			margin-bottom: 0px !important;
-		}
-		
-		.choice-case {
-			width: 100%;
-			height: 50px;
-			font-size: 14px;
-			border-bottom: 1px solid #DEDEDE;
-			padding-left: 15px;
-			background-color: #FFFFFF;
-			padding-top: 3px;
-		}
-		
-		.choice-case-title {
-			width: 35%;
-			padding: 11px 40px 11px 0px;
-			height: 40px;
-			line-height: 40px;
-		}
-		
-		.choice-case-select {
-		    width: 50% !important;
-		    height: 30px !important;
-		    border: 1px solid #ccc !important;
-		    margin-top: 4px;
-		    float: left !important;
-		}
-		
-		.argee {
-			overflow: hidden;
-			line-height: 30px;
-			padding-left: 15px;
-			color: #999;
-			font-size: 14px;
-		}
-		
-		.know {
-			width: 50%;
-			float: left;
-		}
-		
-		.star {
-			color: red;
-		}
-		.mui-bar .mui-btn-link {
-			line-height: 52px;
-		}
-		.myicon {
-			position: absolute;
-			top: 11px;
-			width: 25px;
-		}
-		.contact-icon {
-			content: url(../images/service-1.png);
-			right: 13px;
-		}
-		.newContactNum{
-			position: absolute;
-			right: 5px;
-			top: 3px;
-		}
-		.next{
-			background-color: #fff;
-		}
-		.mui-input-row .mui-btn{
-			font-size: 14px;
-			width: 50% !important;
-		}
-		.mui-input-group .mui-input-row:last-child:after{
-			height: 0;
-		}
-		.mui-input-group:after{
-			height: 0;
-		}
-	</style>
 	<body>
 		<header class="mui-bar mui-bar-nav">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
@@ -176,7 +65,13 @@
 					</div>
 					<div class="mui-input-row">
 						<label class="label">选择病历：</label>
-						<select id="illnessSelect" class="choice-case-select font-size-14"></select>
+						<select id="illnessSelect" class="choice-case-select font-size-14">
+							<option>病历表1</option>
+							<option>病历表2</option>
+							<option>病历表3</option>
+							<option>病历表4</option>
+							<option>病历表5</option>
+						</select>
 					</div>
 				</form>
 				<div class="state-brief">

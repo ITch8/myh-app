@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
@@ -26,7 +25,7 @@
 					</div>
 				</div>
 				<div class="order-audit-content">
-					<div class="waiting">您预约的：<span id="hospital"></span>  <span id="apartment"></span>  <span id="doctor"></span></div>
+					<div class="waiting">您预约的：<span id="hospital"></span> <span id="apartment"></span> <span id="doctor"></span></div>
 					<div class="waiting" id="time"></div>
 					<div class="cancel">
 						已成功取消
@@ -42,14 +41,15 @@
 	<script src="../js/mui.min.js"></script>
 	<script src="../js/common.js"></script>
 	<script>
-		(function(_,doc,u,w){
+		(function(_, doc, u, w) {
 			doc.getElementById("return-index").addEventListener('tap', function() {
 				w.toIndex(0);
 			});
-			var web = null,btn = null;
-			_.plusReady(function(){
+			var web = null,
+				btn = null;
+			_.plusReady(function() {
 				web = plus.webview.currentWebview();
-				var types = web.types?web.types:1;
+				var types = web.types ? web.types : 1;
 				var hospital = web.hospital;
 				var doctor = web.doctor;
 				var time = web.time;
@@ -58,12 +58,12 @@
 				doc.getElementById("apartment").innerHTML = apartment;
 				doc.getElementById("doctor").innerHTML = doctor;
 				doc.getElementById("time").innerHTML = time;
-				if(types == 1){
+				if(types == 1) {
 					btn = "查看我的问诊";
 					doc.getElementById("check").addEventListener('tap', function(e) {
 						w.openView("../my_center/myInterview.html");
 					});
-				}else{
+				} else {
 					btn = "查看我的预约单";
 					doc.getElementById("check").addEventListener('tap', function() {
 						w.openView("../my_center/my_order.html");
@@ -71,6 +71,7 @@
 				}
 				doc.getElementById("check").innerText = btn;
 			});
-		})(mui,document,util,window)
+		})(mui, document, util, window)
 	</script>
+
 </html>

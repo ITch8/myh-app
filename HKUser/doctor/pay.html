@@ -65,12 +65,11 @@
 	</body>
 	<script type="text/javascript" src="../js/mui.min.js"></script>
 	<script type="text/javascript" src="../js/common.js" ></script>
-	<script type="text/javascript" src="../js/passwordBox.min.js"></script>
 	<script>
 		(function(_,doc,w,u){
 			_.init({swipeBack:false});
 			var pdata = {},privateToken = null,walletData = null,ways = null,self = null,type = null,targetWeb = null,money = null,balance = null,orderType = null,orderId = null;
-			var payWay = 1,pays={},channel = null,payPwd = null;
+			var payWay = 1,pays={},channel = null;
 			_.plusReady(function(){
 				var currentPage = plus.webview.currentWebview();
 				type = currentPage.type?currentPage.type:'purchase_succeed.html';
@@ -107,8 +106,6 @@
 						doc.getElementById("balance").textContent = balance;
 					}
 				},myerror)
-				
-				PwdBox.init(payPwd,'img/pwd_keyboard.png','请输入支付密码','安全支付环境，请放心使用！');
 			    getChannels();
 				//支付
 				doc.getElementById("pay").addEventListener('tap', function() {
@@ -125,18 +122,7 @@
 									}
 								},'div');
 							}else if(data.code == 0){
-								PwdBox.show(function(res){
-									payPwd = res.password;
-					                if(res.status){
-					                	balancePay();//余额支付
-					                    //重置输入
-//					                    alert('密码正确');
-					                    //关闭并重置密码输入
-					                    PwdBox.reset();
-					                }else{
-					                    alert(JSON.stringify(arguments));
-					                }
-					            });
+								showPwdInput();
 							}
 						},myerror);
 					}else if(payWay==1){//微信支付
@@ -155,11 +141,8 @@
 				if(!pc.serviceReady){
 					var txt=null;
 					switch(pc.id){
-						case "alipay":
-						txt="检测到系统未安装“支付宝快捷支付服务”，无法完成支付操作，是否立即安装？";
-						break;
-						default:
-						txt="系统未安装“"+pc.description+"”服务，无法完成支付，是否立即安装？";
+						case "wxpay":
+						txt="系统未安装“"+pc.description+"”服务，无法完成支付";
 						break;
 					}
 					plus.nativeUI.confirm(txt,function(e){
@@ -170,7 +153,7 @@
 				}
 			}
 			//余额支付
-			function balancePay(){
+			function balancePay(payPwd){
 				privateToken = w.getItem("privateToken");
 				pdata.privateToken = privateToken;
 				pdata.payPwd = payPwd;//余额支付密码
@@ -186,10 +169,27 @@
 					}else if(data.code == -1){
 						_.toast("余额不足，请充值或者选择其他支付方式");
 					}else{
+						showPwdInput();
 						_.toast(data.msg);
 					}
 				},myerror);
 			}
+			
+			//余额支付时  输入密码
+			function showPwdInput(){
+				_.prompt(money+'元', '', '请输入支付密码', ['取消', '确定'], function(e) {
+					if (e.index == 1) {
+						//确定
+						if(u.isNull(e.value)){
+							_.toast("请输入密码");
+							return false;
+						}else{
+							balancePay(e.value);//余额支付
+						}
+					}
+				})
+			}
+			
 			//调用支付
 			function pay(id){
 				getChannels();

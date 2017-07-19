@@ -13,6 +13,7 @@
 	padding: 0;
 	border-radius: 13px 13px 13px 13px;
 	background: rgba(255, 255, 255, .95);
+	height: 150px;
 }
 
 .mui-popup-buttons {
@@ -20,13 +21,13 @@
 	display: -webkit-box;
 	display: -webkit-flex;
 	display: flex;
-	height: 80px;
+	height: 60px;
 	-webkit-box-pack: initial;
 	-webkit-box-pack: ;
 	t-justify-content: center;
 	justify-content: center;
 	position: relative;
-	bottom: 50px;
+	bottom: 40px;
 }
 
 .mui-popup-button:first-child {
@@ -34,14 +35,14 @@
 }
 
 .mui-popup-button {
-	width: 120px;
-	height: 35px;
-	line-height: 35px;
+	width: 80px;
+	height: 30px;
+	line-height: 30px;
 	background-color: #33A2D7;
 	color: #FFFFFF;
 	font-size: 14px;
 	border-radius: 5px;
-	margin: 0px auto;
+	margin: 0 auto;
 }
 
 .mui-popup-title+.mui-popup-text {
@@ -51,9 +52,9 @@
 }
 
 .mui-popup-button.mui-popup-button-bold {
-	width: 120px;
-	height: 35px;
-	line-height: 35px;
+	width: 80px;
+	height: 30px;
+	line-height: 30px;
 	background-color: #FCD765;
 	color: #6e3f11;
 	font-size: 14px;

@@ -9,7 +9,21 @@
 		<title>用户使用手册</title>
 		<link rel="stylesheet" href="css/mui.min.css" />
     	<link rel="stylesheet" href="css/common.css" />
-    	<link rel="stylesheet" href="css/detail.css" />
+    	<style>
+    		.info-content {
+				width: 95%;
+				margin: 0 auto;
+				overflow: hidden;
+				font-size: 14px;
+				margin-top: 10px;
+				margin-bottom: 30px;
+				color: #666;
+				line-height: 24px;
+			}
+			.mui-content{
+				background-color: #fff;
+			}
+    	</style>
 	</head>
 	<body>
 		<header class="mui-bar mui-bar-nav">
@@ -31,7 +45,12 @@
 				u.mypost("api/systemSetting",pdata,true,function(data){
 					if(data.code == 0){
 						data = data.data.systemValue;
-						doc.getElementById("content").innerHTML = nodataHtmlInfo;
+						if("user_manual未设置或不存在" == data){
+							doc.getElementById("content").innerHTML = nodataHtmlInfo;
+						}else{
+							doc.getElementById("content").innerHTML = data;
+						}
+						
 					}
 				},myerror);
 			})

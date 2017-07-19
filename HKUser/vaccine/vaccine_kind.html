@@ -24,8 +24,8 @@
 						<input type="search" class="mui-input-clear" placeholder="点击搜索疫苗" id="keyword">
 					</div>
 				</form></div>
-			<div id="cases" class="mui-scroll">
-				<div id="vaccine-list" class="gene-content"></div>
+			<div id="cases" class="mui-scroll" style="top: 90px;">
+				<div id="vaccine-list" class="mui-row gene-content"></div>
 			</div>	
 		</div>
 		<div id="menu-wrapper" class="menu-wrapper mui-hidden">
@@ -48,7 +48,7 @@
 		(function(_,doc,u,w){
 			_.init({swipeBack: true}),_(".mui-scroll-wrapper").scroll();
 			var menuWrapper = document.getElementById("menu-wrapper"),backDropObj = document.getElementById("backdrop"),vaccineTitle = document.getElementById("vaccine-title");
-			
+			var bodyWidth = document.body.clientWidth;
 			var list = doc.getElementById("vaccine-list"),keywordPro = doc.getElementById("keyword");
 			var pdata = {offset:0 ,limit:6},_pull = null,page = 0;
 			_.plusReady(function(){
@@ -107,7 +107,7 @@
 				}
 			});
 			//进入详情页面
-			_('.gene-content').on('tap','dl',function(){
+			_('.gene-content').on('tap','.mui-col-xs-6.mui-col-sm-4',function(){
 				/*疫苗id*/
 				var ex  = {
 					vaccinumId:this.id
@@ -145,18 +145,26 @@
 			 * 获取数据--疫苗种类
 			 * **/
 			function renderList(data){
-				var imgserver = null
+				var imgserver = null,dl = null,img = null,imgWith = 0,imgHeight = 100;
+				//大屏
+				if(bodyWidth >= 400){
+					imgWith = (bodyWidth / 3 - 25);
+				}else{
+					imgWith = (bodyWidth / 2 - 25);
+				}
+				imgHeight = imgWith / 1.43;
 				if(data.vaccinumList && data.vaccinumList.length > 0){
 					imgserver = data.imgServer;
 					_pull && _pull.refresh((data.vaccinumList || []).length == pdata.limit);
 					_.each(data.vaccinumList,function(i,obj){
-						dl = doc.createElement("dl");
+						dl = doc.createElement("div");
+						dl.className ="mui-col-xs-6 mui-col-sm-4";
 						dl.id = obj.id;
-						var img = obj.thumbnail == ""?"../images/default-record.png":imgserver+obj.thumbnail;
-						dl.innerHTML = "<dt><img data-lazyload='"+img+"'></dt>"+
-						"<dd><div class='gene-content-title mui-ellipsis-2'>"+(obj.name || '-')+"</div>"+
-							"<div class='gene-content-money'>￥"+(obj.price || '-')+"</div>"+
-						"</dd>";
+						img = obj.thumbnail == ""?"../images/default-record.png":imgserver+obj.thumbnail;
+						dl.innerHTML = "<dl><dt><img style='height:"+imgHeight+"px;' data-lazyload='"+img+"'></dt>"+
+						"<dd><span class='gene-content-title mui-ellipsis-2'>"+(obj.name || '-')+"</span>"+
+							"<span class='gene-content-money'>￥"+(obj.price || '-')+"</span>"+
+						"</dd></dl>";
 						list.appendChild(dl);
 					})
 					_("#vaccine-list").imageLazyload({
