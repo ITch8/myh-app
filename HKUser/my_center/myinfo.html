@@ -62,13 +62,7 @@
 						</div>
 					</li>	
 				</ul>
-				<ul class="width-line mui-table-view mui-table-view-chevron" style="margin-top: 20px;">							
-					<li class="mui-table-view-cell" id="logout">
-						<div class="mui-text-center" >
-							退出登录							
-						</div>
-					</li>						
-				</ul>
+				<div id="logout" class="logout mui-text-center color_red">退出当前账号</div>
 			</div>
 		</div>
 	</body>
@@ -106,35 +100,36 @@
 				},myerror)
 				//退出登录
 				logout.addEventListener('tap',function(){
-					privateToken = w.getItem("privateToken");
-					pdata.privateToken = privateToken;
-					u.mypost("user_center/logout",pdata,true,function(data){
-						if(data.code == 0){
-							_.toast("退出成功");
-//							u.close("contactService");
-							var lauchFlag = w.getItem("lauchFlag") || null;
-							w.clearItem();
-							w.setItem("lauchFlag",lauchFlag);//存储启动页参数
-//							plus.webview.getWebviewById("my_center/myD.html").evalJS("clearAvatar()");
-							var allWeb = plus.webview.all();
-							for (var i = 0; i < allWeb.length; i++) {
-								u.close(allWeb[i].id);
-							}
-//								u.close("tabbar");  
-//								u.close("index.html"); 
-//								u.close("doctor/doctor_list.html"); 
-//								u.close("communicate/communicate_circle.html"); 
-//								u.close("my_center/myD.html"); 
-//								u.close("myinfo");
-							mui.later(function(){
-								w.openView('../userLogin.html');
-							},250)
-						}else if(data.code == 500){
-							w.openView("../userLogin.html");
-						}else{
-							_.toast(data.msg || '退出失败');
+					_.confirm('是否确定退出','提示',['否','是'],function(e){
+						if (e.index == 1) {
+							u.mypost("user_center/logout",pdata,true,function(data){
+								if(data.code == 0){
+									_.toast("退出成功");
+									var lauchFlag = w.getItem("lauchFlag") || null;
+									w.clearItem();
+									w.setItem("lauchFlag",lauchFlag);//存储启动页参数
+									plus.webview.getWebviewById("my_center/myD.html").evalJS("clearAvatar()");
+//									var allWeb = plus.webview.all();
+//									for (var i = 0; i < allWeb.length; i++) {
+//										u.close(allWeb[i].id);
+//									}
+		//								u.close("tabbar");  
+		//								u.close("index.html"); 
+		//								u.close("doctor/doctor_list.html"); 
+		//								u.close("communicate/communicate_circle.html"); 
+		//								u.close("my_center/myD.html"); 
+//										plus.webview.getWebviewById("my_center/myD.html").evalJS("clearAvatar()");
+//										u.close("tabbar");  
+										u.close("myinfo");
+										u.close("contactService");
+								}else if(data.code == 500 && '未登录' == data.msg){
+									u.goLogin();
+								}else{
+									_.toast(data.msg || '退出失败');
+								}
+							},myerror)
 						}
-					},myerror)
+					})
 				})
 				
 				//选择出生年月

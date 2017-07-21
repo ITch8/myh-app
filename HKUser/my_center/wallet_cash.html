@@ -8,360 +8,195 @@
 		<link rel="stylesheet" href="../css/my.css" />
 		<link rel="stylesheet" href="../css/mui.picker.min.css" />
 		<link rel="stylesheet" href="../css/mui.poppicker.css" />
-		<style>
-			.mui-bar{
-				background: #33a2d7;
-				box-shadow: none;
-				border: none;				
-			}
-			.mui-bar h1{
-				color: #fff;
-				font-size: 17px;
-			}
-			.mui-bar a{
-				color: #fff;				
-			}
-			.mui-bar .baocun{
-				font-size: 14px;				
-				line-height: 28px;
-			}
-			.wallet-row{
-				background: #33a2d7;
-				color: #fff;
-				text-align: center;
-				padding: 30px 0;
-			}
-			.wallet-row>div{
-				margin-bottom: 10px;
-			}
-			.wallet-row .wallet-ye{
-				font-size: 30px;
-				font-weight: 300;
-			}
-			.wallet-row .wallet-ye span{
-				font-size: 22px;
-			}
-			.width-line{
-				margin-top: 0 !important;
-			}
-			.mui-table-view-cell{
-				height: 45px;
-				padding-right: 20px !important;
-			}
-			.mui-table-view-cell input{
-				width: 70%;
-				height: 30px;
-				margin-top: -5px;
-				font-size: 14px;
-				border: none;
-				text-align: right;
-				float: right;
-			}
-			.but{
-				padding: 15px;
-				background: #F6F6F6;
-			}
-			.but p{
-				color: #33a2d7;
-				margin-bottom: 30px;
-			}
-			.but button{
-				width: 100%;
-				background: #33a2d7;
-				border: none;
-				color: #fff;
-				height: 33px;
-				border-radius: 22px;				
-				font-size: 16px;
-			}
-			.mui-pull-left{
-				color: #666;
-			}
-			.mui-table-view-cell.mui-active{
-				background-color: #FFFFFF;
-			}
-			input[type=number]{
-				height: 40px;
-				padding-top: 0;
-			}
-		</style>
+		<link rel="stylesheet" href="../css/center/wallet_cash.css" />
 	</head>
 
 	<body>
 		<header class="mui-bar mui-bar-nav">
 			<a class="mui-pull-left mui-action-back mui-icon mui-icon-left-nav"></a>
-			<h1 id="title" class="mui-title">提现</h1>	
+			<h1 id="title" class="mui-title">提现</h1>
 		</header>
 		<div class="mui-content">
 			<div class="wallet-row">
 				<div class="wallet-zh">账户余额</div>
 				<div class="wallet-ye"><span>￥</span><span id="balance"></span></div>
 			</div>
-			<ul class="width-line mui-table-view mui-table-view-chevron" style="margin-top: 10px;">							
+			<ul class="width-line mui-table-view mui-table-view-chevron" style="margin-top: 10px;">
 				<li class="mui-table-view-cell">
-					<div>
-						<span class="mui-pull-left">卡号：</span>
-						<span class="cash-input"><input type="number" id="cardId"  placeholder="您提现使用的银行卡号"/></span>
-					</div>
+					<span class="mui-pull-left">卡号：</span>
+					<span class="cash-input"><input type="number" id="cardId"  placeholder="请输入银行卡号"/></span>
 				</li>
 				<li class="mui-table-view-cell">
-					<div class="mui-navigate-right" >
-						<span class="mui-pull-left">银行：</span>
-						<span class="cash-input"><input id="bank" type="text" readonly="readonly" placeholder="请选择银行"></span>
-					</div>
+					<span class="mui-pull-left">银行：</span>
+					<span class="cash-input"><input type="text" id="bank"  placeholder="请输入开户银行"/></span>
 				</li>
 				<li class="mui-table-view-cell">
-					<div class="mui-navigate-right" >
+					<div class="mui-navigate-right">
 						<span class="mui-pull-left">开户地区：</span>
 						<span class="cash-input"><input id="address" type="text" style="margin-left: 0;" readonly="readonly" placeholder="请选择开户地区"></span>
 					</div>
 				</li>
 				<li class="mui-table-view-cell">
-					<div>
-						<span class="mui-pull-left">姓名：</span>
-						<span class="cash-input"><input id="name" type="text" value="" placeholder="请输入姓名"></span>
-					</div>
+					<span class="mui-pull-left">姓名：</span>
+					<span class="cash-input"><input id="name" type="text" value="" placeholder="请输入姓名"></span>
 				</li>
 				<li class="mui-table-view-cell">
-					<div>
-						<span class="mui-pull-left">身份证：</span>
-						<span class="cash-input"><input id="idcard" class="mui-input-clear" type="number" value="" placeholder="请输入身份证号"></span>
-					</div>
+					<span class="mui-pull-left">身份证：</span>
+					<span class="cash-input"><input id="idcard" class="mui-input-clear" type="number" value="" maxlength="18" placeholder="请输入身份证号"></span>
 				</li>
 				<li class="mui-table-view-cell">
-					<div>
-						<span class="mui-pull-left">金额：</span>
-						<span class="cash-input"><input id="money" type="number" value="" placeholder="请输入金额"></span>
-					</div>
+					<span class="mui-pull-left">金额：</span>
+					<span class="cash-input"><input id="money" type="number" value="" maxlength="9" placeholder="请输入金额"></span>
 				</li>
 			</ul>
 			<div class="mui-clearfix"></div>
 			<div class="but">
+				<p id="info" class="mui-text-center font-color-red mui-hidden">提现余额超过账户余额</p>
 				<p class="mui-text-center">提交后5-7个工作日到账</p>
 				<button id="cash">确认提现</button>
 			</div>
 		</div>
 	</body>
-	<script src="../js/mui.min.js"></script>
-	<script src="../js/mui.picker.min.js"></script>
-	<script src="../js/mui.poppicker.js"></script>
-	<script src="../js/city.data-3.js"></script>
-	<script src="../js/common.js"></script>
+	<script type="text/javascript" src="../js/mui.min.js"></script>
+	<script type="text/javascript" src="../js/mui.picker.min.js"></script>
+	<script type="text/javascript" src="../js/mui.poppicker.js"></script>
+	<script type="text/javascript" src="../js/city.data-3.js"></script>
+	<script type="text/javascript" src="../js/common.js"></script>
 	<script type="text/javascript">
-		(function(_,doc,u,w){
-			_.init({swipeBack:true});
-			var pdata = {};
-			var balance = null;
-			var privateToken = null;
-			var walletData = null;
+		(function(_, doc, u, w) {
+			_.init({
+				swipeBack: false
+			});
+			var pdata = {},
+				balance = null,
+				privateToken = null,
+				walletData = null,
+				inputMoy = 0;
 			var cashObj = doc.getElementById("cash"),
 				cardIdObj = doc.getElementById("cardId"),
 				bankObj = doc.getElementById("bank"),
 				addressObj = doc.getElementById("address"),
 				nameObj = doc.getElementById("name"),
 				idcardObj = doc.getElementById("idcard"),
-				moneyObj = doc.getElementById("money");
-			_.plusReady(function(){
+				moneyObj = doc.getElementById("money"),
+				infoObj = document.getElementById("info");
+			_.plusReady(function() {
 				privateToken = w.getItem("privateToken");
 				pdata.privateToken = privateToken;
 				//显示账号余额
-				u.mypost("user_center/takeCashView",pdata,true,function(data){
-					if(data.code == 0){
+				u.mypost("user_center/takeCashView", pdata, true, function(data) {
+					if(data.code == 0) {
 						walletData = data.data[0][0];
-						balance = walletData?walletData.amount:'0.00';
+						balance = walletData ? walletData.amount : '0.00';
 						doc.getElementById("balance").textContent = balance;
 					}
-				},myerror)
+				}, myerror)
 				//编辑其他信息时 地址和银行选择器隐藏
 				var objs = doc.querySelectorAll("input");
-				for (var i = 0; i < objs.length; i++) {
-					if(!objs[i].getAttribute("readonly")){
-						objs[i].addEventListener("focus",function(){
-							setTimeout(function(){
-								userPicker?userPicker.hide():'';
-								city?city.hide():'';
-							},100);
+				for(var i = 0; i < objs.length; i++) {
+					if(!objs[i].getAttribute("readonly")) {
+						objs[i].addEventListener("focus", function() {
+							setTimeout(function() {
+								city ? city.hide() : '';
+							}, 100);
 						});
 					}
 				}
-				userPicker?userPicker.hide():'';
-				city?city.hide():'';
-				cardIdObj.addEventListener('tap',function(){
-					userPicker?userPicker.hide():'';
-					city?city.hide():'';
+				city ? city.hide() : '';
+				cardIdObj.addEventListener('tap', function() {
+					city ? city.hide() : '';
 				})
-				nameObj.addEventListener('tap',function(){
-					userPicker?userPicker.hide():'';
-					city?city.hide():'';
+				nameObj.addEventListener('tap', function() {
+					city ? city.hide() : '';
 				})
-				idcardObj.addEventListener('tap',function(){
-					userPicker?userPicker.hide():'';
-					city?city.hide():'';
+				idcardObj.addEventListener('tap', function() {
+					city ? city.hide() : '';
 				})
-				moneyObj.addEventListener('tap',function(){
-					userPicker?userPicker.hide():'';
-					city?city.hide():'';
+				moneyObj.addEventListener('tap', function() {
+					city ? city.hide() : '';
 				})
 			});
-			//确认提现
-			cashObj.addEventListener('tap',function(){
-				if(u.isNull(cardIdObj.value)){
-					_.toast("请输入银行卡号");
-					return;
-				}else if(!u.checkCardId(cardIdObj.value)){
-					_.toast("请输入正确的银行卡号");
-					return;
-				}else if(u.isNull(bankObj.value)){
-					_.toast("请选择银行");
-					return;
-				}else if(u.isNull(addressObj.value)){
-					_.toast("请选择开户地区");
-					return;
-				}else if(u.isNull(nameObj.value)){
-					_.toast("请输入姓名");
-					return;
-				}else if(u.isNull(idcardObj.value)){
-					_.toast("请输入身份证号");
-					return;
-				}else if(!u.checkIdCard(idcardObj.value)){
-					_.toast("请输入正确的身份证号");
-					return;
-				}else if(u.isNull(moneyObj.value)){
-					_.toast("请输入金额");
-					return;
-				}else if(!u.checkMoney(moneyObj.value)){
-					_.toast("请输入正确的金额");
-					return;
-				}else if(isEmojiCharacter(cardIdObj.value) || isEmojiCharacter(nameObj.value) || isEmojiCharacter(idcardObj.value) 
-					|| isEmojiCharacter(moneyObj.value)){
-					_.toast("不支持表情输入");
-					return;
+			//检测金额输入
+			moneyObj.addEventListener("input", function() {
+				console.log("this.value=" + this.value)
+				inputMoy = Number(this.value || 0);
+				if(inputMoy > balance) {
+					removeClass(infoObj, 'mui-hidden')
+				} else {
+					addClass(infoObj, 'mui-hidden')
 				}
-				var cardId = cardIdObj.value.trim(),
-					bank = bankObj.value,
-					address = addressObj.value,
-					name = nameObj.value.trim(),
-					idcard = idcardObj.value.trim(),
-					money = moneyObj.value.trim();
-				pdata.privateToken = privateToken;
-				pdata.cardNum = cardId;
-				pdata.bank = bank;
-				pdata.address = address;
-				pdata.realName = name;
-				pdata.identity = idcard;
-				pdata.amount = money;
-				u.mypost("user_center/takeCash",pdata,true,function(data){
-					if(data.code == 0){
-						w.openView("mywallet.html");
-					    _.toast("提现成功,5-7个工作日到账");
-						cardIdObj.value = "";
-						bankObj.value = "";
-						addressObj.value = "";
-						nameObj.value = "";
-						idcardObj.value = "";
-						moneyObj.value = "";
-					}else{
-						_.toast(data.msg);
-					}
-				},myerror)
 			})
-			//普通示例
-			var userPicker = new _.PopPicker();
-			userPicker.setData([{
-				value: '中国银行',
-				text: '中国银行'
-			}, {
-				value: '招商银行',
-				text: '招商银行'
-			}, {
-				value: '中国农业银行',
-				text: '中国农业银行'
-			}, {
-				value: '中国工商银行',
-				text: '中国工商银行'
-			}, {
-				value: '中国建设银行',
-				text: '中国建设银行'
-			}, {
-				value: '美国运通银行',
-				text: '美国运通银行'
-			}, {
-				value: '亚洲商业银行有限公司',
-				text: '亚洲商业银行有限公司'
-			}, {
-				value: '罗马银行',
-				text: '罗马银行'
-			}, {
-				value: '盘谷银行',
-				text: '盘谷银行'
-			}, {
-				value: '东亚银行',
-				text: '东亚银行'
-			}, {
-				value: '印度银行',
-				text: '印度银行'
-			}, {
-				value: '加拿大满地可银行',
-				text: '加拿大满地可银行'
-			}, {
-				value: '法国国家巴黎银行',
-				text: '法国国家巴黎银行'
-			}, {
-				value: '花旗银行',
-				text: '花旗银行'
-			}, {
-				value: '澳洲联邦银行',
-				text: '澳洲联邦银行'
-			}, {
-				value: '恒生银行',
-				text: '恒生银行'
-			}, {
-				value: '韩国外换银行',
-				text: '韩国外换银行'
-			}, {
-				value: '华侨银行',
-				text: '华侨银行'
-			}, {
-				value: '上海商业银行',
-				text: '上海商业银行'
-			}, {
-				value: '永亨银行',
-				text: '永亨银行'
-			}, {
-				value: '永隆银行',
-				text: '永隆银行'
-			}]);
-			var showUserPickerButton = doc.getElementById('bank');
-			showUserPickerButton.addEventListener('tap', function(event) {
-				doc.activeElement.blur();
-				userPicker.show(function(items) {
-					var v = JSON.stringify(items[0].value);
-					v = v.substr(1,v.length-2);
-					if( 0 == v){
-					}else{
-						showUserPickerButton.value = v;
-					}
-				});
-			}, false);
+			//确认提现
+			cashObj.addEventListener('tap', function() {
+				if(u.isNull(cardIdObj.value)) {
+					_.toast("请输入银行卡号");
+				} else if(!u.checkCardId(cardIdObj.value)) {
+					_.toast("请输入正确的银行卡号");
+				} else if(u.isNull(bankObj.value)) {
+					_.toast("请选择银行");
+				} else if(u.isNull(addressObj.value)) {
+					_.toast("请选择开户地区");
+				} else if(u.isNull(nameObj.value)) {
+					_.toast("请输入姓名");
+				} else if(u.isNull(idcardObj.value)) {
+					_.toast("请输入身份证号");
+				} else if(!u.checkIdCard(idcardObj.value)) {
+					_.toast("请输入正确的身份证号");
+				} else if(u.isNull(moneyObj.value)) {
+					_.toast("请输入金额");
+				} else if(!u.checkMoney(moneyObj.value)) {
+					_.toast("请输入正确的金额数目");
+				}else if(moneyObj.value > balance){
+					_.toast("超出本次可提现金额");
+				} else if(isEmojiCharacter(cardIdObj.value) || isEmojiCharacter(nameObj.value) || isEmojiCharacter(idcardObj.value) ||
+					isEmojiCharacter(moneyObj.value)) {
+					_.toast("不支持表情输入");
+				} else {
+					var cardId = cardIdObj.value.trim(),
+						bank = bankObj.value,
+						address = addressObj.value,
+						name = nameObj.value.trim(),
+						idcard = idcardObj.value.trim(),
+						money = moneyObj.value.trim();
+					pdata.privateToken = privateToken;
+					pdata.cardNum = cardId;
+					pdata.bank = bank;
+					pdata.address = address;
+					pdata.realName = name;
+					pdata.identity = idcard;
+					pdata.amount = money;
+					u.mypost("user_center/takeCash", pdata, true, function(data) {
+						if(data.code == 0) {
+							_.toast("申请提现成功");
+							plus.webview.currentWebview().close('slide-out-right',300);
+						} else {
+							_.toast(data.msg);
+						}
+					}, myerror)
+				}
+			})
 			var city = new _.PopPicker({
 				layer: 3
 			});
 			city.setData(cityData3);
-			var address = doc.getElementById('address'),province = null,district = null;
+			var address = doc.getElementById('address'),
+				province = null,
+				district = null;
 			address.addEventListener('tap', function(event) {
 				doc.activeElement.blur();
 				city.show(function(items) {
-					province = (items[0] || {}).text == (items[1] || {}).text?(items[0] || {}).text:(items[0] || {}).text + "" + (items[1] || {}).text;
+					province = (items[0] || {}).text == (items[1] || {}).text ? (items[0] || {}).text : (items[0] || {}).text + "" + (items[1] || {}).text;
 					address.value = province + "" + (items[2] || {}).text;
-					if((items[0] || {}).text != null && (items[1] || {}).text != null && (items[2] || {}).text != null){
+					if((items[0] || {}).text != null && (items[1] || {}).text != null && (items[2] || {}).text != null) {
 						address.value = province + "" + (items[2] || {}).text;
-					}else if((items[0] || {}).text == (items[1] || {}).text){
-						address.value = province + "" + "";//省市名称相同
-					}else if((items[2] || {}).text == undefined){
-						address.value = province + "" + "";//第三级没有值
+					} else if((items[0] || {}).text == (items[1] || {}).text) {
+						address.value = province + "" + ""; //省市名称相同
+					} else if((items[2] || {}).text == undefined) {
+						address.value = province + "" + ""; //第三级没有值
 					}
 				});
 			}, false);
-		})(mui,document,util,window)
+		})(mui, document, util, window)
 	</script>
+
 </html>

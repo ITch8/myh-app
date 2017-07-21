@@ -314,7 +314,9 @@
 					"css/mui.poppicker.css",
 					"js/mui.picker.min.js",
 					"css/mui.picker.min.css",
-					"fonts/iconfont-nodata.ttf"
+					"fonts/iconfont-nodata.ttf",
+					"css/mui.min.css",
+					"css/center/add_case.css"
 				],
 				"refer": [
 					"my_case_history/case_list.html"
@@ -1290,7 +1292,8 @@
 					"fonts/iconfont.ttf",
 					"js/apphandle.js",
 					"css/input.css",
-					null
+					null,
+					"css/login/register.css"
 				],
 				"refer": [
 					"tabbar.html",
@@ -1405,7 +1408,8 @@
 					"js/mui.min.js",
 					"fonts/mui.ttf",
 					"css/mui.min.css",
-					"js/common.js"
+					"js/common.js",
+					"css/center/mywallet.css"
 				],
 				"refer": [
 					"my_center/wallet_cash.html",
@@ -1426,7 +1430,8 @@
 					"js/mui.picker.min.js",
 					"js/mui.poppicker.js",
 					"js/city.data-3.js",
-					"js/common.js"
+					"js/common.js",
+					"css/center/wallet_cash.css"
 				],
 				"refer": [
 					"my_center/mywallet.html"
@@ -1530,7 +1535,8 @@
 					"js/mui.min.js",
 					"fonts/mui.ttf",
 					"css/mui.min.css",
-					"js/common.js"
+					"js/common.js",
+					"css/common.css"
 				],
 				"refer": [
 					"userLogin.html"

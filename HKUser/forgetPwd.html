@@ -59,7 +59,7 @@
 					flag:1
 				};
 				u.mypost("api/sendIdentifyCode",pdata,true,function(data){
-					if(data.code == 0){
+					if(data.code.result == 0){
 						_.toast("验证码已发送");
 						u.time(self);
 					}else{

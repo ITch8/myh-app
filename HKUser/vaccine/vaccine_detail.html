@@ -93,7 +93,6 @@
 					payObj.removeAttribute("disabled");
 				}
 			});
-			
 			payObj.addEventListener('tap',function(){
 				if(!w.getUser()){
 					w.openView("../userLogin.html");
@@ -110,6 +109,8 @@
 								fee:price
 							}
 							w.openView("../doctor/pay.html",ex);//1代表直接支付，并跳转到购买成功
+						}else if(data.code == 500 && '未登录' == data.msg){
+							w.openView("../userLogin.html");
 						}
 					},myerror);
 				}

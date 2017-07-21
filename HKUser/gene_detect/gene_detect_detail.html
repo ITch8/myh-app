@@ -66,6 +66,8 @@
 						doc.getElementById("name").innerHTML = name;
 						doc.getElementById("price").innerHTML = price;
 						doc.getElementById("detail").innerHTML = detail;
+					}else if(data.code == 500 && '未登录' == data.msg){
+						u.goLogin();
 					}else{
 						detail = data?data.detail:nodataHtmlInfo;
 					}
@@ -100,6 +102,8 @@
 								fee:price
 							}
 							w.openView("../doctor/pay.html",ex);//1代表直接支付，并跳转到购买成功
+						}else if(data.code == 500 && '未登录' == data.msg){
+							u.goLogin();
 						}
 					},myerror);
 				}

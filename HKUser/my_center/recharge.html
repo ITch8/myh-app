@@ -15,11 +15,10 @@
 			<h1 id="title" class="mui-title">充值</h1>			
 		</header>
 		<div class="mui-content">
-			<div class="payment">
-				<span class="mui-pull-left">充值金额：¥&nbsp;&nbsp;</span><input type="text" id="total" value="" placeholder="10"/>
-			</div>
+			<p>充值金额</p>
+			<input type="text" id="total" placeholder="请输入充值金额" maxlength="9" class="font-size-14"/>
+			<p>支付方式</p>
 			<div id="sheet" class="mui-popover-bottom mui-popover-action">
-				<div class="popover-title">选择支付方式</div>	
 			    <ul class="mui-table-view mui-table-view-radio">
 					<li id='1' class="mui-table-view-cell mui-selected">
 						<a class="mui-navigate-right">
@@ -166,7 +165,6 @@
 					                	w.openView("mywallet.html");
 					                });
 					            },function(error){
-					            	console.log("wx Error==="+JSON.stringify(error.message));
 					            	if("canceled" == error.message.substr(error.message.length-8,8)){
 					            		_.toast("已取消操作")
 					            	}else if("客户端未安装" == error.message.substr(0,6)){

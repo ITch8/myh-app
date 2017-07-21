@@ -23,7 +23,7 @@
 		</header>
 		<div class="mui-content">
 			<div class="info-title" id="title"></div>
-			<div class="info-detail font-size-14"><span id="author"></span>&nbsp;&nbsp;&nbsp;<span id="createDate"></span></div>
+			<div class="info-detail font-size-14"><span id="createDate"></span>&ensp;&ensp;<span class="main-font-color" id="author"></span></div>
 			<div class="info-content" id="content"></div>
 		</div>
 		<div id="shareList" class="mui-popover mui-popover-action mui-popover-bottom">
@@ -111,7 +111,7 @@
 						title_share = newsData.title;
 						thumbs = [imgserver+newsData.thumbnail+"_50x50.jpg" || ''];//缩略图
 						doc.getElementById("title").innerHTML = title;
-						doc.getElementById("author").innerHTML = "作者：" + author;
+						doc.getElementById("author").innerHTML = author;
 						doc.getElementById("createDate").innerHTML = createDate;
 						doc.getElementById("content").innerHTML = content;
 					}else{

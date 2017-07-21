@@ -164,7 +164,11 @@
 				u.mypost('user_pay/orderPay',pdata, true, function(data) {
 					if(data.code == 0){
 						plus.nativeUI.alert("支付成功！",function(){
-		                	w.openView(targetWeb);
+							w.openView(targetWeb);
+							_.later(function(){
+								u.close('pay')
+							},200)
+							u.close('order_register');
 		                });
 					}else if(data.code == -1){
 						_.toast("余额不足，请充值或者选择其他支付方式");

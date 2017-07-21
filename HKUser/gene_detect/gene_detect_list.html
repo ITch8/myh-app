@@ -38,11 +38,8 @@
 	<script type="text/javascript" src="../js/common.js" ></script>
 	<script>
 		(function(_, doc, u, w) {
-			_.init({swipeBack:true}),_(".mui-scroll-wrapper").scroll();
-			var list = doc.getElementById('gene-list');
-			var dl = null,imgserver = null,_pull=null;
-			var pdata = {offset:0 ,limit:6};
-			var page = 0;
+			_.init(),_(".mui-scroll-wrapper").scroll();
+			var list = doc.getElementById('gene-list'),dl = null,imgserver = null,_pull=null,pdata = {offset:0 ,limit:6},page = 0;
 			var bodyWidth = document.body.clientWidth;
 			_.plusReady(function() {
 				_pull = _('#cases').pullToRefresh({

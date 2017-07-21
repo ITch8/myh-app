@@ -107,7 +107,6 @@
 					privateToken:privateToken,
 					docId:docId
 				}
-				console.log("currentView=="+currentView.id);
 				//根据医生id 获取基本信息
 				u.mypost("reg_num/regNumView",pdata,true,function(data){
 					if(data.code == 0){
@@ -135,7 +134,7 @@
 							doc.getElementById("female").checked = true;
 						}
 					}else if(data.code == 500 && "未登录" == data.msg){
-						_.toast("登录身份过期，请重新登录");
+						u.goLogin();
 					}else{
 						_.toast(data.msg)
 					}
@@ -156,7 +155,8 @@
 				if(!illness || !illness.length){
 					this.setAttribute("disabled","disabled");
 					_.toast("您还没有病历，请先添加病历");
-					return;
+				}else{
+					this.removeAttribute("disabled")
 				}
 			});
 			//选择预约时间
@@ -267,7 +267,6 @@
 //					pdata.appointId = appointId;
 					//重新预约  根据医生id 获取基本信息
 					u.mypost("reg_num/reAppointSubmit",pdata,true,function(data){
-						console.log(JSON.stringify(data));
 						if(data.code == 0){
 							orderId = data.data.orderId;
 							var ex = {
@@ -280,6 +279,8 @@
 							}
 							_.toast(data.msg);
 							w.openView("pay.html", ex);
+						}else if(data.code == 500 && '未登录' == data.msg){
+							u.goLogin();
 						}else{
 							_.toast(data.msg);
 						}
@@ -299,6 +300,8 @@
 							}
 							_.toast(data.msg);
 							w.openView("pay.html", ex);
+						}else if(data.code == 500 && '未登录' == data.msg){
+							u.goLogin();
 						}else{
 							_.toast(data.msg);
 						}

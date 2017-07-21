@@ -112,14 +112,13 @@
 					}
 					li.className = "mui-table-view-cell mui-media";
 					li.innerHTML = "<div class='mui-pull-left mui-col-sm-8 left'>"+
-				                    	"<span class='doctors'>"+obj.docName+"</span>"+
-				                    	"<span class='hospitals'>"+obj.hosName+"</span>"+
+				                    	"<span class='doctors'>"+obj.docName+"</span><span class='hospitals'>"+obj.hosName+"</span>"+
 				                    	"<span class='describe'>地址："+obj.address+"</span>"+
+				                    	"<span class='time'>"+obj.dateline+"</span>"+
 				                   "</div>"+
 				                   "<div class='mui-pull-right mui-col-sm-4 right mui-text-right'>"+
 				                    	"<span class='state "+stateClass+"'>"+state+"</span>"+
 				                    	"<span class='cancel-order-btn'><p data='"+obj.price+"' class='mui-pull-right "+cancelBtn+"' id='"+obj.id+"'>"+cancel+"</p>&nbsp;<p data='"+obj.price+"' class='mui-pull-right "+payBtn+"' id='"+obj.id+"'>"+pay+"</p></span>"+
-				                    	"<span class='time'>"+obj.dateline+"</span>"+
 				                   "</div>";
 					list.appendChild(li);
 				})
@@ -172,15 +171,14 @@
 						}
 						li.className = "mui-table-view-cell mui-media";
 						li.innerHTML = "<div class='mui-pull-left mui-col-sm-8 left'>"+
-					                    	"<span class='doctors'>"+obj.docName+"</span>"+
-					                    	"<span class='hospitals'>"+obj.hosName+"</span>"+
-					                    	"<span class='describe'>地址："+obj.address+"</span>"+
-					                   "</div>"+
-					                   "<div class='mui-pull-right mui-col-sm-4 right mui-text-right'>"+
-					                    	"<span class='state "+stateClass+"'>"+state+"</span>"+
-					                    	"<span class='cancel-order-btn'><p data='"+obj.price+"' class='mui-pull-right "+cancelBtn+"' id='"+obj.id+"'>"+cancel+"</p>&nbsp;<p data='"+obj.price+"' class='mui-pull-right "+payBtn+"' id='"+obj.id+"'>"+pay+"</p></span>"+
-					                    	"<span class='time'>"+obj.dateline+"</span>"+
-					                   "</div>";
+				                    	"<span class='doctors'>"+obj.docName+"<span class='hospitals'>"+obj.hosName+"</span></span>"+
+				                    	"<span class='describe'>地址："+obj.address+"</span>"+
+				                    	"<span class='time'>"+obj.dateline+"</span>"+
+				                   "</div>"+
+				                   "<div class='mui-pull-right mui-col-sm-4 right mui-text-right'>"+
+				                    	"<span class='state "+stateClass+"'>"+state+"</span>"+
+				                    	"<span class='cancel-order-btn'><p data='"+obj.price+"' class='mui-pull-right "+cancelBtn+"' id='"+obj.id+"'>"+cancel+"</p>&nbsp;<p data='"+obj.price+"' class='mui-pull-right "+payBtn+"' id='"+obj.id+"'>"+pay+"</p></span>"+
+				                   "</div>";
 						list.appendChild(li);
 					})
 				},myerror);
@@ -208,7 +206,7 @@
 				pdata.privateToken = privateToken;
 				pdata.oid = this.id;
 				pdata.orderType = 3;
-				var btnArray = ['取消', '确认'];
+				var btnArray = ['否', '是'];
 				_.confirm('<div>确定要取消吗？</div>', '<div class="btn-title">取消</div>',btnArray, function(e) {
 					if(e.index == 1){
 						u.mypost("user_center/orderCancel",pdata,true,function(data){

@@ -7,7 +7,11 @@
 			"fonts/mui.ttf",
 			"css/mui.min.css"
 		],
-		"refer": []
+		"refer": [
+			"my_center/feedback.html",
+			"my_center/help.html",
+			"my_center/about_software.html"
+		]
 	},
 	"my_center/myD.html": {
 		"refer": [
@@ -167,7 +171,8 @@
 			"tabbar.html",
 			"my_center/contactService.html",
 			"forgetPwd.html",
-			"guide.html"
+			"guide.html",
+			"register.html"
 		]
 	},
 	"my_center/buy_record.html": {
@@ -199,7 +204,8 @@
 			"css/center/swipe.css",
 			"css/common.css",
 			"css/pullRefresh.css",
-			"css/mui.min.css"
+			"css/mui.min.css",
+			"fonts/mui.ttf"
 		],
 		"refer": [
 			"info/info_detail.html"
@@ -219,7 +225,9 @@
 			"fonts/mui.ttf"
 		],
 		"refer": [
-			"userLogin.html"
+			"userLogin.html",
+			"my_center/modify_pwd.html",
+			"my_center/modify_payPwd.html"
 		]
 	},
 	"forgetPwd.html": {
@@ -264,7 +272,9 @@
 			"js/mui.min.js",
 			"images/icon_add.png",
 			"fonts/mui.ttf",
-			"css/mui.min.css"
+			"css/mui.min.css",
+			"css/common.css",
+			"css/pullRefresh.css"
 		],
 		"refer": [
 			"doctor/doctor_list_hospital.html"
@@ -332,10 +342,15 @@
 			"js/common.js",
 			"css/iconfont.css",
 			"fonts/iconfont-nodata.ttf",
-			"css/order_register.css"
+			"css/order_register.css",
+			"css/input.css",
+			"css/mui.min.css",
+			"css/common.css",
+			"fonts/mui.ttf"
 		],
 		"refer": [
-			"doctor/pay.html"
+			"doctor/pay.html",
+			"userLogin.html"
 		]
 	},
 	"my_case_history/case_list.html": {
@@ -349,7 +364,8 @@
 			"css/mui.min.css"
 		],
 		"refer": [
-			"my_case_history/case_detail.html"
+			"my_case_history/case_detail.html",
+			"my_case_history/add_case.html"
 		]
 	},
 	"my_center/about.html": {
@@ -357,7 +373,8 @@
 			"images/logo-copyright.png",
 			"js/common.js",
 			"js/mui.min.js",
-			"css/center/about.css"
+			"css/center/about.css",
+			"css/mui.min.css"
 		],
 		"refer": []
 	},
@@ -368,7 +385,11 @@
 			"images/process-header.png",
 			"js/mui.previewimage.js",
 			"css/center/case_detail.css",
-			"js/mui.min.js"
+			"js/mui.min.js",
+			"js/common.js",
+			"css/imagePreview.css",
+			"css/case.css",
+			"css/mui.min.css"
 		],
 		"refer": [
 			"my_case_history/edit_case.html"
@@ -383,7 +404,10 @@
 			"fonts/mui.ttf",
 			"css/mui.min.css"
 		],
-		"refer": []
+		"refer": [
+			"my_center/evaluate.html",
+			"doctor/cancel_succeed.html"
+		]
 	},
 	"my_center/my_order.html": {
 		"resources": [
@@ -393,7 +417,10 @@
 			"fonts/mui.ttf",
 			"css/pay/confirmCss.css",
 			"js/common.js",
-			"js/mui.min.js"
+			"js/mui.min.js",
+			"css/common.css",
+			"css/mui.min.css",
+			"css/pullRefresh.css"
 		],
 		"refer": [
 			"my_center/order_detail.html",
@@ -429,7 +456,9 @@
 			"js/common.js",
 			"css/iconfont.css",
 			"css/mui.min.css",
-			"fonts/iconfont.ttf"
+			"fonts/iconfont.ttf",
+			"fonts/mui.ttf",
+			"css/common.css"
 		],
 		"refer": []
 	},
@@ -450,7 +479,8 @@
 			"doctor/img/pwd_keyboard.png"
 		],
 		"refer": [
-			"doctor/order_audit.html"
+			"doctor/order_audit.html",
+			"my_center/forgetPayPwd.html"
 		]
 	},
 	"medicine_center/medicine_detail.html": {
@@ -461,6 +491,9 @@
 			"css/detail.css",
 			"js/common.js",
 			"css/mui.min.css"
+		],
+		"refer": [
+			"my_case_history/case_list.html"
 		]
 	},
 	"guide.html": {
@@ -493,7 +526,15 @@
 	},
 	"my_center/qa_record.html": {
 		"resources": [
-			"css/order/qa_record.css"
+			"css/order/qa_record.css",
+			"js/common.js",
+			"js/mui.pullToRefresh.min.js",
+			"js/mui.pullToRefresh.material.min.js",
+			"js/mui.min.js",
+			"css/mui.min.css"
+		],
+		"refer": [
+			"my_center/qa_details.html"
 		]
 	},
 	"my_center/myInterview.html": {
@@ -517,7 +558,9 @@
 			"css/my.css",
 			"js/common.js",
 			"js/mui.min.js",
-			"css/mui.min.css"
+			"css/mui.min.css",
+			"css/common.css",
+			"fonts/mui.ttf"
 		]
 	},
 	"my_center/wallet_cash.html": {
@@ -526,7 +569,13 @@
 			"js/mui.poppicker.js",
 			"css/mui.poppicker.css",
 			"css/mui.picker.min.css",
-			"js/city.data-3.js"
+			"js/city.data-3.js",
+			"js/mui.min.js",
+			"css/my.css",
+			"js/common.js",
+			"fonts/mui.ttf",
+			"css/mui.min.css",
+			"css/center/wallet_cash.css"
 		]
 	},
 	"my_center/mywallet.html": {
@@ -534,7 +583,9 @@
 			"js/common.js",
 			"js/mui.min.js",
 			"css/my.css",
-			"css/mui.min.css"
+			"css/mui.min.css",
+			"fonts/mui.ttf",
+			"css/center/mywallet.css"
 		],
 		"refer": [
 			"my_center/recharge.html",
@@ -593,7 +644,9 @@
 			"js/mui.pullToRefresh.material.min.js",
 			"css/main/doctorList.css",
 			"js/mui.min.js",
-			"css/mui.min.css"
+			"css/mui.min.css",
+			"css/common.css",
+			"css/pullRefresh.css"
 		],
 		"refer": [
 			"doctor/doctor_detail.html"
@@ -606,27 +659,105 @@
 			"js/mui.pullToRefresh.material.min.js",
 			"js/mui.min.js",
 			"css/center/message_list.css",
-			"css/pullRefresh.css"
+			"css/pullRefresh.css",
+			"css/mui.min.css"
 		],
 		"refer": [
-			"my_center/qa_details.html"
+			"my_center/qa_details.html",
+			"vaccine/vaccine_detail.html",
+			"my_center/order_detail.html"
 		]
 	},
 	"my_center/qa_details.html": {
 		"resources": [
 			"js/mui.zoom.js",
 			"js/mui.min.js",
-			"js/mui.previewimage.js"
+			"js/mui.previewimage.js",
+			"css/my.css",
+			"js/common.js",
+			"css/mui.min.css"
 		]
 	},
 	"doctor/order_audit.html": {
 		"resources": [
 			"images/check-bg.png",
 			"css/order.css",
-			"images/succeed.png"
+			"images/succeed.png",
+			"js/common.js",
+			"js/mui.min.js",
+			"css/mui.min.css",
+			"css/common.css"
 		],
 		"refer": [
 			"my_center/my_order.html"
+		]
+	},
+	"my_case_history/add_case.html": {
+		"resources": [
+			"js/common.js",
+			"js/mui.picker.min.js",
+			"css/case.css",
+			"js/mui.min.js",
+			"js/mui.poppicker.js",
+			"css/input.css",
+			"css/mui.min.css",
+			"css/mui.poppicker.css",
+			"css/mui.picker.min.css",
+			"css/center/add_case.css"
+		]
+	},
+	"register.html": {
+		"resources": [
+			"css/common-form.css",
+			"js/common.js",
+			"js/mui.min.js",
+			"css/input.css",
+			"css/mui.min.css",
+			"css/login/register.css",
+			"fonts/iconfont.ttf",
+			"css/iconfont.css",
+			"fonts/mui.ttf"
+		]
+	},
+	"my_center/modify_pwd.html": {
+		"resources": [
+			"js/common.js",
+			"js/mui.min.js",
+			"css/common.css",
+			"css/mui.min.css"
+		]
+	},
+	"my_center/about_software.html": {
+		"resources": [
+			"images/logo-copyright.png"
+		]
+	},
+	"my_center/help.html": {
+		"refer": [
+			"my_center/help_detail.html"
+		]
+	},
+	"my_center/help_detail.html": {
+		"resources": [
+			"css/iconfont.css"
+		]
+	},
+	"my_center/modify_payPwd.html": {
+		"resources": [
+			"css/common-form.css",
+			"css/input.css"
+		]
+	},
+	"my_center/forgetPayPwd.html": {
+		"resources": [
+			"css/common-form.css",
+			"js/mui.min.js",
+			"css/input.css"
+		]
+	},
+	"doctor/cancel_succeed.html": {
+		"resources": [
+			"images/order-bg.png"
 		]
 	}
 }

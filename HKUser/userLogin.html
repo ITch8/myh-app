@@ -29,10 +29,10 @@
 				</form>
 				<div class="mui-row login-other">
 					<div class="mui-pull-left">
-						<button id="register" type="button" class="mui-btn mui-btn-link" style="color: #2fd080;font-size: 14px;">新用户注册</button>
+						<button id="register" type="button" class="mui-btn mui-btn-link font-size-14" style="color: #2fd080;">新用户注册</button>
 					</div>
 					<div class="mui-pull-right">
-						<button id="forget" type="button" class="mui-btn mui-btn-link" style="color: #32A3D6;font-size: 14px;">忘记密码?</button>
+						<button id="forget" type="button" class="mui-btn mui-btn-link font-size-14" style="color: #32A3D6;">忘记密码?</button>
 					</div>
 				</div>
 				<div class="next">
@@ -68,29 +68,34 @@
 			doc.getElementById("login").addEventListener("tap",function(){
 				var account = accountObj.value;
 				var password = passwordObj.value;
-				var pdata ={
-					user:account,
-					pwd:password,
-					userType:1
-				}
-				var privateToken = null;
-				u.mypost("api/login",pdata,true,function(data){
-					if(data.code == 0){
-						_.toast(data.msg);
-						privateToken = data.data.privateToken;
-						w.setUser(privateToken);
-						loginSkip();
-//						w.openView("tabbar.html");
-						setTimeout(function(){
-							myDWebView = plus.webview.getWebviewById("my_center/myD.html");
-							if(myDWebView){
-								myDWebView.evalJS("getMyInfo()");
-							}
-						},100);
-					}else{
-						_.toast(data.msg);
+				if(util.isNull(account)){
+					_.toast('请输入登录账号')
+				}else if(util.isNull(password)){
+					_.toast('请输入密码')
+				}else{
+					var pdata ={
+						user:account,
+						pwd:password,
+						userType:1
 					}
-				},myerror);
+					var privateToken = null;
+					u.mypost("api/login",pdata,true,function(data){
+						if(data.code == 0){
+							_.toast(data.msg);
+							privateToken = data.data.privateToken;
+							w.setUser(privateToken);
+							loginSkip();
+							setTimeout(function(){
+								myDWebView = plus.webview.getWebviewById("my_center/myD.html");
+								if(myDWebView){
+									myDWebView.evalJS("getMyInfo()");
+								}
+							},100);
+						}else{
+							_.toast(data.msg);
+						}
+					},myerror);
+				}
 			});
 			//跳过
 			doc.getElementById("skip").addEventListener("tap",function(){
@@ -105,11 +110,8 @@
 					w.openView("tabbar.html");
 				}
 			}
-			
 			//第三方登录
-			var authBtns = ['weixin','qq']; //配置业务支持的第三方登录
-			var auths = {};
-			var oauthArea = doc.querySelector('.oauth-area');
+			var authBtns = ['weixin','qq'],auths = {},oauthArea = doc.querySelector('.oauth-area');
 			_.plusReady(function(){
 				//检查更新
 			    if(sessionStorage.getItem('upgrade') !='1'){
@@ -160,14 +162,12 @@
 										u.mypost("api/checkBind",pdata,true,function(data){
 											if(data.code == 5){
 												var oid = auth.authResult.openid;
-												console.log("oid=="+oid);
 												w.openView("my_center/boundpho.html",{openId:oid,oId:auth.id});
 											}else if(data.code == -1){
 												_.toast(data.msg ||'');
 											}else if(data.code == 0){
 												data.data.privateToken?w.setUser(data.data.privateToken):_.toast("获取信息失败");
 												loginSkip();
-//												w.openView("tabbar.html");
 											}
 										},myerror);
 									}else if(auth.id == "qq"){
@@ -183,12 +183,10 @@
 											}else if(data.code == 0){
 												data.data.privateToken?w.setUser(data.data.privateToken):_.toast("获取信息失败");
 												loginSkip();
-//												w.openView("tabbar.html");
 											}
 										},myerror);
 									}else{
 										loginSkip();
-//										w.openView("tabbar.html");
 									}
 								});
 							}, function(e) {
@@ -213,32 +211,20 @@
 		   	function checkUpdate(wgtVer){
 		       	u.mypost("api/checkVersion",{clientVersion:wgtVer,pos:1},false,function(data){
 		       		plus.nativeUI.closeWaiting();
-			        /*返回码说明：
-				     0 客户端版本号小于最新版本号 返回更新包下载url
-				     1 客户端版本是最新版本 无需更新
-				     2 管理员未设置最新版本号
-				     3 客户端版本号小于当前版本号但管理员未上传升级包
-				     -1 客户端类型传参错误或其他系统错误类型
-				               附录：版本号设置和升级包上传在后台管理-系统设置。
-			     	*/
 			        if(parseInt(data.code) == 0){      
-			            //可以升级
 			            plus.nativeUI.confirm("检查到当前版本有最新更新，下载升级？",
 			                function(event){
 			                    if(event.index ==0){
 			                        downWgt(data.data.downloadURL); //下载更新版的地址
 			                    }                        
 			                } ,'系统消息',['马上升级','下次再说']);                
-			        } else{  
-			//            	mui.toast("无新版本可更新！");
 			        }
 				},function(){
-				    mui.toast('检测更新失败！') ;
+				    _.toast('检测更新失败！') ;
 				});
 		   	}
 		   	// 下载wgt文件
 		   	function downWgt(wgtUrl){
-//		   		var url='itms-apps://itunes.apple.com/cn/app/id1159570957';//应用在appstore的地址
 		       	plus.nativeUI.showWaiting("下载更新文件...");
 		       	plus.downloader.createDownload(wgtUrl,{filename:"_doc/update/"}, function(d,status){
 		           	if (status == 200) {

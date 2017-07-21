@@ -78,6 +78,12 @@ var nodataHtmlInfo = "<div class='noContent'><div class='mui-icon iconfont icon-
 			});
 		},50);
 	};
+	u.goLogin = function(){
+		mui.toast("登录身份过期，请重新登录");
+		mui.later(function(){
+			w.openView("../userLogin.html");
+		},500)
+	};
 	u.close = function(wid){
 		var thisweb = null;
 		if(w.plus){
@@ -213,7 +219,8 @@ var nodataHtmlInfo = "<div class='noContent'><div class='mui-icon iconfont icon-
 	};
 	u.checkPhone = function(phone){
 		var pReg =  /^1[0-9]{10}$/;
-		return pReg.test(phone);
+		var pReg_HK =  /^([5|6|9])\d{7}$/;
+		return pReg.test(phone) || pReg_HK.test(phone);
 	};
 	u.checkAge = function(age){
 		var pReg =  /^([0-9]|[0-9]{2}|100)$/;
