@@ -90,7 +90,7 @@
 				if(!w.getUser()){
 					w.openView("../userLogin.html");
 				}else{
-					pdata.privateToken = privateToken;
+					pdata.privateToken = w.getItem("privateToken");
 					pdata.geneId = geneId;
 					u.mypost("gene_check/payView",pdata,true,function(data){
 						if(data.code == 0){

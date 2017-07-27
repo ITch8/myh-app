@@ -58,11 +58,11 @@
 						_.toast("两次输入的密码不一致");
 						return;
 					}
+					u.close('forgetPwd');
 					u.mypost("api/reSetForgotPwd",pdata,true,function(data){
 						if(data.code == 0){
-							_.toast("密码重置成功!");
-							u.close(web.id);
-							w.openView("userLogin.html");
+							_.later(function(){u.close(web.id),500})
+							_.toast("密码重置成功");
 						}else{
 							_.toast(data.msg);
 						}

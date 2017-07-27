@@ -1,4 +1,4 @@
-﻿var ASKURL = "https://api.du-ms.com/",token = '85FBCA0D01D6EB76A3888C5F8E4118D5';//123.207.88.225 api.classcode.cn api.du-ms.com/
+﻿var ASKURL = "https://api.du-ms.com/",token = '85FBCA0D01D6EB76A3888C5F8E4118D5';
 var nodataHtmlInfo = "<div class='noContent'><div class='mui-icon iconfont icon-comiiszanwushuju'></div><div>暂无数据</div></div>";
 (function(w, _, u,owner) {
 	w.openView = function(url,extras) {
@@ -10,7 +10,7 @@ var nodataHtmlInfo = "<div class='noContent'><div class='mui-icon iconfont icon-
 				if("tabbar" == id){
 					w.toIndex(0);
 				}else{
-					_.fire(web,"event",extras);
+					_.fire(web,"event",extras)
 					web.show('slide-in-right',300);
 				}
 			}else{
@@ -60,19 +60,16 @@ var nodataHtmlInfo = "<div class='noContent'><div class='mui-icon iconfont icon-
 			plus.nativeUI.showWaiting("努力加载中...");
 		}
 		_.extend(true, pdata, {	'token': token});
-		console.log(JSON.stringify(pdata));
 		setTimeout(function(){
 			_.ajax({
 				url: ASKURL+postUrl,type: 'post',data: pdata,timeout:60000,
 				success: function(data) {
 					_.later(function(){plus.nativeUI.closeWaiting();},100)
 					data = JSON.parse(data);
-					console.log("返回结果==="+JSON.stringify(data));
 					_.isFunction(success) ? success(data) : '';
 				},
 				error: function(xhr) {
 					_.later(function(){plus.nativeUI.closeWaiting();},100)
-					console.log(JSON.stringify(xhr));
 					_.isFunction(error) ? error() : _.toast('网络连接超时');
 				}
 			});
@@ -91,7 +88,6 @@ var nodataHtmlInfo = "<div class='noContent'><div class='mui-icon iconfont icon-
 			if(wid){
 				thisweb = plus.webview.getWebviewById(wid);
 				if(thisweb){
-					console.log("closewid====="+wid);
 					thisweb.close("slide-out-right",300);
 				}
 			}else{
@@ -219,7 +215,7 @@ var nodataHtmlInfo = "<div class='noContent'><div class='mui-icon iconfont icon-
 	};
 	u.checkPhone = function(phone){
 		var pReg =  /^1[0-9]{10}$/;
-		var pReg_HK =  /^([5|6|9])\d{7}$/;
+		var pReg_HK =  /^([5|6|9|8])\d{7}$/;
 		return pReg.test(phone) || pReg_HK.test(phone);
 	};
 	u.checkAge = function(age){

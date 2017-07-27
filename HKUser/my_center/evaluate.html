@@ -6,34 +6,8 @@
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<link rel="stylesheet" href="../css/mui.min.css" />
 		<link rel="stylesheet" href="../css/common.css" />
-		<style>
-			.mui-content{
-				background-color: #fff;
-			}
-			textarea{
-				margin-bottom: 0;
-				font-size: 12px;
-				padding: 10px 15px;
-				border-radius: 8px;
-			}
-			button{
-				width: 90%;
-				background: #33a2d7;
-				margin: 0 auto;
-				display: block;
-				border: none;
-				color: #fff;
-				height: 30px;
-				border-radius: 22px;
-				margin-top: 20px;
-				font-size: 14px;
-			}
-			.mui-input-row{
-				margin: 15px 15px 0px 15px;;
-			}
-		</style>
+		<link rel="stylesheet" href="../css/center/feedback.css" />
 	</head>
-
 	<body>
 		<header class="mui-bar mui-bar-nav">
 			<a class="mui-pull-left mui-action-back mui-icon mui-icon-left-nav"></a>
@@ -85,10 +59,7 @@
 					u.mypost("user_center/evaluate",pdata,true,function(data){
 						if(data.code == 0){
 							_.toast("评论提交成功");
-//							w.openView(targetWeb);
 							u.close();
-					    	contentObj.value = "";
-					    	doc.getElementById("counter").textContent = 0;
 						}else{
 							_.toast(data.msg);
 						}

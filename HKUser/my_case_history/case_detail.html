@@ -30,7 +30,7 @@
 					<div class="case-detail-item"><div class="detail-title">基本病情：</div><div id="situation" class="detail-content"></div></div>
 				</div>
 			</div>
-			<div class="treatment">就诊记录</div>
+			<div class="treatment">就诊记录<span id="delCase" class="mui-pull-right main-font-color">删除病历</span></div>
 			<div class="treatment-detail" id="treatment-detail"></div>
 		</div>
 	</body>
@@ -41,11 +41,8 @@
 	<script>
 		(function(_,doc,u,w){
 			var list = doc.getElementById('treatment-detail');
-			var web = null;
-			var pdata = {}, div = null,illId = null;
-			var privateToken = null;
-			var data1 = null;
-			var imgServer = null;
+			var web = null,pdata = {}, div = null,illId = null;
+			var privateToken = null,data1 = null,imgServer = null;
 			var illName = null,sex = null,age = null,realName = null,allergyHistory = null,result = null,stages = null,situation = null;
 			var stageType = null,sexType = null;
 			_.plusReady(function(e){
@@ -146,6 +143,22 @@
 				doc.getElementById("collect").addEventListener('tap',function(){
 					w.openView("edit_case.html",{illId:illId});
 				});
+				//删除病历
+				doc.getElementById("delCase").addEventListener('tap',function(){
+					_.confirm('是否确定删除该病历','提示',['是','否'],function(e){
+						if(e.index == 0){
+							u.mypost("medical/delIllness",{privateToken:privateToken,illId:illId},true,function(data){
+								if(data.code == 0){
+									_.toast('删除成功');
+									plus.webview.getWebviewById('case_list').evalJS('getCaseList()');
+									_.later(function(){
+										_.back();
+									},500)
+								}
+							})
+						}
+					})
+				})
 			})
 			_.previewImage();
 		})(mui,document,util,window)

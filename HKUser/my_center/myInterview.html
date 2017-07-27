@@ -31,11 +31,7 @@
 		(function(_,doc,u,w){
 			_.init({swipeBack: false}),_(".mui-scroll-wrapper").scroll();
 			var pdata = {offset:0,limit:5};
-			var page = 0;
-			var privateToken = null;
-			var li = null;
-			var _pull = null;
-			var state = null;
+			var page = 0,privateToken = null,li = null,_pull = null,state = null;
 			var list = doc.getElementById('interview-list');
 			_.plusReady(function() {
 				mui('#mui-scroll-wrapper').scroll().scrollTo(0,0,100);
@@ -76,9 +72,7 @@
 				});
 			});
 			function interviewList(data){
-				var stateClass = "";
-				var stateClass_01 = "color_f99";
-				var stateClass_02 = "color_ff0";
+				var stateClass = "",stateClass_01 = "color_f99",stateClass_02 = "color_ff0";
 				var payBtn = "",pay = "",cancel = "",cancelBtn = "";
 				var payClass = "but",payText = "付款",cancelOrder = "取消",cancelClass = "cancel";
 				_.each(data[0],function(i,obj){

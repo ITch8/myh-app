@@ -6,31 +6,8 @@
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<link rel="stylesheet" href="../css/mui.min.css" />
 		<link rel="stylesheet" href="../css/common.css" />
-		<style>
-			.mui-content{				
-				background: #fff;				
-			}
-			textarea{
-				margin-bottom: 0;
-				font-size: 12px;
-				padding: 10px 15px;
-				border-radius: 8px;
-			}
-			button{
-				width: 90%;
-				background: #33a2d7;
-				margin: 0 auto;
-				display: block;
-				border: none;
-				color: #fff;
-				height:33px;
-				border-radius: 22px;
-				margin-top: 20px;
-				font-size: 16px;
-			}
-		</style>
+		<link rel="stylesheet" href="../css/center/feedback.css" />
 	</head>
-
 	<body>
 		<header class="mui-bar mui-bar-nav">
 			<a class="mui-pull-left mui-action-back mui-icon mui-icon-left-nav"></a>
@@ -48,10 +25,7 @@
 	<script src="../js/common.js"></script>
 	<script language="javascript"> 
 		(function(_,doc,u,w){
-			var pdata = {};
-			var content = null;
-			var privateToken = null;
-			var contentObj = doc.getElementById("content");
+			var pdata = {},content = null,privateToken = null,contentObj = doc.getElementById("content");
 			_.plusReady(function(){
 				privateToken = w.getItem("privateToken");
 				doc.getElementById("submit").addEventListener('tap',function(){

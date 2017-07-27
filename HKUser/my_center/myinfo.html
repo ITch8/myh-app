@@ -62,7 +62,7 @@
 						</div>
 					</li>	
 				</ul>
-				<div id="logout" class="logout mui-text-center color_red">退出当前账号</div>
+				<div id="logout" class="logout mui-text-center color_red font-size-14">退出当前账号</div>
 			</div>
 		</div>
 	</body>
@@ -77,9 +77,6 @@
 			var nickNameObj = doc.getElementById("nickname"),sexObj = doc.getElementsByName("radio1"),birthdayObj = doc.getElementById("birthday"),sexInput = doc.getElementById("sexInput"),sexRadio = doc.getElementById("sexRadio"),logout = doc.getElementById("logout");
 			var userInfo = null,picker = null;
 			_.plusReady(function(){
-				u.close("HBuilder");
-				u.close("H568440CA");
-				u.close("userLogin");
 				privateToken = w.getItem("privateToken");
 				pdata.privateToken = privateToken;
 				//读取个人信息
@@ -109,19 +106,9 @@
 									w.clearItem();
 									w.setItem("lauchFlag",lauchFlag);//存储启动页参数
 									plus.webview.getWebviewById("my_center/myD.html").evalJS("clearAvatar()");
-//									var allWeb = plus.webview.all();
-//									for (var i = 0; i < allWeb.length; i++) {
-//										u.close(allWeb[i].id);
-//									}
-		//								u.close("tabbar");  
-		//								u.close("index.html"); 
-		//								u.close("doctor/doctor_list.html"); 
-		//								u.close("communicate/communicate_circle.html"); 
-		//								u.close("my_center/myD.html"); 
-//										plus.webview.getWebviewById("my_center/myD.html").evalJS("clearAvatar()");
-//										u.close("tabbar");  
-										u.close("myinfo");
-										u.close("contactService");
+									window.setItem('WKIThaveLogin',false);
+									plus.webview.getWebviewById('myinfo').hide('none');
+									w.openView('../userLogin.html');
 								}else if(data.code == 500 && '未登录' == data.msg){
 									u.goLogin();
 								}else{

@@ -78,17 +78,19 @@
 						pwd:password,
 						userType:1
 					}
-					var privateToken = null;
 					u.mypost("api/login",pdata,true,function(data){
 						if(data.code == 0){
 							_.toast(data.msg);
-							privateToken = data.data.privateToken;
-							w.setUser(privateToken);
+							w.setUser(data.data.privateToken);
 							loginSkip();
 							setTimeout(function(){
 								myDWebView = plus.webview.getWebviewById("my_center/myD.html");
+								var myinfo = plus.webview.getWebviewById('myinfo');
 								if(myDWebView){
 									myDWebView.evalJS("getMyInfo()");
+								}
+								if(myinfo){
+									myinfo.close('none');
 								}
 							},100);
 						}else{
@@ -160,6 +162,7 @@
 											openId:auth.authResult.openid
 										}
 										u.mypost("api/checkBind",pdata,true,function(data){
+											console.log("res========"+JSON.stringify(data));
 											if(data.code == 5){
 												var oid = auth.authResult.openid;
 												w.openView("my_center/boundpho.html",{openId:oid,oId:auth.id});
@@ -168,6 +171,10 @@
 											}else if(data.code == 0){
 												data.data.privateToken?w.setUser(data.data.privateToken):_.toast("获取信息失败");
 												loginSkip();
+												myDWebView = plus.webview.getWebviewById("my_center/myD.html");
+												if(myDWebView){
+													myDWebView.evalJS("getMyInfo()");
+												}
 											}
 										},myerror);
 									}else if(auth.id == "qq"){
@@ -183,6 +190,10 @@
 											}else if(data.code == 0){
 												data.data.privateToken?w.setUser(data.data.privateToken):_.toast("获取信息失败");
 												loginSkip();
+												myDWebView = plus.webview.getWebviewById("my_center/myD.html");
+												if(myDWebView){
+													myDWebView.evalJS("getMyInfo()");
+												}
 											}
 										},myerror);
 									}else{
@@ -211,13 +222,27 @@
 		   	function checkUpdate(wgtVer){
 		       	u.mypost("api/checkVersion",{clientVersion:wgtVer,pos:1},false,function(data){
 		       		plus.nativeUI.closeWaiting();
-			        if(parseInt(data.code) == 0){      
-			            plus.nativeUI.confirm("检查到当前版本有最新更新，下载升级？",
+			        if(parseInt(data.code) == 0){
+			        	var lastVer = data.data.version || '1.0.0';
+			        	wgtVer = wgtVer && wgtVer.substring(0,wgtVer.indexOf('.'));
+			        	lastVer = lastVer && lastVer.substring(0,lastVer.indexOf('.'));
+			        	if(Number(lastVer) > Number(wgtVer)){//如果最新的大版本号较大 需要下载新安装包
+			        		plus.nativeUI.confirm("检查到当前版本有更新，下载最新安装包？",
+			                function(event){
+			                    if(event.index ==0){
+			                    	plus.runtime.openURL('http://a.app.qq.com/o/simple.jsp?pkgname=io.dcloud.H568440CA',function(err){
+					        			console.log("open err==="+JSON.stringify(err));
+					        		})
+			                    }                        
+			                } ,'系统消息',['马上下载','下次再说']); 
+			        	}else{
+			        		plus.nativeUI.confirm("检查到当前版本有更新，在线升级？",
 			                function(event){
 			                    if(event.index ==0){
 			                        downWgt(data.data.downloadURL); //下载更新版的地址
 			                    }                        
-			                } ,'系统消息',['马上升级','下次再说']);                
+			                } ,'系统消息',['马上升级','下次再说']); 
+			        	}
 			        }
 				},function(){
 				    _.toast('检测更新失败！') ;

@@ -5,65 +5,22 @@
 		<title>绑定手机</title>
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<link rel="stylesheet" href="../css/mui.min.css" />
-		<link rel="stylesheet" href="../css/my.css" />
 		<link rel="stylesheet" href="../css/common-form.css" />
 		<link rel="stylesheet" href="../css/common.css" />
-		<style>
-			.mui-content{
-				padding:0 30px;
-				background: #fff;
-				margin-top: 20px;
-			}
-			.pho-row{
-				border-bottom: 1px solid #DEDEDE;
-				height: 50px;
-				position: relative;
-			}
-			.pho-row input{
-				border: none;
-				margin-top: 5px;
-				padding-left: 0;
-				font-size: 14px;
-				color: #333333;
-			}
-			.pho-row button{
-				position: absolute;
-				right: 0;
-				top: 8px;
-				padding:8px 10px;
-				font-size: 12px;
-				background: #33a2d7;
-				border: none;
-				color: #fff;
-			}
-			.active{
-				background: #999;
-			}
-			.but{
-				width: 100%;
-				background: #33a2d7;
-				border: none;
-				color: #fff;
-				height: 44px;
-				border-radius: 22px;
-				margin-top: 30px;
-				font-size: 18px;
-			}
-		</style>
+		<link rel="stylesheet" href="../css/login/boundpho.css" />
 	</head>
-
 	<body>
 		<header class="mui-bar mui-bar-nav">
 			<a class="mui-pull-left mui-action-back mui-icon mui-icon-left-nav"></a>
-			<h1 id="title" class="mui-title">绑定手机</h1>			
+			<h1 id="title" class="mui-title">绑定手机</h1>
 		</header>
-		<div class="mui-content" >			
+		<div class="mui-content">
 			<form class="phoneform">
 				<div class="pho-row">
-					<input type="tel" id="phone" placeholder="请输入需要绑定的手机号"/>
+					<input type="tel" id="phone" placeholder="请输入需要绑定的手机号" />
 				</div>
 				<div class="pho-row">
-					<input type="text" id="code" placeholder="请输入短信验证码"/>
+					<input type="text" id="code" placeholder="请输入短信验证码" />
 					<button id="getCode" type="button" class="mui-btn mui-btn-blue main-bg-color" disabled="disabled">获取验证码</button>
 				</div>
 				<button class="but" type="button" id="btnOk">确定</button>
@@ -73,52 +30,48 @@
 	<script src="../js/mui.min.js"></script>
 	<script src="../js/common.js"></script>
 	<script type="text/javascript">
-		(function(_,doc,u,w){
-			_.init({swipeBack:true});
-			var getCodeObj = doc.getElementById("getCode");
-			var codeObj = doc.getElementById("code");
-			var phoneObj = doc.getElementById("phone");
-			var btnObj = doc.getElementById("btnOk");
-			var mobileValue = null;
-			var privateToken = null;
+		(function(_, doc, u, w) {
+			_.init({swipeBack: false});
+			var getCodeObj = doc.getElementById("getCode"),codeObj = doc.getElementById("code"),phoneObj = doc.getElementById("phone"),btnObj = doc.getElementById("btnOk"),mobileValue = null,privateToken = null;
 			//获取验证码按钮控制
-			phoneObj.addEventListener("input",function(){
-				if(this.value.length > 0 && u.checkPhone(this.value)){
+			phoneObj.addEventListener("input", function() {
+				if(this.value.length > 0 && u.checkPhone(this.value)) {
 					getCodeObj.removeAttribute("disabled");
-				}else{
-					getCodeObj.setAttribute("disabled","disabled");
+				} else {
+					getCodeObj.setAttribute("disabled", "disabled");
 				}
 			});
 			//获取验证码
-			getCodeObj.addEventListener("tap",function(){
+			getCodeObj.addEventListener("tap", function() {
 				var self = this;
 				mobileValue = phoneObj.value;
 				var pdata = {
-					mobile:mobileValue
+					mobile: mobileValue
 				};
-				u.mypost("api/sendIdentifyCode",pdata,false,function(data){
-					if(data.code == 0){
+				u.mypost("api/sendIdentifyCode", pdata, false, function(data) {
+					if(data.msg == '请求成功') {
 						u.time(self);
-					}else{
+						_.toast('验证码已发送')
+					} else {
 						_.toast(data.msg)
 					}
-				},myerror);
+				}, myerror);
 			});
 			//验证码检查
-			codeObj.addEventListener("input",function(){
-				if(this.value.length == 6){
+			codeObj.addEventListener("input", function() {
+				if(this.value.length == 6) {
 					var pdata = {
-						mobile:mobileValue,
-						code:this.value
+						mobile: mobileValue,
+						code: this.value
 					};
-					u.mypost("api/checkVerificationCode",pdata,false,function(data){
-						if(data.code == 1){
+					u.mypost("api/checkVerificationCode", pdata, false, function(data) {
+						if(data.code == 1) {
 							_.toast(data.msg)
 						}
-					},myerror);
+					}, myerror);
 				}
 			});
-			_.plusReady(function(){
+			_.plusReady(function() {
 				var web = plus.webview.currentWebview();
 				var openId = web.openId;
 				var id = web.oId;
@@ -126,36 +79,41 @@
 					var phone = phoneObj.value.trim();
 					var code = codeObj.value.trim();
 					var pdata = {};
-					if(id == "weixin"){
+					if(id == "weixin") {
 						pdata.bindType = 1;
-					}else if(id == "qq"){
+					} else if(id == "qq") {
 						pdata.bindType = 2;
 					}
 					pdata.openId = openId;
 					pdata.code = code;
 					pdata.telephone = phone;
-					if(u.isNull(phone) || !u.checkPhone(phone)){
+					if(u.isNull(phone) || !u.checkPhone(phone)) {
 						_.toast("请正确输入手机号码");
-					}else if(u.isNull(code) || code.length < 6){
+					} else if(u.isNull(code) || code.length < 6) {
 						_.toast("请正确输入短信验证码");
 					}
-					u.mypost("api/thirdPartBind",pdata,false,function(data){
-						if(data.code == 0){
+					u.mypost("api/thirdPartBind", pdata, false, function(data) {
+						if(data.code == 0) {
 							_.toast(data.msg);
 							privateToken = data.data.privateToken;
-							w.setItem("privateToken",privateToken);
+							w.setItem("privateToken", privateToken);
 							var main = plus.webview.getWebviewById("tabbar");
-							if(main){
-								w.toIndex(0,null);
-							}else{
+							if(main) {
+								var myDWebView = plus.webview.getWebviewById("my_center/myD.html");
+								if(myDWebView){
+									myDWebView.evalJS("getMyInfo()");
+								}
+								w.toIndex(0, null);
+							} else {
 								w.openView("../tabbar.html");
 							}
-						}else{
+						} else {
 							_.toast(data.msg);
 						}
-					},myerror);
+					}, myerror);
 				});
 			})
-		})(mui,document,util,window)
+		})(mui, document, util, window)
 	</script>
+
 </html>

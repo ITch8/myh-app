@@ -23,24 +23,11 @@
 			</span>
 		</header>
 		<div class="mui-bar mui-bar-tab">
-			<div class="detail-btn">
-				<div class="detail-btn-know">
-					<div class="know-agree">
-						<span id="res" class="mui-icon iconfont icon-xuanzhong font-size-14 main-font-color"></span>
-						<span id="know-agree">&ensp;知情同意书</span>
-					</div>
-					<div class="pay-money">
-						<span class="pay-title">定金：</span><span class="RMB">¥</span>
-						<span id="price"></span>
-						<button type="button" class="mui-pull-right mui-btn but" id="pay" disabled="disabled">付款</button>
-					</div>
-					<div class="pay-money">
-						<span class="pay-title">剩余款项<span class="paytoHK">（到港支付）</span>：</span>
-						<span class="RMB">¥</span>
-						<span id="price2"></span>
-					</div>
-				</div>
+			<div class="detail-btn-know">
+				<div class="pay-money"><span class="pay-title">定金：</span><span class="RMB">¥</span><span id="price"></span></div>
+				<div class="pay-money"><span class="pay-title">剩余款项<span class="paytoHK">（到港支付）</span>：</span><span class="RMB">¥</span><span id="price2"></span></div>
 			</div>
+			<button type="button" class="mui-btn detail-btn-pay" id="pay">付款</button>
 		</div>
 		<div class="mui-content mui-fullscreen mui-scroll-wrapper">
 			<div class="mui-scroll">
@@ -82,17 +69,6 @@
 					}
 				},myerror);
 			})
-			doc.getElementById("res").addEventListener('tap', function() {
-				if(hasClass(this,"icon-xuanzhong")){
-					removeClass(this,"icon-xuanzhong");
-					addClass(this,"icon-weixuanzhong");
-					payObj.setAttribute("disabled","disabled");
-				}else{
-					removeClass(this,"icon-weixuanzhong");
-					addClass(this,"icon-xuanzhong");
-					payObj.removeAttribute("disabled");
-				}
-			});
 			payObj.addEventListener('tap',function(){
 				if(!w.getUser()){
 					w.openView("../userLogin.html");
@@ -122,10 +98,6 @@
 				}else{
 					w.openView("../my_center/contactService.html");
 				}
-			});
-			//知情通知书
-			doc.getElementById("know-agree").addEventListener('tap',function(){
-				w.openView("../know_agree.html");
 			});
 		})(mui,document,util,window)
 	</script>

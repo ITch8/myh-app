@@ -3,7 +3,7 @@
     "id": "H568440CA",/*应用的标识，创建应用时自动生成，勿手动修改*/
     "name": "名医肿瘤科",/*应用名称，程序桌面图标名称*/
     "version": {
-        "name": "1.0.8",/*应用版本名称*/
+        "name": "1.0.6",/*应用版本名称*/
         "code": ""
     },
     "description": "",/*应用描述信息*/
@@ -35,7 +35,7 @@
         },
         "File": {},
         "Gallery": {},
-        "Geolocation": {},
+        
         "Invocation": {},
         "Orientation": {},
         "Proximity": {},
@@ -152,1789 +152,1816 @@
         }
     },
 	"dependencies": {
-		"pages": {
-			"index.html": {
-				"resources": [
-					"css/mui.min.css",
-					"images/part-vaccine.png",
-					"images/part-check.png",
-					"css/common.css",
-					"images/part-medical.png",
-					"images/search-icon.png",
-					"images/part-hospital.png",
-					"fonts/mui.ttf",
-					"message_list.html",
-					"images/service-1.png",
-					"images/service-icon.png",
-					"images/alarm.png",
-					"js/mui.min.js",
-					"css/input.css",
-					"js/mui.pullToRefresh.min.js",
-					"js/mui.pullToRefresh.material.min.js",
-					"css/pullRefresh.css",
-					"js/common.js",
-					"index.html",
-					"js/mui.previewimage.js",
-					"images/medicine.png",
-					"fonts/iconfont-nav.ttf",
-					"css/iconfont-nav.css",
-					"fonts/iconfont-nodata.ttf",
-					"images/default-doctor.png",
-					null,
-					"images/default-news.png",
-					"js/mui.lazyload.js",
-					"js/mui.lazyload.img.js",
-					"js/mui.extend.js",
-					"images/default-banner.png",
-					"css/main/index.css",
-					"img/icon_index_doctors.png",
-					"img/icon_index_info.png",
-					"img/btn_more.png",
-					"images/default-person.png",
-					"images/index/icon_2.png",
-					"images/index/icon_5.png",
-					"images/index/icon_01.png",
-					"images/index/icon_4.png"
-				],
-				"refer": [
-					"info/info_detail.html",
-					"vaccine/vaccine_kind.html",
-					"doctor/doctor_detail.html",
-					"doctor/doctor_list.html",
-					"gene_detect/gene_detect_list.html",
-					"doctor/hospital_list.html",
-					"info/info_index.html",
-					"my_center/contactService.html",
-					"slider_detail.html",
-					"userLogin.html",
-					"medicine_center/medicine_center.html",
-					"doctor/order_register.html"
-				],
-				"priority": 0
-			},
-			"message_list.html": {
-				"resources": [
-					"css/common.css",
-					"fonts/mui.ttf",
-					"js/mui.pullToRefresh.min.js",
-					"js/mui.pullToRefresh.material.min.js",
-					"js/mui.min.js",
-					"css/pullRefresh.css",
-					"js/apphandle.js",
-					"js/common.js",
-					"message_list.html",
-					"fonts/iconfont-nodata.ttf",
-					"css/mui.min.css",
-					"css/center/message_list.css"
-				],
-				"refer": [
-					"my_center/interview_details.html",
-					"my_center/qa_details.html",
-					"my_center/order_detail.html",
-					"vaccine/vaccine_detail.html",
-					"gene_detect/gene_detect_detail.html",
-					"medicine_center/medicine_detail.html"
-				],
-				"priority": 0
-			},
-			"tabbar.html": {
-				"resources": [
-					"index.html",
-					"js/mui.min.js",
-					"css/common.css",
-					"fonts/mui.ttf",
-					"css/mui.min.css",
-					"my_center/myD.html",
-					"fonts/iconfont-nav.ttf",
-					"css/iconfont-nav.css",
-					"js/common.js",
-					null,
-					"fonts/iconfont-nodata.ttf",
-					"doctor/doctor_list.html"
-				],
-				"refer": [
-					"communicate/communicate_circle.html",
-					"guide.html",
-					"communicate/communicate.html"
-				],
-				"priority": 0
-			},
-			"my_case_history/medical_list.html": {
-				"resources": [
-					"css/common.css",
-					"fonts/mui.ttf",
-					"images/add.png"
-				],
-				"refer": [],
-				"priority": 0
-			},
-			"my_case_history/case_detail.html": {
-				"resources": [
-					"images/add.png",
-					"css/common.css",
-					"fonts/mui.ttf",
-					"images/medical-record-3.png",
-					"images/medical-record-1.png",
-					"images/process-2.png",
-					"images/medical-record-2.png",
-					"images/process-1.png",
-					"js/apphandle.js",
-					"js/jquery-1.8.3.min.js",
-					"css/case.css",
-					"js/mui.min.js",
-					"js/mui.previewimage.js",
-					"js/mui.zoom.js",
-					"js/common.js",
-					"images/release.png",
-					"fonts/iconfont-nodata.ttf",
-					"css/imagePreview.css",
-					"images/process-body-last.png",
-					"images/process-header.png",
-					"images/process-body.png",
-					"css/mui.min.css",
-					"css/center/case_detail.css"
-				],
-				"refer": [
-					"my_case_history/add_record.html",
-					"my_case_history/edit_case.html"
-				],
-				"priority": 0
-			},
-			"my_case_history/add_case.html": {
-				"resources": [
-					"css/common.css",
-					"fonts/mui.ttf",
-					"css/input.css",
-					"js/apphandle.js",
-					"js/jquery-1.8.3.min.js",
-					"css/case.css",
-					"js/mui.min.js",
-					"js/common.js",
-					"js/mui.poppicker.js",
-					"css/mui.poppicker.css",
-					"js/mui.picker.min.js",
-					"css/mui.picker.min.css",
-					"fonts/iconfont-nodata.ttf",
-					"css/mui.min.css",
-					"css/center/add_case.css"
-				],
-				"refer": [
-					"my_case_history/case_list.html"
-				],
-				"priority": 0
-			},
-			"my_case_history/edit_case.html": {
-				"resources": [
-					"css/common.css",
-					"fonts/mui.ttf",
-					"images/medical-add.png",
-					"images/medical-1.png",
-					"images/medical-2.png",
-					"css/input.css",
-					"js/apphandle.js",
-					"js/jquery-1.8.3.min.js",
-					"css/case.css",
-					"js/mui.min.js",
-					"css/my.css",
-					"js/common.js",
-					"js/mui.previewimage.js",
-					"js/mui.picker.min.js",
-					"css/mui.picker.min.css",
-					"js/mui.poppicker.js",
-					"css/mui.poppicker.css",
-					"fonts/iconfont-nodata.ttf",
-					"css/mui.min.css",
-					"css/center/edit_case.css"
-				],
-				"refer": [
-					"my_case_history/add_record.html",
-					"my_case_history/case_detail.html",
-					"my_case_history/case_list.html"
-				],
-				"priority": 0
-			},
-			"my_case_history/add_record.html": {
-				"resources": [
-					"css/common.css",
-					"fonts/mui.ttf",
-					"images/medical-2.png",
-					"images/medical-add.png",
-					"images/medical-1.png",
-					"css/input.css",
-					"css/my.css",
-					"js/common.js",
-					"js/jquery-1.8.3.min.js",
-					"css/case.css",
-					"js/mui.min.js",
-					"js/mui.picker.min.js",
-					"css/mui.picker.min.css",
-					"js/city.data-3.js",
-					"js/mui.poppicker.js",
-					"css/mui.poppicker.css",
-					"fonts/iconfont-nodata.ttf",
-					"css/mui.min.css"
-				],
-				"refer": [
-					"my_case_history/case_detail.html"
-				],
-				"priority": 0
-			},
-			"info/info_index.html": {
-				"resources": [
-					"images/infor-photo-1.png",
-					"css/common.css",
-					"images/infor-photo-2.png",
-					"fonts/mui.ttf",
-					"images/infor-photo-3.png",
-					"js/common.js",
-					"js/mui.pullToRefresh.min.js",
-					"js/mui.pullToRefresh.material.min.js",
-					"js/mui.min.js",
-					"css/input.css",
-					"css/pullRefresh.css",
-					"fonts/iconfont-nodata.ttf",
-					"css/mui.min.css",
-					"css/info/info_index.css"
-				],
-				"refer": [
-					"info/info_detail.html",
-					"userLogin.html"
-				],
-				"priority": 0
-			},
-			"info/info_detail.html": {
-				"resources": [
-					"images/infor-detail-1.png",
-					"css/common.css",
-					"fonts/mui.ttf",
-					"images/infor-detail-2.png",
-					"images/transmit.png",
-					"images/love.png",
-					"js/mui.min.js",
-					"images/wechat.png",
-					"images/circle.png",
-					"images/copy.png",
-					"images/xinlang.png",
-					"css/detail.css",
-					"js/common.js",
-					"js/jquery-1.8.3.min.js",
-					"img/collection.png",
-					"css/iconfont.css",
-					"js/clipboard.min.js",
-					"fonts/iconfont-nodata.ttf",
-					null,
-					"fonts/iconfont.ttf",
-					"css/info/info_detail.css",
-					"css/mui.min.css"
-				],
-				"refer": [
-					"userLogin.html"
-				],
-				"priority": 0
-			},
-			"doctor/doctor_list.html": {
-				"resources": [
-					"js/mui.min.js",
-					"css/common.css",
-					"fonts/mui.ttf",
-					"images/doctor-down-arrow.png",
-					"images/doctor-photo-3.png",
-					"images/doctor-photo-2.png",
-					"images/type.png",
-					"images/hospital.png",
-					"images/doctor-photo-4.png",
-					"images/doctor-photo-1.png",
-					"js/apphandle.js",
-					"js/jquery-1.8.3.min.js",
-					"css/input.css",
-					"css/pullRefresh.css",
-					"js/mui.pullToRefresh.min.js",
-					"js/mui.pullToRefresh.material.min.js",
-					"js/common.js",
-					"js/mui.previewimage.js",
-					"doctor/doctor_list.html",
-					"css/base.css",
-					"js/jquery.js",
-					"images/default-doctor.png",
-					"js/mui.zoom.js",
-					"css/mui.min.css",
-					"js/mui.lazyload.js",
-					"js/mui.lazyload.img.js",
-					"images/default-news.png",
-					"images/doctor-photo.png",
-					"js/mui.extend.js",
-					"images/right.png",
-					"css/main/doctorList.css",
-					"js/util/util.js",
-					"fonts/iconfont-nodata.ttf"
-				],
-				"refer": [
-					"doctor/doctor_detail.html"
-				],
-				"priority": 0
-			},
-			"doctor/hospital_list.html": {
-				"resources": [
-					"images/doctor-photo-3.png",
-					"images/doctor-photo-2.png",
-					"css/common.css",
-					"fonts/mui.ttf",
-					"images/type.png",
-					"images/hospital.png",
-					"images/doctor-photo-4.png",
-					"images/doctor-photo-1.png",
-					"images/infor-photo-1.png",
-					"images/infor-photo-2.png",
-					"images/infor-photo-3.png",
-					"images/up-arrow.png",
-					"js/apphandle.js",
-					"js/jquery-1.8.3.min.js",
-					"js/mui.min.js",
-					"css/input.css",
-					"images/down-arrow.png",
-					"js/common.js",
-					"js/mui.pullToRefresh.min.js",
-					"js/mui.pullToRefresh.material.min.js",
-					"js/mui.previewimage.js",
-					"css/pullRefresh.css",
-					"css/base.css",
-					"doctor/hospital_list.html",
-					"images/icon_add.png",
-					"images/default-news.png",
-					"css/mui.min.css",
-					"fonts/iconfont-nodata.ttf",
-					"css/main/hospital.css"
-				],
-				"refer": [
-					"doctor/doctor_list.html",
-					"doctor/doctor_list_hospital.html"
-				],
-				"priority": 0
-			},
-			"doctor/doctor_detail.html": {
-				"resources": [
-					"images/center-photo.png",
-					"css/common.css",
-					"fonts/mui.ttf",
-					"images/doctor-photo-2.png",
-					"images/doctor-photo-1.png",
-					"images/online.png",
-					"images/appointment.png",
-					"images/note.png",
-					"js/mui.min.js",
-					"js/apphandle.js",
-					"js/jquery-1.8.3.min.js",
-					"js/common.js",
-					"js/mui.pullToRefresh.min.js",
-					"js/mui.pullToRefresh.material.min.js",
-					"js/mui.previewimage.js",
-					"css/pullRefresh.css",
-					"doctor/doctor_detail.html",
-					"css/mui.min.css",
-					"fonts/iconfont-nodata.ttf",
-					"css/iconfont.css",
-					"images/default-person.png",
-					"images/default-doctor.png",
-					"js/mui.zoom.js",
-					"fonts/iconfont.ttf",
-					"css/doctor/doctor_detail.css",
-					"css/imagePreview.css"
-				],
-				"refer": [
-					"doctor/message_question_answer.html",
-					"doctor/order_register.html",
-					"doctor/online_preliminary.html",
-					"userLogin.html"
-				],
-				"priority": 0
-			},
-			"doctor/message_question_answer.html": {
-				"resources": [
-					"images/service.png",
-					"css/common.css",
-					"fonts/mui.ttf",
-					"images/medical-2.png",
-					"images/medical-add.png",
-					"images/medical-1.png",
-					"images/service-1.png",
-					"css/input.css",
-					"js/apphandle.js",
-					"js/jquery-1.8.3.min.js",
-					"js/common.js",
-					"js/mui.min.js",
-					"css/iconfont.css",
-					"fonts/iconfont.ttf",
-					"css/my.css",
-					"fonts/iconfont-nodata.ttf",
-					null
-				],
-				"refer": [
-					"doctor/pay.html",
-					"doctor/order_audit.html",
-					"user_manual.html",
-					"my_center/contactService.html"
-				],
-				"priority": 0
-			},
-			"doctor/online_preliminary.html": {
-				"resources": [
-					"images/service.png",
-					"js/mui.min.js",
-					"css/common.css",
-					"fonts/mui.ttf",
-					"images/doctor-down-arrow.png",
-					"css/case.css",
-					"js/apphandle.js",
-					"js/common.js",
-					"js/jquery-1.8.3.min.js",
-					"css/iconfont.css",
-					"css/input.css",
-					"images/service-1.png",
-					"fonts/iconfont.ttf",
-					"css/mui.picker.min.css",
-					"js/mui.picker.min.js",
-					"doctor/online_preliminary.html",
-					"fonts/iconfont-nodata.ttf",
-					"css/base.css",
-					null,
-					"images/right.png"
-				],
-				"refer": [
-					"doctor/pay.html",
-					"doctor/order_succeed.html",
-					"know_agree.html",
-					"doctor/order_succeeds.html",
-					"doctor/interview_order_succeed.html",
-					"doctor/interview_submit_succeed.html",
-					"my_center/contactService.html"
-				],
-				"priority": 0
-			},
-			"doctor/order_register.html": {
-				"resources": [
-					"js/mui.picker.min.js",
-					"js/mui.min.js",
-					"css/common.css",
-					"fonts/mui.ttf",
-					"doctor/order_register.html",
-					"css/mui.min.css",
-					"css/mui.picker.min.css",
-					"images/service.png",
-					"images/service-1.png",
-					"js/apphandle.js",
-					"js/common.js",
-					"js/jquery-1.8.3.min.js",
-					"css/iconfont.css",
-					"fonts/iconfont.ttf",
-					"css/input.css",
-					"fonts/iconfont-nodata.ttf",
-					"images/medical-add.png",
-					null,
-					"css/order_register.css"
-				],
-				"refer": [
-					"doctor/pay.html",
-					"my_center/contactService.html",
-					"doctor/order_succeed.html",
-					"know_agree.html",
-					"doctor/order_succeeds.html",
-					"doctor/order_audit.html",
-					"userLogin.html"
-				],
-				"priority": 0
-			},
-			"doctor/order_audit.html": {
-				"resources": [
-					"css/common.css",
-					"fonts/mui.ttf",
-					"images/check-bg.png",
-					"css/mui.min.css",
-					"images/succeed.png",
-					"css/order.css",
-					"js/apphandle.js",
-					"js/jquery-1.8.3.min.js",
-					"js/mui.min.js",
-					"js/common.js",
-					"fonts/iconfont-nodata.ttf"
-				],
-				"refer": [
-					"my_center/qa_record.html",
-					"tabbar.html",
-					"my_center/my_order.html"
-				],
-				"priority": 0
-			},
-			"doctor/order_succeed.html": {
-				"resources": [
-					"css/common.css",
-					"fonts/mui.ttf",
-					"css/mui.min.css",
-					"images/order-bg.png",
-					"images/succeed.png",
-					"css/order.css",
-					"js/common.js",
-					"js/jquery-1.8.3.min.js",
-					"js/mui.min.js",
-					"images/check-bg.png"
-				],
-				"refer": [
-					"my_center/myInterview.html"
-				],
-				"priority": 0
-			},
-			"doctor/order_fail.html": {
-				"resources": [
-					"css/common.css",
-					"fonts/mui.ttf",
-					"css/mui.min.css",
-					"images/fail.png",
-					"images/fail-bg.png"
-				],
-				"refer": [],
-				"priority": 0
-			},
-			"doctor/pay.html": {
-				"resources": [
-					"css/common.css",
-					"fonts/mui.ttf",
-					"css/mui.min.css",
-					"images/choice-before.png",
-					"images/choice-after.png",
-					"images/ylzf.png",
-					"images/zfb.png",
-					"images/wechat-1.png",
-					"images/bank.png",
-					"js/common.js",
-					"js/jquery-1.8.3.min.js",
-					"js/mui.min.js",
-					"images/weixin.png",
-					"js/passwordBox.min.js",
-					"fonts/iconfont-nodata.ttf",
-					"doctor/img/pwd_keyboard.png",
-					null,
-					"css/doctor/pay.css"
-				],
-				"refer": [
-					"doctor/purchase_succeed.html",
-					"doctor/order_audit.html",
-					"doctor/submit_succeed.html",
-					"doctor/order_succeed.html",
-					"doctor/interview_submit_succeed.html",
-					"my_center/setPayPwd.html",
-					"doctor/numberKeyboard.html",
-					"my_center/forgetPayPwd.html"
-				],
-				"priority": 0
-			},
-			"gene_detect/gene_detect_list.html": {
-				"resources": [
-					"images/product-3.png",
-					"images/product-4.png",
-					"fonts/mui.ttf",
-					"css/mui.min.css",
-					"images/product-1.png",
-					"images/product-6.png",
-					"images/product-5.png",
-					"images/product-2.png",
-					"css/common.css",
-					"css/list.css",
-					"gene_detect/gene_detect_list.html",
-					"js/apphandle.js",
-					"js/common.js",
-					"js/jquery-1.8.3.min.js",
-					"js/mui.min.js",
-					"js/mui.previewimage.js",
-					"js/mui.pullToRefresh.min.js",
-					"js/mui.pullToRefresh.material.min.js",
-					"css/pullRefresh.css",
-					"fonts/iconfont-nodata.ttf",
-					"js/mui.lazyload.js",
-					"js/mui.lazyload.img.js",
-					"images/default-news.png",
-					"images/default-record.png"
-				],
-				"refer": [
-					"gene_detect/gene_detect_detail.html"
-				],
-				"priority": 0
-			},
-			"gene_detect/gene_detect_detail.html": {
-				"resources": [
-					"images/infor-detail-1.png",
-					"images/service.png",
-					"js/mui.min.js",
-					"css/common.css",
-					"fonts/mui.ttf",
-					"images/infor-detail-2.png",
-					"images/service-1.png",
-					"css/detail.css",
-					"js/apphandle.js",
-					"js/jquery-1.8.3.min.js",
-					"js/common.js",
-					"css/iconfont.css",
-					"fonts/iconfont.ttf",
-					"fonts/iconfont-nodata.ttf",
-					null,
-					"css/mui.min.css",
-					"css/medicine/gene_detect_detail.css"
-				],
-				"refer": [
-					"doctor/pay.html",
-					"my_center/contactService.html",
-					"know_agree.html",
-					"userLogin.html"
-				],
-				"priority": 0
-			},
-			"gene_detect/purchase_succeed.html": {
-				"resources": [
-					"css/common.css",
-					"fonts/mui.ttf",
-					"css/mui.min.css",
-					"images/order-bg.png",
-					"images/succeed.png"
-				],
-				"refer": [],
-				"priority": 0
-			},
-			"vaccine/vaccine_kind.html": {
-				"resources": [
-					"images/product-3.png",
-					"js/mui.min.js",
-					"images/product-4.png",
-					"css/common.css",
-					"images/up-arrow.png",
-					"fonts/mui.ttf",
-					"images/product-1.png",
-					"images/product-6.png",
-					"images/product-5.png",
-					"images/product-2.png",
-					"css/list.css",
-					"js/apphandle.js",
-					"js/jquery-1.8.3.min.js",
-					"css/input.css",
-					"js/common.js",
-					"js/mui.pullToRefresh.min.js",
-					"js/mui.pullToRefresh.material.min.js",
-					"js/mui.previewimage.js",
-					"css/pullRefresh.css",
-					"images/down-arrow.png",
-					"fonts/iconfont-nodata.ttf",
-					"js/mui.lazyload.js",
-					"js/mui.lazyload.img.js",
-					"images/default-news.png",
-					"css/mui.min.css",
-					"js/util/util.js",
-					"images/default-record.png",
-					"css/medicine/vaccine_kind.css"
-				],
-				"refer": [
-					"vaccine/vaccine_detail.html"
-				],
-				"priority": 0
-			},
-			"vaccine/vaccine_detail.html": {
-				"resources": [
-					"images/infor-detail-1.png",
-					"images/service.png",
-					"js/mui.min.js",
-					"css/common.css",
-					"fonts/mui.ttf",
-					"images/service-1.png",
-					"images/infor-detail-2.png",
-					"css/detail.css",
-					"js/common.js",
-					"css/iconfont.css",
-					"fonts/iconfont.ttf",
-					"fonts/iconfont-nodata.ttf",
-					"css/mui.min.css",
-					"css/medicine/vaccine_detail.css"
-				],
-				"refer": [
-					"doctor/pay.html",
-					"know_agree.html",
-					"userLogin.html",
-					"my_center/contactService.html"
-				],
-				"priority": 0
-			},
-			"communicate/release_post.html": {
-				"resources": [
-					"css/common.css",
-					"fonts/mui.ttf",
-					"images/medical-2.png",
-					"images/medical-add.png",
-					"images/medical-1.png",
-					"css/my.css",
-					"js/apphandle.js",
-					"js/jquery-1.8.3.min.js",
-					"js/common.js",
-					"js/mui.min.js",
-					"css/input.css",
-					"css/iconfont.css",
-					"fonts/iconfont.ttf",
-					"fonts/iconfont-nodata.ttf",
-					"/images/medical-add.png"
-				],
-				"refer": [
-					"communicate/communicate_circle.html"
-				],
-				"priority": 0
-			},
-			"communicate/communicate_circle.html": {
-				"resources": [
-					"images/praise-before.png",
-					"js/mui.min.js",
-					"css/common.css",
-					"fonts/mui.ttf",
-					"images/praise-after.png",
-					"images/news-photo.png",
-					"js/apphandle.js",
-					"css/pullRefresh.css",
-					"js/mui.pullToRefresh.min.js",
-					"js/mui.pullToRefresh.material.min.js",
-					"js/mui.previewimage.js",
-					"js/common.js",
-					"communicate/communicate_circle.html",
-					"js/jquery-1.8.3.min.js",
-					"fonts/iconfont-nodata.ttf",
-					"images/default-person.png"
-				],
-				"refer": [
-					"communicate/post_detail.html",
-					"userLogin.html"
-				],
-				"priority": 0
-			},
-			"communicate/post_detail.html": {
-				"resources": [
-					"css/common.css",
-					"images/con-detail-1.png",
-					"fonts/mui.ttf",
-					"images/con-detail-2.png",
-					"images/con-detail-3.png",
-					"images/praise-after.png",
-					"images/news-photo.png",
-					"images/person-photo-2.png",
-					"css/input.css",
-					"images/release.png",
-					"js/apphandle.js",
-					"js/jquery-1.8.3.min.js",
-					"js/mui.min.js",
-					"communicate/post_detail.html",
-					"js/common.js",
-					"js/mui.pullToRefresh.min.js",
-					"js/mui.pullToRefresh.material.min.js",
-					"js/mui.previewimage.js",
-					"css/pullRefresh.css",
-					"css/iconfont-icon.css",
-					"fonts/iconfont-icon.ttf",
-					"images/praise-before.png",
-					"fonts/iconfont-nodata.ttf",
-					"images/default-record.png",
-					"js/mui.zoom.js",
-					null
-				],
-				"refer": [
-					"communicate/release_post.html",
-					"communicate/release_posts.html",
-					"userLogin.html"
-				],
-				"priority": 0
-			},
-			"my_case_history/case_list.html": {
-				"resources": [
-					"images/add.png",
-					"fonts/mui.ttf",
-					"css/case.css",
-					"js/apphandle.js",
-					"js/jquery-1.8.3.min.js",
-					"js/mui.min.js",
-					"css/common.css",
-					"js/common.js",
-					"js/mui.pullToRefresh.min.js",
-					"js/mui.pullToRefresh.material.min.js",
-					"js/mui.previewimage.js",
-					"css/pullRefresh.css",
-					"fonts/iconfont-nodata.ttf",
-					"css/mui.min.css"
-				],
-				"refer": [
-					"my_case_history/add_case.html",
-					"my_case_history/case_detail.html",
-					"my_case_history/add_record.html"
-				],
-				"priority": 0
-			},
-			"my_center/myD.html": {
-				"resources": [
-					"img/question-record.png",
-					"img/modify.png",
-					"img/service.png",
-					"img/note.png",
-					"img/medical-record.png",
-					"img/purchase-record.png",
-					"img/userImg.png",
-					"img/about.png",
-					"img/wallet.png",
-					"img/appointment.png",
-					"img/inquiry.png",
-					"img/collection.png",
-					"img/photo.png",
-					"js/apphandle.js",
-					"js/jquery-1.8.3.min.js",
-					"css/my.css",
-					"css/mui.min.css",
-					"fonts/mui.ttf",
-					"js/mui.min.js",
-					"js/common.js",
-					"js/mui.previewimage.js",
-					"css/common.css",
-					null,
-					"js/mui.zoom.js",
-					"images/default-person.png",
-					"css/imagepreview/imagespreview.css",
-					"css/imagePreview.css",
-					"css/center/myD.css"
-				],
-				"refer": [
-					"my_center/myinfo.html",
-					"my_center/qa_record.html",
-					"my_center/about.html",
-					"my_center/swipe.html",
-					"my_center/mywallet.html",
-					"my_center/myInterview.html",
-					"my_center/buy_record.html",
-					"my_case_history/case_list.html",
-					"my_center/contactService.html",
-					"my_center/my_order.html",
-					"my_center/setting.html",
-					"my_center/tab_post.html",
-					"my_center/my_post.html",
-					"userLogin.html",
-					"my_center/question.html"
-				],
-				"priority": 0
-			},
-			"my_center/qa_details.html": {
-				"resources": [
-					"images/medical-2.png",
-					"images/medical-1.png",
-					"js/mui.previewimage.js",
-					"css/my.css",
-					"js/mui.zoom.js",
-					"js/mui.min.js",
-					"fonts/mui.ttf",
-					"css/mui.min.css",
-					"css/common.css",
-					"js/common.js",
-					"fonts/iconfont-nodata.ttf"
-				],
-				"refer": [],
-				"priority": 0
-			},
-			"my_center/qa_record.html": {
-				"resources": [
-					"my_center/qa_record.html",
-					"js/apphandle.js",
-					"css/my.css",
-					"js/common.js",
-					"js/mui.pullToRefresh.min.js",
-					"js/jquery-1.8.3.min.js",
-					"js/mui.pullToRefresh.material.min.js",
-					"js/mui.min.js",
-					"fonts/mui.ttf",
-					"css/mui.min.css",
-					"css/pullRefresh.css",
-					"css/common.css",
-					"css/order/qa_record.css"
-				],
-				"refer": [
-					"my_center/qa_details.html"
-				],
-				"priority": 0
-			},
-			"doctor/purchase_succeed.html": {
-				"resources": [
-					"css/order.css",
-					"images/order-bg.png",
-					"images/succeed.png",
-					"css/mui.min.css",
-					"css/common.css",
-					"js/mui.min.js",
-					"js/common.js",
-					"fonts/iconfont-nodata.ttf",
-					"fonts/mui.ttf"
-				],
-				"refer": [
-					"index.html",
-					"my_center/buy_record.html",
-					"tabbar.html"
-				],
-				"priority": 0
-			},
-			"my_center/contactService.html": {
-				"resources": [
-					"js/common.js",
-					"js/mui.min.js",
-					"css/common.css",
-					"fonts/mui.ttf",
-					"images/service.png",
-					"images/anwser.png",
-					"css/iconfont.css",
-					"css/mui.min.css",
-					"fonts/iconfont.ttf",
-					"css/common-form.css",
-					"images/back-arrow.png",
-					"images/load2.gif",
-					"images/default-person.png",
-					"fonts/iconfont-nodata.ttf",
-					"css/center/contactService.css"
-				],
-				"refer": [],
-				"priority": 0
-			},
-			"my_center/myinfo.html": {
-				"resources": [
-					"fonts/mui.ttf",
-					"js/apphandle.js",
-					"css/my.css",
-					"js/jquery-1.8.3.min.js",
-					"js/mui.min.js",
-					"css/mui.min.css",
-					"js/mui.picker.min.js",
-					"css/mui.picker.min.css",
-					"js/common.js",
-					"css/case.css",
-					"css/input.css",
-					"js/mui.poppicker.js",
-					"css/mui.poppicker.css",
-					"css/common.css",
-					"css/center/myinfo.css"
-				],
-				"refer": [
-					"my_center/forget_pwd.html",
-					"my_center/forget_nickname.html",
-					"my_center/modify_nickname.html",
-					"my_center/modify_pwd.html",
-					"userLogin.html",
-					"my_center/modify_payPwd.html",
-					"my_center/setPayPwd.html"
-				],
-				"priority": 0
-			},
-			"my_center/swipe.html": {
-				"resources": [
-					"img/keep.jpg",
-					"img/shanc.png",
-					"js/apphandle.js",
-					"js/mui.min.js",
-					"fonts/mui.ttf",
-					"css/mui.min.css",
-					"js/common.js",
-					"js/mui.pullToRefresh.min.js",
-					"js/jquery-1.8.3.min.js",
-					"js/mui.pullToRefresh.material.min.js",
-					"css/pullRefresh.css",
-					"my_center/swipe.html",
-					"images/check-bg.png",
-					"images/default-news.png",
-					"css/common.css",
-					"css/center/swipe.css"
-				],
-				"refer": [
-					"info/info_detail.html"
-				],
-				"priority": 0
-			},
-			"my_center/myInterview.html": {
-				"resources": [
-					"js/apphandle.js",
-					"css/my.css",
-					"js/common.js",
-					"js/mui.pullToRefresh.min.js",
-					"js/jquery-1.8.3.min.js",
-					"js/mui.pullToRefresh.material.min.js",
-					"js/mui.min.js",
-					"fonts/mui.ttf",
-					"css/mui.min.css",
-					"css/pullRefresh.css",
-					"my_center/myInterview.html",
-					"css/iconfont.css",
-					"fonts/iconfont.ttf",
-					"css/pay/confirmCss.css",
-					"css/order/myInterview.css",
-					"css/common.css"
-				],
-				"refer": [
-					"my_center/interview_details.html",
-					"my_center/evaluate.html"
-				],
-				"priority": 0
-			},
-			"my_center/interview_details.html": {
-				"resources": [
-					"css/my.css",
-					"css/mui.min.css",
-					"js/common.js",
-					"js/jquery-1.8.3.min.js",
-					"js/mui.min.js",
-					"fonts/mui.ttf"
-				],
-				"refer": [
-					"my_center/evaluate.html",
-					"doctor/cancel_succeed.html",
-					"doctor/online_preliminary.html",
-					"doctor/pay.html"
-				],
-				"priority": 0
-			},
-			"my_center/buy_record.html": {
-				"resources": [
-					"css/my.css",
-					"images/infor-photo-1.png",
-					"css/pullRefresh.css",
-					"js/common.js",
-					"js/jquery-1.8.3.min.js",
-					"js/mui.pullToRefresh.min.js",
-					"js/mui.pullToRefresh.material.min.js",
-					"js/mui.min.js",
-					"fonts/mui.ttf",
-					"css/mui.min.css",
-					"js/mui.previewimage.js",
-					"my_center/buy_record.html",
-					"images/default-record.png",
-					"css/pay/confirmCss.css",
-					"css/common.css",
-					"css/order/buy_record.css"
-				],
-				"refer": [
-					"my_center/qa_details.html",
-					"doctor/pay.html",
-					"gene_detect/gene_detect_detail.html",
-					"vaccine/vaccine_detail.html"
-				],
-				"priority": 0
-			},
-			"userLogin.html": {
-				"resources": [
-					"js/common.js",
-					"js/mui.min.js",
-					"css/common.css",
-					"css/iconfont.css",
-					"css/mui.min.css",
-					"fonts/iconfont.ttf",
-					"fonts/mui.ttf",
-					"js/apphandle.js",
-					"css/common-form.css",
-					"js/jquery-1.8.3.min.js",
-					"images/logo.png",
-					"images/wechat-icon.png",
-					"images/weixin.png",
-					"images/qq.png",
-					null,
-					"images/icon_120x120.png",
-					"css/login/userLogin.css",
-					"img/icon_close.png"
-				],
-				"refer": [
-					"index.html",
-					"tabbar.html",
-					"forgetPwd.html",
-					"register.html",
-					"my_center/contactService.html",
-					"doctor/online_preliminary.html",
-					"doctor/message_question_answer.html",
-					"doctor/order_register.html",
-					"doctor/pay.html",
-					"my_center/boundpho.html",
-					"doctor/doctor_detail.html",
-					"info/info_detail.html",
-					"communicate/post_detail.html",
-					"my_center/interview_details.html",
-					"my_center/qa_details.html",
-					"my_center/order_detail.html",
-					"medicine_center/medicine_detail.html",
-					"my_case_history/edit_case.html",
-					"guide.html",
-					"doctor/doctor_list.html",
-					"userLogin.html",
-					"my_center/myD.html"
-				],
-				"priority": 0
-			},
-			"forgetPwd.html": {
-				"resources": [
-					"fonts/mui.ttf",
-					"css/common-form.css",
-					"js/common.js",
-					"js/jquery-1.8.3.min.js",
-					"js/mui.min.js",
-					"css/mui.min.css",
-					"js/apphandle.js",
-					"css/input.css",
-					"css/login/forgetPwd.css"
-				],
-				"refer": [
-					"resetPwd.html"
-				],
-				"priority": 0
-			},
-			"register.html": {
-				"resources": [
-					"css/common-form.css",
-					"js/common.js",
-					"js/jquery-1.8.3.min.js",
-					"js/mui.min.js",
-					"fonts/mui.ttf",
-					"css/iconfont.css",
-					"css/mui.min.css",
-					"fonts/iconfont.ttf",
-					"js/apphandle.js",
-					"css/input.css",
-					null,
-					"css/login/register.css"
-				],
-				"refer": [
-					"tabbar.html",
-					"user_manual.html",
-					"userLogin.html"
-				],
-				"priority": 0
-			},
-			"my_center/my_order.html": {
-				"resources": [
-					"js/apphandle.js",
-					"css/my.css",
-					"js/jquery-1.8.3.min.js",
-					"js/mui.min.js",
-					"css/common.css",
-					"fonts/mui.ttf",
-					"css/mui.min.css",
-					"js/common.js",
-					"js/mui.pullToRefresh.min.js",
-					"js/mui.pullToRefresh.material.min.js",
-					"css/pullRefresh.css",
-					"my_center/my_order.html",
-					"fonts/iconfont-nodata.ttf",
-					"css/center/myorder.css",
-					"css/pay/confirmCss.css"
-				],
-				"refer": [
-					"my_center/order_detail.html",
-					"doctor/cancel_succeed.html",
-					"doctor/pay.html"
-				],
-				"priority": 0
-			},
-			"my_center/setting.html": {
-				"resources": [
-					"css/case.css",
-					"css/input.css",
-					"js/apphandle.js",
-					"css/common.css",
-					"js/common.js",
-					"js/jquery-1.8.3.min.js",
-					"js/mui.min.js",
-					"fonts/mui.ttf",
-					"fonts/iconfont-nodata.ttf",
-					"css/mui.min.css"
-				],
-				"refer": [
-					"my_center/help.html",
-					"my_center/feedback.html",
-					"my_center/about_software.html",
-					"userLogin.html"
-				],
-				"priority": 0
-			},
-			"my_center/help.html": {
-				"resources": [
-					"js/apphandle.js",
-					"js/jquery-1.8.3.min.js",
-					"js/mui.min.js",
-					"css/common.css",
-					"fonts/mui.ttf",
-					"js/common.js",
-					"fonts/iconfont-nodata.ttf"
-				],
-				"refer": [
-					"my_center/help_detail.html"
-				],
-				"priority": 0
-			},
-			"resetPwd.html": {
-				"resources": [
-					"js/apphandle.js",
-					"css/common-form.css",
-					"js/common.js",
-					"js/mui.min.js",
-					"fonts/mui.ttf",
-					"css/mui.min.css",
-					"css/input.css",
-					"js/jquery-1.8.3.min.js"
-				],
-				"refer": [
-					"tabbar.html",
-					"userLogin.html"
-				],
-				"priority": 0
-			},
-			"my_center/order_detail.html": {
-				"resources": [
-					"fonts/mui.ttf",
-					"js/apphandle.js",
-					"js/jquery-1.8.3.min.js",
-					"js/mui.min.js",
-					"css/mui.min.css",
-					"css/my.css",
-					"css/common.css",
-					"js/common.js",
-					"fonts/iconfont-nodata.ttf",
-					"css/order/order_detail.css"
-				],
-				"refer": [
-					"doctor/cancel_succeed.html",
-					"my_center/evaluate.html",
-					"doctor/order_register.html"
-				],
-				"priority": 0
-			},
-			"my_center/mywallet.html": {
-				"resources": [
-					"js/apphandle.js",
-					"css/my.css",
-					"js/jquery-1.8.3.min.js",
-					"js/mui.min.js",
-					"fonts/mui.ttf",
-					"css/mui.min.css",
-					"js/common.js",
-					"css/center/mywallet.css"
-				],
-				"refer": [
-					"my_center/wallet_cash.html",
-					"my_center/recharge.html",
-					"my_center/records.html"
-				],
-				"priority": 0
-			},
-			"my_center/wallet_cash.html": {
-				"resources": [
-					"css/my.css",
-					"js/jquery-1.8.3.min.js",
-					"js/mui.min.js",
-					"fonts/mui.ttf",
-					"css/mui.min.css",
-					"css/mui.picker.min.css",
-					"css/mui.poppicker.css",
-					"js/mui.picker.min.js",
-					"js/mui.poppicker.js",
-					"js/city.data-3.js",
-					"js/common.js",
-					"css/center/wallet_cash.css"
-				],
-				"refer": [
-					"my_center/mywallet.html"
-				],
-				"priority": 0
-			},
-			"my_center/recharge.html": {
-				"resources": [
-					"img/unionpay.png",
-					"img/zfb.png",
-					"img/choice-after.png",
-					"img/choice-before.png",
-					"img/wechat.png",
-					"css/my.css",
-					"js/jquery-1.8.3.min.js",
-					"js/mui.min.js",
-					"fonts/mui.ttf",
-					"css/mui.min.css",
-					"js/common.js",
-					"images/zfb.png",
-					"images/weixin.png",
-					"images/choice-before.png",
-					"images/choice-after.png",
-					"css/common.css",
-					"images/bank.png",
-					null,
-					"fonts/iconfont-nodata.ttf",
-					"css/center/recharge.css"
-				],
-				"refer": [
-					"my_center/mywallet.html"
-				],
-				"priority": 0
-			},
-			"my_center/tab_post.html": {
-				"resources": [
-					"img/keep.jpg",
-					"img/input.png",
-					"img/note-person.png",
-					"js/mui.min.js",
-					"fonts/mui.ttf",
-					"css/mui.min.css",
-					"img/shanc.png",
-					"js/common.js",
-					"js/mui.pullToRefresh.min.js",
-					"js/jquery-1.8.3.min.js",
-					"js/mui.pullToRefresh.material.min.js",
-					"css/pullRefresh.css",
-					"my_center/tab_post.html",
-					"js/mui.zoom.js",
-					"css/common.css",
-					"js/mui.previewimage.js",
-					"images/default-record.png",
-					"css/iconfont.css",
-					"css/iconfont-icon.css",
-					"images/default-person.png",
-					"fonts/iconfont.ttf",
-					"fonts/iconfont-nodata.ttf"
-				],
-				"refer": [
-					"communicate/post_detail.html"
-				],
-				"priority": 0
-			},
-			"my_center/forget_pwd.html": {
-				"resources": [
-					"my_center/forget_pwd.html"
-				],
-				"refer": [],
-				"priority": 0
-			},
-			"my_center/about_software.html": {
-				"resources": [
-					"images/logo.png",
-					"js/mui.min.js",
-					"fonts/mui.ttf",
-					"css/mui.min.css",
-					"js/common.js",
-					"images/logo-copyright.png"
-				],
-				"refer": [],
-				"priority": 0
-			},
-			"my_center/modify_nickname.html": {
-				"resources": [
-					"css/my.css",
-					"js/mui.min.js",
-					"fonts/mui.ttf",
-					"css/mui.min.css",
-					"js/apphandle.js"
-				],
-				"refer": [],
-				"priority": 0
-			},
-			"my_center/modify_pwd.html": {
-				"resources": [
-					"my_center/modify_pwd.html",
-					"js/apphandle.js",
-					"css/my.css",
-					"js/jquery-1.8.3.min.js",
-					"js/mui.min.js",
-					"fonts/mui.ttf",
-					"css/mui.min.css",
-					"js/common.js",
-					"css/common.css"
-				],
-				"refer": [
-					"userLogin.html"
-				],
-				"priority": 0
-			},
-			"doctor/submit_succeed.html": {
-				"resources": [
-					"images/check-bg.png",
-					"js/common.js",
-					"js/jquery-1.8.3.min.js",
-					"js/mui.min.js",
-					"css/common.css",
-					"fonts/mui.ttf",
-					"css/order.css",
-					"css/mui.min.css",
-					"images/succeed.png",
-					"fonts/iconfont-nodata.ttf"
-				],
-				"refer": [
-					"my_center/qa_record.html"
-				],
-				"priority": 0
-			},
-			"doctor/cancel_succeed.html": {
-				"resources": [
-					"css/order.css",
-					"images/order-bg.png",
-					"images/succeed.png",
-					"js/apphandle.js",
-					"js/jquery-1.8.3.min.js",
-					"js/mui.min.js",
-					"css/common.css",
-					"fonts/mui.ttf",
-					"css/mui.min.css",
-					"js/common.js",
-					"fonts/iconfont-nodata.ttf"
-				],
-				"refer": [
-					"my_center/myInterview.html",
-					"my_center/my_order.html"
-				],
-				"priority": 0
-			},
-			"user_manual.html": {
-				"resources": [
-					"css/detail.css",
-					"js/mui.min.js",
-					"css/common.css",
-					"fonts/mui.ttf",
-					"js/common.js",
-					"fonts/iconfont-nodata.ttf"
-				],
-				"refer": [],
-				"priority": 0
-			},
-			"my_center/evaluate.html": {
-				"resources": [
-					"css/my.css",
-					"js/jquery-1.8.3.min.js",
-					"js/mui.min.js",
-					"fonts/mui.ttf",
-					"css/mui.min.css",
-					"js/common.js",
-					null
-				],
-				"refer": [
-					"my_center/interview_details.html",
-					"my_center/order_detail.html"
-				],
-				"priority": 0
-			},
-			"my_center/records.html": {
-				"resources": [
-					"css/my.css",
-					"js/common.js",
-					"js/mui.pullToRefresh.min.js",
-					"js/jquery-1.8.3.min.js",
-					"js/mui.pullToRefresh.material.min.js",
-					"js/mui.min.js",
-					"fonts/mui.ttf",
-					"css/mui.min.css",
-					"css/pullRefresh.css",
-					"css/iconfont.css",
-					"fonts/iconfont.ttf",
-					"css/common.css",
-					"css/center/records.css"
-				],
-				"refer": [],
-				"priority": 0
-			},
-			"my_center/about.html": {
-				"resources": [
-					"css/my.css",
-					"js/mui.min.js",
-					"fonts/mui.ttf",
-					"css/mui.min.css",
-					"js/common.js",
-					"images/logo-copyright.png",
-					"css/common.css",
-					"css/center/about.css"
-				],
-				"refer": [],
-				"priority": 0
-			},
-			"my_center/boundpho.html": {
-				"resources": [
-					"my_center/boundpho.html",
-					"css/my.css",
-					"fonts/mui.ttf",
-					"css/common-form.css",
-					"js/common.js",
-					"js/mui.min.js",
-					"css/mui.min.css"
-				],
-				"refer": [
-					"tabbar.html"
-				],
-				"priority": 0
-			},
-			"my_center/feedback.html": {
-				"resources": [
-					"css/my.css",
-					"css/mui.min.css",
-					"js/jquery-1.8.3.min.js",
-					"js/mui.min.js",
-					"fonts/mui.ttf",
-					"js/common.js"
-				],
-				"refer": [
-					"my_center/setting.html"
-				],
-				"priority": 0
-			},
-			"know_agree.html": {
-				"resources": [
-					"css/detail.css",
-					"js/mui.min.js",
-					"css/common.css",
-					"fonts/mui.ttf",
-					"js/common.js",
-					"fonts/iconfont-nodata.ttf"
-				],
-				"refer": [],
-				"priority": 0
-			},
-			"my_center/help_detail.html": {
-				"resources": [
-					"js/mui.min.js",
-					"css/common.css",
-					"fonts/mui.ttf",
-					"js/common.js",
-					"css/mui.min.css",
-					"css/iconfont.css",
-					"fonts/iconfont-nodata.ttf",
-					"fonts/iconfont.ttf"
-				],
-				"refer": [],
-				"priority": 0
-			},
-			"slider_detail.html": {
-				"resources": [
-					"images/infor-detail-1.png",
-					"js/mui.min.js",
-					"css/common.css",
-					"fonts/mui.ttf",
-					"css/detail.css",
-					"images/infor-detail-2.png"
-				],
-				"refer": [],
-				"priority": 0
-			},
-			"doctor/order_succeeds.html": {
-				"resources": [
-					"css/order.css",
-					"images/order-bg.png",
-					"images/succeed.png",
-					"css/mui.min.css"
-				],
-				"refer": [
-					"my_center/my_order.html"
-				],
-				"priority": 0
-			},
-			"doctor/interview_submit_succeed.html": {
-				"resources": [
-					"images/check-bg.png",
-					"css/order.css",
-					"images/succeed.png",
-					"css/mui.min.css",
-					"css/common.css",
-					"js/common.js",
-					"js/mui.min.js",
-					"fonts/mui.ttf",
-					"fonts/iconfont-nodata.ttf"
-				],
-				"refer": [
-					"my_center/myInterview.html"
-				],
-				"priority": 0
-			},
-			"doctor/interview_order_succeed.html": {
-				"resources": [
-					"images/order-bg.png",
-					"css/common.css",
-					"css/order.css",
-					"images/succeed.png"
-				],
-				"refer": [],
-				"priority": 0
-			},
-			"my_center/my_post.html": {
-				"resources": [
-					"img/keep.jpg",
-					"img/input.png",
-					"img/shanc.png",
-					"img/note-person.png",
-					"js/common.js",
-					"js/mui.zoom.js",
-					"js/mui.min.js",
-					"css/common.css",
-					"fonts/mui.ttf",
-					"css/mui.min.css",
-					"js/mui.previewimage.js"
-				],
-				"refer": [],
-				"priority": 0
-			},
-			"medicine_center/medicine_center.html": {
-				"resources": [
-					"images/medicine-3.png",
-					"images/medicine-2.png",
-					"images/medicine-4.png",
-					"images/medicine-1.png",
-					"css/base.css",
-					"fonts/mui.ttf",
-					"js/common.js",
-					"js/mui.pullToRefresh.min.js",
-					"js/mui.pullToRefresh.material.min.js",
-					"css/common.css",
-					"js/mui.min.js",
-					"css/pullRefresh.css",
-					"css/mui.min.css",
-					"images/right.png",
-					"css/medicine/medicine_center.css",
-					"js/util/util.js",
-					"fonts/iconfont-nodata.ttf",
-					"images/default-news.png"
-				],
-				"refer": [
-					"medicine_center/medicine_detail.html"
-				],
-				"priority": 0
-			},
-			"medicine_center/medicine_detail.html": {
-				"resources": [
-					"images/m-add.png",
-					"js/common.js",
-					"js/mui.min.js",
-					"css/common.css",
-					"fonts/mui.ttf",
-					"css/mui.min.css",
-					"images/medicine-banner.png",
-					"css/detail.css",
-					"fonts/iconfont-nodata.ttf",
-					"images/default-banner.png",
-					"css/medicine/medicine_detail.css"
-				],
-				"refer": [
-					"my_case_history/case_list.html",
-					"my_center/contactService.html",
-					"userLogin.html"
-				],
-				"priority": 0
-			},
-			"my_center/question.html": {
-				"resources": [
-					"css/my.css",
-					"js/common.js",
-					"js/mui.pullToRefresh.min.js",
-					"js/mui.pullToRefresh.material.min.js",
-					"js/mui.min.js",
-					"fonts/mui.ttf",
-					"css/mui.min.css",
-					"css/pullRefresh.css"
-				],
-				"refer": [],
-				"priority": 0
-			},
-			"my_center/modify_payPwd.html": {
-				"resources": [
-					"js/mui.min.js",
-					"css/common-form.css",
-					"js/common.js",
-					"fonts/mui.ttf",
-					"css/input.css",
-					"css/mui.min.css"
-				],
-				"refer": [
-					"my_center/myinfo.html"
-				],
-				"priority": 0
-			},
-			"my_center/setPayPwd.html": {
-				"resources": [
-					"css/common-form.css",
-					"js/common.js",
-					"js/mui.min.js",
-					"fonts/mui.ttf",
-					"css/input.css",
-					"css/mui.min.css"
-				],
-				"refer": [],
-				"priority": 0
-			},
-			"doctor/numberKeyboard.html": {
-				"resources": [
-					"js/mui.min.js",
-					"css/mui.min.css"
-				],
-				"refer": [],
-				"priority": 0
-			},
-			"my_center/forgetPayPwd.html": {
-				"resources": [
-					"css/common-form.css",
-					"js/common.js",
-					"js/mui.min.js",
-					"fonts/mui.ttf",
-					"css/input.css",
-					"css/mui.min.css"
-				],
-				"refer": [
-					"my_center/resetPayPwd.html"
-				],
-				"priority": 0
-			},
-			"my_center/resetPayPwd.html": {
-				"resources": [
-					"css/common-form.css",
-					"js/common.js",
-					"js/mui.min.js",
-					"fonts/mui.ttf",
-					"css/input.css",
-					"css/mui.min.css"
-				],
-				"refer": [],
-				"priority": 0
-			},
-			"guide.html": {
-				"resources": [
-					"images/guidance-2.png",
-					"images/guidance-1.png",
-					"images/guidance-3.png",
-					"js/common.js",
-					"js/mui.min.js",
-					"css/mui.min.css",
-					"fonts/mui.ttf",
-					"css/login/guide.css"
-				],
-				"refer": [],
-				"priority": 0
-			},
-			"doctor/doctor_list_hospital.html": {
-				"resources": [
-					"js/util/util.js",
-					"js/mui.min.js",
-					"css/base.css",
-					"js/common.js",
-					"js/mui.pullToRefresh.min.js",
-					"js/mui.pullToRefresh.material.min.js",
-					"css/main/doctorList.css",
-					"css/common.css",
-					"fonts/mui.ttf",
-					"css/mui.min.css",
-					"css/pullRefresh.css",
-					"images/type.png",
-					"images/hospital.png"
-				],
-				"refer": [
-					"doctor/doctor_detail.html"
-				],
-				"priority": 0
-			},
-			"communicate/communicate.html": {
-				"resources": [
-					"fonts/mui.ttf",
-					"js/mui.min.js",
-					"css/common.css",
-					"css/mui.min.css"
-				],
-				"refer": [],
-				"priority": 0
-			}
-		},
-		"idle": {
-			"resources": []
-		}
+	  "pages": {
+	    "index.html": {
+	      "resources": [
+	        "css/mui.min.css",
+	        "css/common.css",
+	        "images/search-icon.png",
+	        "fonts/mui.ttf",
+	        "message_list.html",
+	        "images/service-1.png",
+	        "images/service-icon.png",
+	        "images/alarm.png",
+	        "js/mui.min.js",
+	        "css/input.css",
+	        "js/mui.pullToRefresh.min.js",
+	        "js/mui.pullToRefresh.material.min.js",
+	        "css/pullRefresh.css",
+	        "js/common.js",
+	        "index.html",
+	        "js/mui.previewimage.js",
+	        "fonts/iconfont-nav.ttf",
+	        "css/iconfont-nav.css",
+	        "fonts/iconfont-nodata.ttf",
+	        "images/default-doctor.png",
+	        null,
+	        "images/default-news.png",
+	        "js/mui.lazyload.js",
+	        "js/mui.lazyload.img.js",
+	        "js/mui.extend.js",
+	        "images/default-banner.png",
+	        "css/main/index.css",
+	        "img/icon_index_doctors.png",
+	        "img/icon_index_info.png",
+	        "img/btn_more.png",
+	        "images/default-person.png",
+	        "images/index/icon_2.png",
+	        "images/index/icon_5.png",
+	        "images/index/icon_01.png",
+	        "images/index/icon_4.png"
+	      ],
+	      "refer": [
+	        "info/info_detail.html",
+	        "vaccine/vaccine_kind.html",
+	        "doctor/doctor_detail.html",
+	        "doctor/doctor_list.html",
+	        "gene_detect/gene_detect_list.html",
+	        "doctor/hospital_list.html",
+	        "info/info_index.html",
+	        "my_center/contactService.html",
+	        "slider_detail.html",
+	        "userLogin.html",
+	        "medicine_center/medicine_center.html",
+	        "doctor/order_register.html",
+	        "message_list.html"
+	      ],
+	      "priority": 0
+	    },
+	    "message_list.html": {
+	      "resources": [
+	        "css/common.css",
+	        "fonts/mui.ttf",
+	        "js/mui.pullToRefresh.min.js",
+	        "js/mui.pullToRefresh.material.min.js",
+	        "js/mui.min.js",
+	        "css/pullRefresh.css",
+	        "js/apphandle.js",
+	        "js/common.js",
+	        "message_list.html",
+	        "fonts/iconfont-nodata.ttf",
+	        "css/mui.min.css",
+	        "css/center/message_list.css"
+	      ],
+	      "refer": [
+	        "my_center/interview_details.html",
+	        "my_center/qa_details.html",
+	        "my_center/order_detail.html",
+	        "vaccine/vaccine_detail.html",
+	        "gene_detect/gene_detect_detail.html",
+	        "medicine_center/medicine_detail.html"
+	      ],
+	      "priority": 0
+	    },
+	    "tabbar.html": {
+	      "resources": [
+	        "index.html",
+	        "js/mui.min.js",
+	        "css/common.css",
+	        "fonts/mui.ttf",
+	        "css/mui.min.css",
+	        "my_center/myD.html",
+	        "fonts/iconfont-nav.ttf",
+	        "css/iconfont-nav.css",
+	        "js/common.js",
+	        null,
+	        "fonts/iconfont-nodata.ttf",
+	        "doctor/doctor_list.html"
+	      ],
+	      "refer": [
+	        "communicate/communicate_circle.html",
+	        "guide.html",
+	        "communicate/communicate.html",
+	        "my_center/myD.html",
+	        "index.html",
+	        "doctor/doctor_list.html"
+	      ],
+	      "priority": 0
+	    },
+	    "my_case_history/medical_list.html": {
+	      "resources": [
+	        "css/common.css",
+	        "fonts/mui.ttf",
+	        "images/add.png"
+	      ],
+	      "refer": [],
+	      "priority": 0
+	    },
+	    "my_case_history/case_detail.html": {
+	      "resources": [
+	        "images/add.png",
+	        "css/common.css",
+	        "fonts/mui.ttf",
+	        "images/medical-record-3.png",
+	        "images/medical-record-1.png",
+	        "images/process-2.png",
+	        "images/medical-record-2.png",
+	        "images/process-1.png",
+	        "js/apphandle.js",
+	        "js/jquery-1.8.3.min.js",
+	        "css/case.css",
+	        "js/mui.min.js",
+	        "js/mui.previewimage.js",
+	        "js/mui.zoom.js",
+	        "js/common.js",
+	        "images/release.png",
+	        "fonts/iconfont-nodata.ttf",
+	        "css/imagePreview.css",
+	        "images/process-body-last.png",
+	        "images/process-header.png",
+	        "images/process-body.png",
+	        "css/mui.min.css",
+	        "css/center/case_detail.css"
+	      ],
+	      "refer": [
+	        "my_case_history/add_record.html",
+	        "my_case_history/edit_case.html"
+	      ],
+	      "priority": 0
+	    },
+	    "my_case_history/add_case.html": {
+	      "resources": [
+	        "css/common.css",
+	        "fonts/mui.ttf",
+	        "css/input.css",
+	        "js/apphandle.js",
+	        "js/jquery-1.8.3.min.js",
+	        "css/case.css",
+	        "js/mui.min.js",
+	        "js/common.js",
+	        "js/mui.poppicker.js",
+	        "css/mui.poppicker.css",
+	        "js/mui.picker.min.js",
+	        "css/mui.picker.min.css",
+	        "fonts/iconfont-nodata.ttf",
+	        "css/mui.min.css",
+	        "css/center/add_case.css"
+	      ],
+	      "refer": [
+	        "my_case_history/case_list.html"
+	      ],
+	      "priority": 0
+	    },
+	    "my_case_history/edit_case.html": {
+	      "resources": [
+	        "css/common.css",
+	        "fonts/mui.ttf",
+	        "images/medical-add.png",
+	        "images/medical-1.png",
+	        "images/medical-2.png",
+	        "css/input.css",
+	        "js/apphandle.js",
+	        "js/jquery-1.8.3.min.js",
+	        "css/case.css",
+	        "js/mui.min.js",
+	        "css/my.css",
+	        "js/common.js",
+	        "js/mui.previewimage.js",
+	        "js/mui.picker.min.js",
+	        "css/mui.picker.min.css",
+	        "js/mui.poppicker.js",
+	        "css/mui.poppicker.css",
+	        "fonts/iconfont-nodata.ttf",
+	        "css/mui.min.css",
+	        "css/center/edit_case.css"
+	      ],
+	      "refer": [
+	        "my_case_history/add_record.html",
+	        "my_case_history/case_detail.html",
+	        "my_case_history/case_list.html"
+	      ],
+	      "priority": 0
+	    },
+	    "my_case_history/add_record.html": {
+	      "resources": [
+	        "css/common.css",
+	        "fonts/mui.ttf",
+	        "images/medical-2.png",
+	        "images/medical-add.png",
+	        "images/medical-1.png",
+	        "css/input.css",
+	        "css/my.css",
+	        "js/common.js",
+	        "js/jquery-1.8.3.min.js",
+	        "css/case.css",
+	        "js/mui.min.js",
+	        "js/mui.picker.min.js",
+	        "css/mui.picker.min.css",
+	        "js/city.data-3.js",
+	        "js/mui.poppicker.js",
+	        "css/mui.poppicker.css",
+	        "fonts/iconfont-nodata.ttf",
+	        "css/mui.min.css"
+	      ],
+	      "refer": [
+	        "my_case_history/case_detail.html"
+	      ],
+	      "priority": 0
+	    },
+	    "info/info_index.html": {
+	      "resources": [
+	        "images/infor-photo-1.png",
+	        "css/common.css",
+	        "images/infor-photo-2.png",
+	        "fonts/mui.ttf",
+	        "images/infor-photo-3.png",
+	        "js/common.js",
+	        "js/mui.pullToRefresh.min.js",
+	        "js/mui.pullToRefresh.material.min.js",
+	        "js/mui.min.js",
+	        "css/input.css",
+	        "css/pullRefresh.css",
+	        "fonts/iconfont-nodata.ttf",
+	        "css/mui.min.css",
+	        "css/info/info_index.css"
+	      ],
+	      "refer": [
+	        "info/info_detail.html",
+	        "userLogin.html"
+	      ],
+	      "priority": 0
+	    },
+	    "info/info_detail.html": {
+	      "resources": [
+	        "images/infor-detail-1.png",
+	        "css/common.css",
+	        "fonts/mui.ttf",
+	        "images/infor-detail-2.png",
+	        "images/transmit.png",
+	        "images/love.png",
+	        "js/mui.min.js",
+	        "images/wechat.png",
+	        "images/circle.png",
+	        "images/copy.png",
+	        "images/xinlang.png",
+	        "css/detail.css",
+	        "js/common.js",
+	        "js/jquery-1.8.3.min.js",
+	        "img/collection.png",
+	        "css/iconfont.css",
+	        "js/clipboard.min.js",
+	        "fonts/iconfont-nodata.ttf",
+	        null,
+	        "fonts/iconfont.ttf",
+	        "css/info/info_detail.css",
+	        "css/mui.min.css"
+	      ],
+	      "refer": [
+	        "userLogin.html"
+	      ],
+	      "priority": 0
+	    },
+	    "doctor/doctor_list.html": {
+	      "resources": [
+	        "js/mui.min.js",
+	        "css/common.css",
+	        "fonts/mui.ttf",
+	        "images/doctor-down-arrow.png",
+	        "images/doctor-photo-3.png",
+	        "images/doctor-photo-2.png",
+	        "images/type.png",
+	        "images/hospital.png",
+	        "images/doctor-photo-4.png",
+	        "images/doctor-photo-1.png",
+	        "js/apphandle.js",
+	        "js/jquery-1.8.3.min.js",
+	        "css/input.css",
+	        "css/pullRefresh.css",
+	        "js/mui.pullToRefresh.min.js",
+	        "js/mui.pullToRefresh.material.min.js",
+	        "js/common.js",
+	        "js/mui.previewimage.js",
+	        "doctor/doctor_list.html",
+	        "css/base.css",
+	        "js/jquery.js",
+	        "images/default-doctor.png",
+	        "js/mui.zoom.js",
+	        "css/mui.min.css",
+	        "js/mui.lazyload.js",
+	        "js/mui.lazyload.img.js",
+	        "images/default-news.png",
+	        "images/doctor-photo.png",
+	        "js/mui.extend.js",
+	        "images/right.png",
+	        "css/main/doctorList.css",
+	        "js/util/util.js",
+	        "fonts/iconfont-nodata.ttf"
+	      ],
+	      "refer": [
+	        "doctor/doctor_detail.html"
+	      ],
+	      "priority": 0
+	    },
+	    "doctor/hospital_list.html": {
+	      "resources": [
+	        "images/doctor-photo-3.png",
+	        "images/doctor-photo-2.png",
+	        "css/common.css",
+	        "fonts/mui.ttf",
+	        "images/type.png",
+	        "images/hospital.png",
+	        "images/doctor-photo-4.png",
+	        "images/doctor-photo-1.png",
+	        "images/infor-photo-1.png",
+	        "images/infor-photo-2.png",
+	        "images/infor-photo-3.png",
+	        "images/up-arrow.png",
+	        "js/apphandle.js",
+	        "js/jquery-1.8.3.min.js",
+	        "js/mui.min.js",
+	        "css/input.css",
+	        "images/down-arrow.png",
+	        "js/common.js",
+	        "js/mui.pullToRefresh.min.js",
+	        "js/mui.pullToRefresh.material.min.js",
+	        "js/mui.previewimage.js",
+	        "css/pullRefresh.css",
+	        "css/base.css",
+	        "doctor/hospital_list.html",
+	        "images/icon_add.png",
+	        "images/default-news.png",
+	        "css/mui.min.css",
+	        "fonts/iconfont-nodata.ttf",
+	        "css/main/hospital.css"
+	      ],
+	      "refer": [
+	        "doctor/doctor_list.html",
+	        "doctor/doctor_list_hospital.html"
+	      ],
+	      "priority": 0
+	    },
+	    "doctor/doctor_detail.html": {
+	      "resources": [
+	        "images/center-photo.png",
+	        "css/common.css",
+	        "fonts/mui.ttf",
+	        "images/doctor-photo-2.png",
+	        "images/doctor-photo-1.png",
+	        "images/online.png",
+	        "images/appointment.png",
+	        "images/note.png",
+	        "js/mui.min.js",
+	        "js/apphandle.js",
+	        "js/jquery-1.8.3.min.js",
+	        "js/common.js",
+	        "js/mui.pullToRefresh.min.js",
+	        "js/mui.pullToRefresh.material.min.js",
+	        "js/mui.previewimage.js",
+	        "css/pullRefresh.css",
+	        "doctor/doctor_detail.html",
+	        "css/mui.min.css",
+	        "fonts/iconfont-nodata.ttf",
+	        "css/iconfont.css",
+	        "images/default-person.png",
+	        "images/default-doctor.png",
+	        "js/mui.zoom.js",
+	        "fonts/iconfont.ttf",
+	        "css/doctor/doctor_detail.css",
+	        "css/imagePreview.css"
+	      ],
+	      "refer": [
+	        "doctor/message_question_answer.html",
+	        "doctor/order_register.html",
+	        "doctor/online_preliminary.html",
+	        "userLogin.html"
+	      ],
+	      "priority": 0
+	    },
+	    "doctor/message_question_answer.html": {
+	      "resources": [
+	        "images/service.png",
+	        "css/common.css",
+	        "fonts/mui.ttf",
+	        "images/medical-2.png",
+	        "images/medical-add.png",
+	        "images/medical-1.png",
+	        "images/service-1.png",
+	        "css/input.css",
+	        "js/apphandle.js",
+	        "js/jquery-1.8.3.min.js",
+	        "js/common.js",
+	        "js/mui.min.js",
+	        "css/iconfont.css",
+	        "fonts/iconfont.ttf",
+	        "css/my.css",
+	        "fonts/iconfont-nodata.ttf",
+	        null,
+	        "css/mui.min.css"
+	      ],
+	      "refer": [
+	        "doctor/pay.html",
+	        "doctor/order_audit.html",
+	        "user_manual.html",
+	        "my_center/contactService.html"
+	      ],
+	      "priority": 0
+	    },
+	    "doctor/online_preliminary.html": {
+	      "resources": [
+	        "images/service.png",
+	        "js/mui.min.js",
+	        "css/common.css",
+	        "fonts/mui.ttf",
+	        "images/doctor-down-arrow.png",
+	        "css/case.css",
+	        "js/apphandle.js",
+	        "js/common.js",
+	        "js/jquery-1.8.3.min.js",
+	        "css/iconfont.css",
+	        "css/input.css",
+	        "images/service-1.png",
+	        "fonts/iconfont.ttf",
+	        "css/mui.picker.min.css",
+	        "js/mui.picker.min.js",
+	        "doctor/online_preliminary.html",
+	        "fonts/iconfont-nodata.ttf",
+	        "css/base.css",
+	        null,
+	        "images/right.png"
+	      ],
+	      "refer": [
+	        "doctor/pay.html",
+	        "doctor/order_succeed.html",
+	        "know_agree.html",
+	        "doctor/order_succeeds.html",
+	        "doctor/interview_order_succeed.html",
+	        "doctor/interview_submit_succeed.html",
+	        "my_center/contactService.html"
+	      ],
+	      "priority": 0
+	    },
+	    "doctor/order_register.html": {
+	      "resources": [
+	        "js/mui.picker.min.js",
+	        "js/mui.min.js",
+	        "css/common.css",
+	        "fonts/mui.ttf",
+	        "doctor/order_register.html",
+	        "css/mui.min.css",
+	        "css/mui.picker.min.css",
+	        "images/service.png",
+	        "images/service-1.png",
+	        "js/apphandle.js",
+	        "js/common.js",
+	        "js/jquery-1.8.3.min.js",
+	        "css/iconfont.css",
+	        "fonts/iconfont.ttf",
+	        "css/input.css",
+	        "fonts/iconfont-nodata.ttf",
+	        "images/medical-add.png",
+	        null,
+	        "css/order_register.css"
+	      ],
+	      "refer": [
+	        "doctor/pay.html",
+	        "my_center/contactService.html",
+	        "doctor/order_succeed.html",
+	        "know_agree.html",
+	        "doctor/order_succeeds.html",
+	        "doctor/order_audit.html",
+	        "userLogin.html"
+	      ],
+	      "priority": 0
+	    },
+	    "doctor/order_audit.html": {
+	      "resources": [
+	        "css/common.css",
+	        "fonts/mui.ttf",
+	        "images/check-bg.png",
+	        "css/mui.min.css",
+	        "images/succeed.png",
+	        "css/order.css",
+	        "js/apphandle.js",
+	        "js/jquery-1.8.3.min.js",
+	        "js/mui.min.js",
+	        "js/common.js",
+	        "fonts/iconfont-nodata.ttf"
+	      ],
+	      "refer": [
+	        "my_center/qa_record.html",
+	        "tabbar.html",
+	        "my_center/my_order.html"
+	      ],
+	      "priority": 0
+	    },
+	    "doctor/order_succeed.html": {
+	      "resources": [
+	        "css/common.css",
+	        "fonts/mui.ttf",
+	        "css/mui.min.css",
+	        "images/order-bg.png",
+	        "images/succeed.png",
+	        "css/order.css",
+	        "js/common.js",
+	        "js/jquery-1.8.3.min.js",
+	        "js/mui.min.js",
+	        "images/check-bg.png"
+	      ],
+	      "refer": [
+	        "my_center/myInterview.html"
+	      ],
+	      "priority": 0
+	    },
+	    "doctor/order_fail.html": {
+	      "resources": [
+	        "css/common.css",
+	        "fonts/mui.ttf",
+	        "css/mui.min.css",
+	        "images/fail.png",
+	        "images/fail-bg.png"
+	      ],
+	      "refer": [],
+	      "priority": 0
+	    },
+	    "doctor/pay.html": {
+	      "resources": [
+	        "css/common.css",
+	        "fonts/mui.ttf",
+	        "css/mui.min.css",
+	        "images/choice-before.png",
+	        "images/choice-after.png",
+	        "images/ylzf.png",
+	        "images/zfb.png",
+	        "images/wechat-1.png",
+	        "images/bank.png",
+	        "js/common.js",
+	        "js/jquery-1.8.3.min.js",
+	        "js/mui.min.js",
+	        "images/weixin.png",
+	        "js/passwordBox.min.js",
+	        "fonts/iconfont-nodata.ttf",
+	        "doctor/img/pwd_keyboard.png",
+	        null,
+	        "css/doctor/pay.css"
+	      ],
+	      "refer": [
+	        "doctor/purchase_succeed.html",
+	        "doctor/order_audit.html",
+	        "doctor/submit_succeed.html",
+	        "doctor/order_succeed.html",
+	        "doctor/interview_submit_succeed.html",
+	        "my_center/setPayPwd.html",
+	        "doctor/numberKeyboard.html",
+	        "my_center/forgetPayPwd.html"
+	      ],
+	      "priority": 0
+	    },
+	    "gene_detect/gene_detect_list.html": {
+	      "resources": [
+	        "images/product-3.png",
+	        "images/product-4.png",
+	        "fonts/mui.ttf",
+	        "css/mui.min.css",
+	        "images/product-1.png",
+	        "images/product-6.png",
+	        "images/product-5.png",
+	        "images/product-2.png",
+	        "css/common.css",
+	        "css/list.css",
+	        "gene_detect/gene_detect_list.html",
+	        "js/apphandle.js",
+	        "js/common.js",
+	        "js/jquery-1.8.3.min.js",
+	        "js/mui.min.js",
+	        "js/mui.previewimage.js",
+	        "js/mui.pullToRefresh.min.js",
+	        "js/mui.pullToRefresh.material.min.js",
+	        "css/pullRefresh.css",
+	        "fonts/iconfont-nodata.ttf",
+	        "js/mui.lazyload.js",
+	        "js/mui.lazyload.img.js",
+	        "images/default-news.png",
+	        "images/default-record.png"
+	      ],
+	      "refer": [
+	        "gene_detect/gene_detect_detail.html"
+	      ],
+	      "priority": 0
+	    },
+	    "gene_detect/gene_detect_detail.html": {
+	      "resources": [
+	        "images/infor-detail-1.png",
+	        "images/service.png",
+	        "js/mui.min.js",
+	        "css/common.css",
+	        "fonts/mui.ttf",
+	        "images/infor-detail-2.png",
+	        "images/service-1.png",
+	        "css/detail.css",
+	        "js/apphandle.js",
+	        "js/jquery-1.8.3.min.js",
+	        "js/common.js",
+	        "css/iconfont.css",
+	        "fonts/iconfont.ttf",
+	        "fonts/iconfont-nodata.ttf",
+	        null,
+	        "css/mui.min.css",
+	        "css/medicine/gene_detect_detail.css"
+	      ],
+	      "refer": [
+	        "doctor/pay.html",
+	        "my_center/contactService.html",
+	        "know_agree.html",
+	        "userLogin.html"
+	      ],
+	      "priority": 0
+	    },
+	    "gene_detect/purchase_succeed.html": {
+	      "resources": [
+	        "css/common.css",
+	        "fonts/mui.ttf",
+	        "css/mui.min.css",
+	        "images/order-bg.png",
+	        "images/succeed.png"
+	      ],
+	      "refer": [],
+	      "priority": 0
+	    },
+	    "vaccine/vaccine_kind.html": {
+	      "resources": [
+	        "images/product-3.png",
+	        "js/mui.min.js",
+	        "images/product-4.png",
+	        "css/common.css",
+	        "images/up-arrow.png",
+	        "fonts/mui.ttf",
+	        "images/product-1.png",
+	        "images/product-6.png",
+	        "images/product-5.png",
+	        "images/product-2.png",
+	        "css/list.css",
+	        "js/apphandle.js",
+	        "js/jquery-1.8.3.min.js",
+	        "css/input.css",
+	        "js/common.js",
+	        "js/mui.pullToRefresh.min.js",
+	        "js/mui.pullToRefresh.material.min.js",
+	        "js/mui.previewimage.js",
+	        "css/pullRefresh.css",
+	        "images/down-arrow.png",
+	        "fonts/iconfont-nodata.ttf",
+	        "js/mui.lazyload.js",
+	        "js/mui.lazyload.img.js",
+	        "images/default-news.png",
+	        "css/mui.min.css",
+	        "js/util/util.js",
+	        "images/default-record.png",
+	        "css/medicine/vaccine_kind.css"
+	      ],
+	      "refer": [
+	        "vaccine/vaccine_detail.html"
+	      ],
+	      "priority": 0
+	    },
+	    "vaccine/vaccine_detail.html": {
+	      "resources": [
+	        "images/infor-detail-1.png",
+	        "images/service.png",
+	        "js/mui.min.js",
+	        "css/common.css",
+	        "fonts/mui.ttf",
+	        "images/service-1.png",
+	        "images/infor-detail-2.png",
+	        "css/detail.css",
+	        "js/common.js",
+	        "css/iconfont.css",
+	        "fonts/iconfont.ttf",
+	        "fonts/iconfont-nodata.ttf",
+	        "css/mui.min.css",
+	        "css/medicine/vaccine_detail.css"
+	      ],
+	      "refer": [
+	        "doctor/pay.html",
+	        "know_agree.html",
+	        "userLogin.html",
+	        "my_center/contactService.html"
+	      ],
+	      "priority": 0
+	    },
+	    "communicate/release_post.html": {
+	      "resources": [
+	        "css/common.css",
+	        "fonts/mui.ttf",
+	        "images/medical-2.png",
+	        "images/medical-add.png",
+	        "images/medical-1.png",
+	        "css/my.css",
+	        "js/apphandle.js",
+	        "js/jquery-1.8.3.min.js",
+	        "js/common.js",
+	        "js/mui.min.js",
+	        "css/input.css",
+	        "css/iconfont.css",
+	        "fonts/iconfont.ttf",
+	        "fonts/iconfont-nodata.ttf",
+	        "/images/medical-add.png"
+	      ],
+	      "refer": [
+	        "communicate/communicate_circle.html"
+	      ],
+	      "priority": 0
+	    },
+	    "communicate/communicate_circle.html": {
+	      "resources": [
+	        "images/praise-before.png",
+	        "js/mui.min.js",
+	        "css/common.css",
+	        "fonts/mui.ttf",
+	        "images/praise-after.png",
+	        "images/news-photo.png",
+	        "js/apphandle.js",
+	        "css/pullRefresh.css",
+	        "js/mui.pullToRefresh.min.js",
+	        "js/mui.pullToRefresh.material.min.js",
+	        "js/mui.previewimage.js",
+	        "js/common.js",
+	        "communicate/communicate_circle.html",
+	        "js/jquery-1.8.3.min.js",
+	        "fonts/iconfont-nodata.ttf",
+	        "images/default-person.png",
+	        "css/mui.min.css"
+	      ],
+	      "refer": [
+	        "communicate/post_detail.html",
+	        "userLogin.html"
+	      ],
+	      "priority": 0
+	    },
+	    "communicate/post_detail.html": {
+	      "resources": [
+	        "css/common.css",
+	        "images/con-detail-1.png",
+	        "fonts/mui.ttf",
+	        "images/con-detail-2.png",
+	        "images/con-detail-3.png",
+	        "images/praise-after.png",
+	        "images/news-photo.png",
+	        "images/person-photo-2.png",
+	        "css/input.css",
+	        "images/release.png",
+	        "js/apphandle.js",
+	        "js/jquery-1.8.3.min.js",
+	        "js/mui.min.js",
+	        "communicate/post_detail.html",
+	        "js/common.js",
+	        "js/mui.pullToRefresh.min.js",
+	        "js/mui.pullToRefresh.material.min.js",
+	        "js/mui.previewimage.js",
+	        "css/pullRefresh.css",
+	        "css/iconfont-icon.css",
+	        "fonts/iconfont-icon.ttf",
+	        "images/praise-before.png",
+	        "fonts/iconfont-nodata.ttf",
+	        "images/default-record.png",
+	        "js/mui.zoom.js",
+	        null
+	      ],
+	      "refer": [
+	        "communicate/release_post.html",
+	        "communicate/release_posts.html",
+	        "userLogin.html"
+	      ],
+	      "priority": 0
+	    },
+	    "my_case_history/case_list.html": {
+	      "resources": [
+	        "images/add.png",
+	        "fonts/mui.ttf",
+	        "css/case.css",
+	        "js/apphandle.js",
+	        "js/jquery-1.8.3.min.js",
+	        "js/mui.min.js",
+	        "css/common.css",
+	        "js/common.js",
+	        "js/mui.pullToRefresh.min.js",
+	        "js/mui.pullToRefresh.material.min.js",
+	        "js/mui.previewimage.js",
+	        "css/pullRefresh.css",
+	        "fonts/iconfont-nodata.ttf",
+	        "css/mui.min.css"
+	      ],
+	      "refer": [
+	        "my_case_history/add_case.html",
+	        "my_case_history/case_detail.html",
+	        "my_case_history/add_record.html"
+	      ],
+	      "priority": 0
+	    },
+	    "my_center/myD.html": {
+	      "resources": [
+	        "img/question-record.png",
+	        "img/modify.png",
+	        "img/service.png",
+	        "img/note.png",
+	        "img/medical-record.png",
+	        "img/purchase-record.png",
+	        "img/userImg.png",
+	        "img/about.png",
+	        "img/wallet.png",
+	        "img/appointment.png",
+	        "img/inquiry.png",
+	        "img/collection.png",
+	        "img/photo.png",
+	        "js/apphandle.js",
+	        "js/jquery-1.8.3.min.js",
+	        "css/my.css",
+	        "css/mui.min.css",
+	        "fonts/mui.ttf",
+	        "js/mui.min.js",
+	        "js/common.js",
+	        "js/mui.previewimage.js",
+	        "css/common.css",
+	        null,
+	        "js/mui.zoom.js",
+	        "images/default-person.png",
+	        "css/imagepreview/imagespreview.css",
+	        "css/imagePreview.css",
+	        "css/center/myD.css",
+	        "fonts/iconfont-nodata.ttf"
+	      ],
+	      "refer": [
+	        "my_center/myinfo.html",
+	        "my_center/qa_record.html",
+	        "my_center/about.html",
+	        "my_center/swipe.html",
+	        "my_center/mywallet.html",
+	        "my_center/myInterview.html",
+	        "my_center/buy_record.html",
+	        "my_case_history/case_list.html",
+	        "my_center/contactService.html",
+	        "my_center/my_order.html",
+	        "my_center/setting.html",
+	        "my_center/tab_post.html",
+	        "my_center/my_post.html",
+	        "userLogin.html",
+	        "my_center/question.html"
+	      ],
+	      "priority": 0
+	    },
+	    "my_center/qa_details.html": {
+	      "resources": [
+	        "images/medical-2.png",
+	        "images/medical-1.png",
+	        "js/mui.previewimage.js",
+	        "css/my.css",
+	        "js/mui.zoom.js",
+	        "js/mui.min.js",
+	        "fonts/mui.ttf",
+	        "css/mui.min.css",
+	        "css/common.css",
+	        "js/common.js",
+	        "fonts/iconfont-nodata.ttf"
+	      ],
+	      "refer": [],
+	      "priority": 0
+	    },
+	    "my_center/qa_record.html": {
+	      "resources": [
+	        "my_center/qa_record.html",
+	        "js/apphandle.js",
+	        "css/my.css",
+	        "js/common.js",
+	        "js/mui.pullToRefresh.min.js",
+	        "js/jquery-1.8.3.min.js",
+	        "js/mui.pullToRefresh.material.min.js",
+	        "js/mui.min.js",
+	        "fonts/mui.ttf",
+	        "css/mui.min.css",
+	        "css/pullRefresh.css",
+	        "css/common.css",
+	        "css/order/qa_record.css",
+	        "fonts/iconfont-nodata.ttf"
+	      ],
+	      "refer": [
+	        "my_center/qa_details.html"
+	      ],
+	      "priority": 0
+	    },
+	    "doctor/purchase_succeed.html": {
+	      "resources": [
+	        "css/order.css",
+	        "images/order-bg.png",
+	        "images/succeed.png",
+	        "css/mui.min.css",
+	        "css/common.css",
+	        "js/mui.min.js",
+	        "js/common.js",
+	        "fonts/iconfont-nodata.ttf",
+	        "fonts/mui.ttf"
+	      ],
+	      "refer": [
+	        "index.html",
+	        "my_center/buy_record.html",
+	        "tabbar.html"
+	      ],
+	      "priority": 0
+	    },
+	    "my_center/contactService.html": {
+	      "resources": [
+	        "js/common.js",
+	        "js/mui.min.js",
+	        "css/common.css",
+	        "fonts/mui.ttf",
+	        "images/service.png",
+	        "images/anwser.png",
+	        "css/iconfont.css",
+	        "css/mui.min.css",
+	        "fonts/iconfont.ttf",
+	        "css/common-form.css",
+	        "images/back-arrow.png",
+	        "images/load2.gif",
+	        "images/default-person.png",
+	        "fonts/iconfont-nodata.ttf",
+	        "css/center/contactService.css"
+	      ],
+	      "refer": [],
+	      "priority": 0
+	    },
+	    "my_center/myinfo.html": {
+	      "resources": [
+	        "fonts/mui.ttf",
+	        "js/apphandle.js",
+	        "css/my.css",
+	        "js/jquery-1.8.3.min.js",
+	        "js/mui.min.js",
+	        "css/mui.min.css",
+	        "js/mui.picker.min.js",
+	        "css/mui.picker.min.css",
+	        "js/common.js",
+	        "css/case.css",
+	        "css/input.css",
+	        "js/mui.poppicker.js",
+	        "css/mui.poppicker.css",
+	        "css/common.css",
+	        "css/center/myinfo.css",
+	        "fonts/iconfont-nodata.ttf"
+	      ],
+	      "refer": [
+	        "my_center/forget_pwd.html",
+	        "my_center/forget_nickname.html",
+	        "my_center/modify_nickname.html",
+	        "my_center/modify_pwd.html",
+	        "userLogin.html",
+	        "my_center/modify_payPwd.html",
+	        "my_center/setPayPwd.html"
+	      ],
+	      "priority": 0
+	    },
+	    "my_center/swipe.html": {
+	      "resources": [
+	        "img/keep.jpg",
+	        "img/shanc.png",
+	        "js/apphandle.js",
+	        "js/mui.min.js",
+	        "fonts/mui.ttf",
+	        "css/mui.min.css",
+	        "js/common.js",
+	        "js/mui.pullToRefresh.min.js",
+	        "js/jquery-1.8.3.min.js",
+	        "js/mui.pullToRefresh.material.min.js",
+	        "css/pullRefresh.css",
+	        "my_center/swipe.html",
+	        "images/check-bg.png",
+	        "images/default-news.png",
+	        "css/common.css",
+	        "css/center/swipe.css",
+	        "fonts/iconfont-nodata.ttf"
+	      ],
+	      "refer": [
+	        "info/info_detail.html"
+	      ],
+	      "priority": 0
+	    },
+	    "my_center/myInterview.html": {
+	      "resources": [
+	        "js/apphandle.js",
+	        "css/my.css",
+	        "js/common.js",
+	        "js/mui.pullToRefresh.min.js",
+	        "js/jquery-1.8.3.min.js",
+	        "js/mui.pullToRefresh.material.min.js",
+	        "js/mui.min.js",
+	        "fonts/mui.ttf",
+	        "css/mui.min.css",
+	        "css/pullRefresh.css",
+	        "my_center/myInterview.html",
+	        "css/iconfont.css",
+	        "fonts/iconfont.ttf",
+	        "css/pay/confirmCss.css",
+	        "css/order/myInterview.css",
+	        "css/common.css",
+	        "fonts/iconfont-nodata.ttf"
+	      ],
+	      "refer": [
+	        "my_center/interview_details.html",
+	        "my_center/evaluate.html"
+	      ],
+	      "priority": 0
+	    },
+	    "my_center/interview_details.html": {
+	      "resources": [
+	        "css/my.css",
+	        "css/mui.min.css",
+	        "js/common.js",
+	        "js/jquery-1.8.3.min.js",
+	        "js/mui.min.js",
+	        "fonts/mui.ttf",
+	        "css/common.css",
+	        "fonts/iconfont-nodata.ttf"
+	      ],
+	      "refer": [
+	        "my_center/evaluate.html",
+	        "doctor/cancel_succeed.html",
+	        "doctor/online_preliminary.html",
+	        "doctor/pay.html"
+	      ],
+	      "priority": 0
+	    },
+	    "my_center/buy_record.html": {
+	      "resources": [
+	        "css/my.css",
+	        "images/infor-photo-1.png",
+	        "css/pullRefresh.css",
+	        "js/common.js",
+	        "js/jquery-1.8.3.min.js",
+	        "js/mui.pullToRefresh.min.js",
+	        "js/mui.pullToRefresh.material.min.js",
+	        "js/mui.min.js",
+	        "fonts/mui.ttf",
+	        "css/mui.min.css",
+	        "js/mui.previewimage.js",
+	        "my_center/buy_record.html",
+	        "images/default-record.png",
+	        "css/pay/confirmCss.css",
+	        "css/common.css",
+	        "css/order/buy_record.css",
+	        "fonts/iconfont-nodata.ttf"
+	      ],
+	      "refer": [
+	        "my_center/qa_details.html",
+	        "doctor/pay.html",
+	        "gene_detect/gene_detect_detail.html",
+	        "vaccine/vaccine_detail.html"
+	      ],
+	      "priority": 0
+	    },
+	    "userLogin.html": {
+	      "resources": [
+	        "js/common.js",
+	        "js/mui.min.js",
+	        "css/common.css",
+	        "css/iconfont.css",
+	        "css/mui.min.css",
+	        "fonts/iconfont.ttf",
+	        "fonts/mui.ttf",
+	        "js/apphandle.js",
+	        "css/common-form.css",
+	        "js/jquery-1.8.3.min.js",
+	        "images/logo.png",
+	        "images/wechat-icon.png",
+	        "images/weixin.png",
+	        "images/qq.png",
+	        null,
+	        "images/icon_120x120.png",
+	        "css/login/userLogin.css",
+	        "img/icon_close.png"
+	      ],
+	      "refer": [
+	        "index.html",
+	        "tabbar.html",
+	        "forgetPwd.html",
+	        "register.html",
+	        "my_center/contactService.html",
+	        "doctor/online_preliminary.html",
+	        "doctor/message_question_answer.html",
+	        "doctor/order_register.html",
+	        "doctor/pay.html",
+	        "my_center/boundpho.html",
+	        "doctor/doctor_detail.html",
+	        "info/info_detail.html",
+	        "communicate/post_detail.html",
+	        "my_center/interview_details.html",
+	        "my_center/qa_details.html",
+	        "my_center/order_detail.html",
+	        "medicine_center/medicine_detail.html",
+	        "my_case_history/edit_case.html",
+	        "guide.html",
+	        "doctor/doctor_list.html",
+	        "userLogin.html",
+	        "my_center/myD.html"
+	      ],
+	      "priority": 0
+	    },
+	    "forgetPwd.html": {
+	      "resources": [
+	        "fonts/mui.ttf",
+	        "css/common-form.css",
+	        "js/common.js",
+	        "js/jquery-1.8.3.min.js",
+	        "js/mui.min.js",
+	        "css/mui.min.css",
+	        "js/apphandle.js",
+	        "css/input.css",
+	        "css/login/forgetPwd.css"
+	      ],
+	      "refer": [
+	        "resetPwd.html"
+	      ],
+	      "priority": 0
+	    },
+	    "register.html": {
+	      "resources": [
+	        "css/common-form.css",
+	        "js/common.js",
+	        "js/jquery-1.8.3.min.js",
+	        "js/mui.min.js",
+	        "fonts/mui.ttf",
+	        "css/iconfont.css",
+	        "css/mui.min.css",
+	        "fonts/iconfont.ttf",
+	        "js/apphandle.js",
+	        "css/input.css",
+	        null,
+	        "css/login/register.css"
+	      ],
+	      "refer": [
+	        "tabbar.html",
+	        "user_manual.html",
+	        "userLogin.html"
+	      ],
+	      "priority": 0
+	    },
+	    "my_center/my_order.html": {
+	      "resources": [
+	        "js/apphandle.js",
+	        "css/my.css",
+	        "js/jquery-1.8.3.min.js",
+	        "js/mui.min.js",
+	        "css/common.css",
+	        "fonts/mui.ttf",
+	        "css/mui.min.css",
+	        "js/common.js",
+	        "js/mui.pullToRefresh.min.js",
+	        "js/mui.pullToRefresh.material.min.js",
+	        "css/pullRefresh.css",
+	        "my_center/my_order.html",
+	        "fonts/iconfont-nodata.ttf",
+	        "css/center/myorder.css",
+	        "css/pay/confirmCss.css"
+	      ],
+	      "refer": [
+	        "my_center/order_detail.html",
+	        "doctor/cancel_succeed.html",
+	        "doctor/pay.html"
+	      ],
+	      "priority": 0
+	    },
+	    "my_center/setting.html": {
+	      "resources": [
+	        "css/case.css",
+	        "css/input.css",
+	        "js/apphandle.js",
+	        "css/common.css",
+	        "js/common.js",
+	        "js/jquery-1.8.3.min.js",
+	        "js/mui.min.js",
+	        "fonts/mui.ttf",
+	        "fonts/iconfont-nodata.ttf",
+	        "css/mui.min.css"
+	      ],
+	      "refer": [
+	        "my_center/help.html",
+	        "my_center/feedback.html",
+	        "my_center/about_software.html",
+	        "userLogin.html"
+	      ],
+	      "priority": 0
+	    },
+	    "my_center/help.html": {
+	      "resources": [
+	        "js/apphandle.js",
+	        "js/jquery-1.8.3.min.js",
+	        "js/mui.min.js",
+	        "css/common.css",
+	        "fonts/mui.ttf",
+	        "js/common.js",
+	        "fonts/iconfont-nodata.ttf",
+	        "css/mui.min.css"
+	      ],
+	      "refer": [
+	        "my_center/help_detail.html"
+	      ],
+	      "priority": 0
+	    },
+	    "resetPwd.html": {
+	      "resources": [
+	        "js/apphandle.js",
+	        "css/common-form.css",
+	        "js/common.js",
+	        "js/mui.min.js",
+	        "fonts/mui.ttf",
+	        "css/mui.min.css",
+	        "css/input.css",
+	        "js/jquery-1.8.3.min.js",
+	        "css/login/resetPwd.css"
+	      ],
+	      "refer": [
+	        "tabbar.html",
+	        "userLogin.html"
+	      ],
+	      "priority": 0
+	    },
+	    "my_center/order_detail.html": {
+	      "resources": [
+	        "fonts/mui.ttf",
+	        "js/apphandle.js",
+	        "js/jquery-1.8.3.min.js",
+	        "js/mui.min.js",
+	        "css/mui.min.css",
+	        "css/my.css",
+	        "css/common.css",
+	        "js/common.js",
+	        "fonts/iconfont-nodata.ttf",
+	        "css/order/order_detail.css"
+	      ],
+	      "refer": [
+	        "doctor/cancel_succeed.html",
+	        "my_center/evaluate.html",
+	        "doctor/order_register.html",
+	        "doctor/pay.html"
+	      ],
+	      "priority": 0
+	    },
+	    "my_center/mywallet.html": {
+	      "resources": [
+	        "js/apphandle.js",
+	        "css/my.css",
+	        "js/jquery-1.8.3.min.js",
+	        "js/mui.min.js",
+	        "fonts/mui.ttf",
+	        "css/mui.min.css",
+	        "js/common.js",
+	        "css/center/mywallet.css"
+	      ],
+	      "refer": [
+	        "my_center/wallet_cash.html",
+	        "my_center/recharge.html",
+	        "my_center/records.html"
+	      ],
+	      "priority": 0
+	    },
+	    "my_center/wallet_cash.html": {
+	      "resources": [
+	        "css/my.css",
+	        "js/jquery-1.8.3.min.js",
+	        "js/mui.min.js",
+	        "fonts/mui.ttf",
+	        "css/mui.min.css",
+	        "css/mui.picker.min.css",
+	        "css/mui.poppicker.css",
+	        "js/mui.picker.min.js",
+	        "js/mui.poppicker.js",
+	        "js/city.data-3.js",
+	        "js/common.js",
+	        "css/center/wallet_cash.css"
+	      ],
+	      "refer": [
+	        "my_center/mywallet.html"
+	      ],
+	      "priority": 0
+	    },
+	    "my_center/recharge.html": {
+	      "resources": [
+	        "img/unionpay.png",
+	        "img/zfb.png",
+	        "img/choice-after.png",
+	        "img/choice-before.png",
+	        "img/wechat.png",
+	        "css/my.css",
+	        "js/jquery-1.8.3.min.js",
+	        "js/mui.min.js",
+	        "fonts/mui.ttf",
+	        "css/mui.min.css",
+	        "js/common.js",
+	        "images/zfb.png",
+	        "images/weixin.png",
+	        "images/choice-before.png",
+	        "images/choice-after.png",
+	        "css/common.css",
+	        "images/bank.png",
+	        null,
+	        "fonts/iconfont-nodata.ttf",
+	        "css/center/recharge.css"
+	      ],
+	      "refer": [
+	        "my_center/mywallet.html"
+	      ],
+	      "priority": 0
+	    },
+	    "my_center/tab_post.html": {
+	      "resources": [
+	        "img/keep.jpg",
+	        "img/input.png",
+	        "img/note-person.png",
+	        "js/mui.min.js",
+	        "fonts/mui.ttf",
+	        "css/mui.min.css",
+	        "img/shanc.png",
+	        "js/common.js",
+	        "js/mui.pullToRefresh.min.js",
+	        "js/jquery-1.8.3.min.js",
+	        "js/mui.pullToRefresh.material.min.js",
+	        "css/pullRefresh.css",
+	        "my_center/tab_post.html",
+	        "js/mui.zoom.js",
+	        "css/common.css",
+	        "js/mui.previewimage.js",
+	        "images/default-record.png",
+	        "css/iconfont.css",
+	        "css/iconfont-icon.css",
+	        "images/default-person.png",
+	        "fonts/iconfont.ttf",
+	        "fonts/iconfont-nodata.ttf"
+	      ],
+	      "refer": [
+	        "communicate/post_detail.html"
+	      ],
+	      "priority": 0
+	    },
+	    "my_center/forget_pwd.html": {
+	      "resources": [
+	        "my_center/forget_pwd.html"
+	      ],
+	      "refer": [],
+	      "priority": 0
+	    },
+	    "my_center/about_software.html": {
+	      "resources": [
+	        "images/logo.png",
+	        "js/mui.min.js",
+	        "fonts/mui.ttf",
+	        "css/mui.min.css",
+	        "js/common.js",
+	        "images/logo-copyright.png"
+	      ],
+	      "refer": [],
+	      "priority": 0
+	    },
+	    "my_center/modify_nickname.html": {
+	      "resources": [
+	        "css/my.css",
+	        "js/mui.min.js",
+	        "fonts/mui.ttf",
+	        "css/mui.min.css",
+	        "js/apphandle.js"
+	      ],
+	      "refer": [],
+	      "priority": 0
+	    },
+	    "my_center/modify_pwd.html": {
+	      "resources": [
+	        "my_center/modify_pwd.html",
+	        "js/apphandle.js",
+	        "css/my.css",
+	        "js/jquery-1.8.3.min.js",
+	        "js/mui.min.js",
+	        "fonts/mui.ttf",
+	        "css/mui.min.css",
+	        "js/common.js",
+	        "css/common.css",
+	        "fonts/iconfont-nodata.ttf"
+	      ],
+	      "refer": [
+	        "userLogin.html"
+	      ],
+	      "priority": 0
+	    },
+	    "doctor/submit_succeed.html": {
+	      "resources": [
+	        "images/check-bg.png",
+	        "js/common.js",
+	        "js/jquery-1.8.3.min.js",
+	        "js/mui.min.js",
+	        "css/common.css",
+	        "fonts/mui.ttf",
+	        "css/order.css",
+	        "css/mui.min.css",
+	        "images/succeed.png",
+	        "fonts/iconfont-nodata.ttf"
+	      ],
+	      "refer": [
+	        "my_center/qa_record.html"
+	      ],
+	      "priority": 0
+	    },
+	    "doctor/cancel_succeed.html": {
+	      "resources": [
+	        "css/order.css",
+	        "images/order-bg.png",
+	        "images/succeed.png",
+	        "js/apphandle.js",
+	        "js/jquery-1.8.3.min.js",
+	        "js/mui.min.js",
+	        "css/common.css",
+	        "fonts/mui.ttf",
+	        "css/mui.min.css",
+	        "js/common.js",
+	        "fonts/iconfont-nodata.ttf"
+	      ],
+	      "refer": [
+	        "my_center/myInterview.html",
+	        "my_center/my_order.html"
+	      ],
+	      "priority": 0
+	    },
+	    "user_manual.html": {
+	      "resources": [
+	        "css/detail.css",
+	        "js/mui.min.js",
+	        "css/common.css",
+	        "fonts/mui.ttf",
+	        "js/common.js",
+	        "fonts/iconfont-nodata.ttf",
+	        "css/mui.min.css"
+	      ],
+	      "refer": [],
+	      "priority": 0
+	    },
+	    "my_center/evaluate.html": {
+	      "resources": [
+	        "css/my.css",
+	        "js/jquery-1.8.3.min.js",
+	        "js/mui.min.js",
+	        "fonts/mui.ttf",
+	        "css/mui.min.css",
+	        "js/common.js",
+	        null,
+	        "css/common.css",
+	        "fonts/iconfont-nodata.ttf",
+	        "css/center/feedback.css"
+	      ],
+	      "refer": [
+	        "my_center/interview_details.html",
+	        "my_center/order_detail.html"
+	      ],
+	      "priority": 0
+	    },
+	    "my_center/records.html": {
+	      "resources": [
+	        "css/my.css",
+	        "js/common.js",
+	        "js/mui.pullToRefresh.min.js",
+	        "js/jquery-1.8.3.min.js",
+	        "js/mui.pullToRefresh.material.min.js",
+	        "js/mui.min.js",
+	        "fonts/mui.ttf",
+	        "css/mui.min.css",
+	        "css/pullRefresh.css",
+	        "css/iconfont.css",
+	        "fonts/iconfont.ttf",
+	        "css/common.css",
+	        "css/center/records.css",
+	        "fonts/iconfont-nodata.ttf"
+	      ],
+	      "refer": [],
+	      "priority": 0
+	    },
+	    "my_center/about.html": {
+	      "resources": [
+	        "css/my.css",
+	        "js/mui.min.js",
+	        "fonts/mui.ttf",
+	        "css/mui.min.css",
+	        "js/common.js",
+	        "images/logo-copyright.png",
+	        "css/common.css",
+	        "css/center/about.css",
+	        "fonts/iconfont-nodata.ttf"
+	      ],
+	      "refer": [],
+	      "priority": 0
+	    },
+	    "my_center/boundpho.html": {
+	      "resources": [
+	        "my_center/boundpho.html",
+	        "css/my.css",
+	        "fonts/mui.ttf",
+	        "css/common-form.css",
+	        "js/common.js",
+	        "js/mui.min.js",
+	        "css/mui.min.css",
+	        "css/common.css",
+	        "css/login/boundpho.css",
+	        "fonts/iconfont-nodata.ttf"
+	      ],
+	      "refer": [
+	        "tabbar.html"
+	      ],
+	      "priority": 0
+	    },
+	    "my_center/feedback.html": {
+	      "resources": [
+	        "css/my.css",
+	        "css/mui.min.css",
+	        "js/jquery-1.8.3.min.js",
+	        "js/mui.min.js",
+	        "fonts/mui.ttf",
+	        "js/common.js",
+	        "css/common.css",
+	        "css/center/feedback.css",
+	        "fonts/iconfont-nodata.ttf"
+	      ],
+	      "refer": [
+	        "my_center/setting.html"
+	      ],
+	      "priority": 0
+	    },
+	    "know_agree.html": {
+	      "resources": [
+	        "css/detail.css",
+	        "js/mui.min.js",
+	        "css/common.css",
+	        "fonts/mui.ttf",
+	        "js/common.js",
+	        "fonts/iconfont-nodata.ttf",
+	        "css/mui.min.css"
+	      ],
+	      "refer": [],
+	      "priority": 0
+	    },
+	    "my_center/help_detail.html": {
+	      "resources": [
+	        "js/mui.min.js",
+	        "css/common.css",
+	        "fonts/mui.ttf",
+	        "js/common.js",
+	        "css/mui.min.css",
+	        "css/iconfont.css",
+	        "fonts/iconfont-nodata.ttf",
+	        "fonts/iconfont.ttf"
+	      ],
+	      "refer": [],
+	      "priority": 0
+	    },
+	    "slider_detail.html": {
+	      "resources": [
+	        "images/infor-detail-1.png",
+	        "js/mui.min.js",
+	        "css/common.css",
+	        "fonts/mui.ttf",
+	        "css/detail.css",
+	        "images/infor-detail-2.png"
+	      ],
+	      "refer": [],
+	      "priority": 0
+	    },
+	    "doctor/order_succeeds.html": {
+	      "resources": [
+	        "css/order.css",
+	        "images/order-bg.png",
+	        "images/succeed.png",
+	        "css/mui.min.css"
+	      ],
+	      "refer": [
+	        "my_center/my_order.html"
+	      ],
+	      "priority": 0
+	    },
+	    "doctor/interview_submit_succeed.html": {
+	      "resources": [
+	        "images/check-bg.png",
+	        "css/order.css",
+	        "images/succeed.png",
+	        "css/mui.min.css",
+	        "css/common.css",
+	        "js/common.js",
+	        "js/mui.min.js",
+	        "fonts/mui.ttf",
+	        "fonts/iconfont-nodata.ttf"
+	      ],
+	      "refer": [
+	        "my_center/myInterview.html"
+	      ],
+	      "priority": 0
+	    },
+	    "doctor/interview_order_succeed.html": {
+	      "resources": [
+	        "images/order-bg.png",
+	        "css/common.css",
+	        "css/order.css",
+	        "images/succeed.png"
+	      ],
+	      "refer": [],
+	      "priority": 0
+	    },
+	    "my_center/my_post.html": {
+	      "resources": [
+	        "img/keep.jpg",
+	        "img/input.png",
+	        "img/shanc.png",
+	        "img/note-person.png",
+	        "js/common.js",
+	        "js/mui.zoom.js",
+	        "js/mui.min.js",
+	        "css/common.css",
+	        "fonts/mui.ttf",
+	        "css/mui.min.css",
+	        "js/mui.previewimage.js"
+	      ],
+	      "refer": [],
+	      "priority": 0
+	    },
+	    "medicine_center/medicine_center.html": {
+	      "resources": [
+	        "images/medicine-3.png",
+	        "images/medicine-2.png",
+	        "images/medicine-4.png",
+	        "images/medicine-1.png",
+	        "css/base.css",
+	        "fonts/mui.ttf",
+	        "js/common.js",
+	        "js/mui.pullToRefresh.min.js",
+	        "js/mui.pullToRefresh.material.min.js",
+	        "css/common.css",
+	        "js/mui.min.js",
+	        "css/pullRefresh.css",
+	        "css/mui.min.css",
+	        "images/right.png",
+	        "css/medicine/medicine_center.css",
+	        "js/util/util.js",
+	        "fonts/iconfont-nodata.ttf",
+	        "images/default-news.png"
+	      ],
+	      "refer": [
+	        "medicine_center/medicine_detail.html"
+	      ],
+	      "priority": 0
+	    },
+	    "medicine_center/medicine_detail.html": {
+	      "resources": [
+	        "images/m-add.png",
+	        "js/common.js",
+	        "js/mui.min.js",
+	        "css/common.css",
+	        "fonts/mui.ttf",
+	        "css/mui.min.css",
+	        "images/medicine-banner.png",
+	        "css/detail.css",
+	        "fonts/iconfont-nodata.ttf",
+	        "images/default-banner.png",
+	        "css/medicine/medicine_detail.css"
+	      ],
+	      "refer": [
+	        "my_case_history/case_list.html",
+	        "my_center/contactService.html",
+	        "userLogin.html"
+	      ],
+	      "priority": 0
+	    },
+	    "my_center/question.html": {
+	      "resources": [
+	        "css/my.css",
+	        "js/common.js",
+	        "js/mui.pullToRefresh.min.js",
+	        "js/mui.pullToRefresh.material.min.js",
+	        "js/mui.min.js",
+	        "fonts/mui.ttf",
+	        "css/mui.min.css",
+	        "css/pullRefresh.css"
+	      ],
+	      "refer": [],
+	      "priority": 0
+	    },
+	    "my_center/modify_payPwd.html": {
+	      "resources": [
+	        "js/mui.min.js",
+	        "css/common-form.css",
+	        "js/common.js",
+	        "fonts/mui.ttf",
+	        "css/input.css",
+	        "css/mui.min.css"
+	      ],
+	      "refer": [
+	        "my_center/myinfo.html"
+	      ],
+	      "priority": 0
+	    },
+	    "my_center/setPayPwd.html": {
+	      "resources": [
+	        "css/common-form.css",
+	        "js/common.js",
+	        "js/mui.min.js",
+	        "fonts/mui.ttf",
+	        "css/input.css",
+	        "css/mui.min.css"
+	      ],
+	      "refer": [],
+	      "priority": 0
+	    },
+	    "doctor/numberKeyboard.html": {
+	      "resources": [
+	        "js/mui.min.js",
+	        "css/mui.min.css"
+	      ],
+	      "refer": [],
+	      "priority": 0
+	    },
+	    "my_center/forgetPayPwd.html": {
+	      "resources": [
+	        "css/common-form.css",
+	        "js/common.js",
+	        "js/mui.min.js",
+	        "fonts/mui.ttf",
+	        "css/input.css",
+	        "css/mui.min.css",
+	        "css/center/forgetPayPwd.css"
+	      ],
+	      "refer": [
+	        "my_center/resetPayPwd.html"
+	      ],
+	      "priority": 0
+	    },
+	    "my_center/resetPayPwd.html": {
+	      "resources": [
+	        "css/common-form.css",
+	        "js/common.js",
+	        "js/mui.min.js",
+	        "fonts/mui.ttf",
+	        "css/input.css",
+	        "css/mui.min.css"
+	      ],
+	      "refer": [],
+	      "priority": 0
+	    },
+	    "guide.html": {
+	      "resources": [
+	        "images/guidance-2.png",
+	        "images/guidance-1.png",
+	        "images/guidance-3.png",
+	        "js/common.js",
+	        "js/mui.min.js",
+	        "css/mui.min.css",
+	        "fonts/mui.ttf",
+	        "css/login/guide.css"
+	      ],
+	      "refer": [],
+	      "priority": 0
+	    },
+	    "doctor/doctor_list_hospital.html": {
+	      "resources": [
+	        "js/util/util.js",
+	        "js/mui.min.js",
+	        "css/base.css",
+	        "js/common.js",
+	        "js/mui.pullToRefresh.min.js",
+	        "js/mui.pullToRefresh.material.min.js",
+	        "css/main/doctorList.css",
+	        "css/common.css",
+	        "fonts/mui.ttf",
+	        "css/mui.min.css",
+	        "css/pullRefresh.css",
+	        "images/type.png",
+	        "images/hospital.png",
+	        "images/default-doctor.png",
+	        "fonts/iconfont-nodata.ttf"
+	      ],
+	      "refer": [
+	        "doctor/doctor_detail.html"
+	      ],
+	      "priority": 0
+	    },
+	    "communicate/communicate.html": {
+	      "resources": [
+	        "fonts/mui.ttf",
+	        "js/mui.min.js",
+	        "css/common.css",
+	        "css/mui.min.css"
+	      ],
+	      "refer": [],
+	      "priority": 0
+	    }
+	  },
+	  "idle": {}
 	},
 	"unpackage":[
 	]

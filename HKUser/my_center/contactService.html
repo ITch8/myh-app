@@ -12,7 +12,7 @@
 	</head>
 	<body>
 	<div id='msg-list'>
-		<div style="text-align: center;margin-top:50%;font-size: 14px;"><img src="../images/load2.gif" /><div style="color: #32A3D6;">加载中</div></div>
+		<div style="text-align: center;margin-top:50%;" class="mui-text-center font-size-14"><div class="main-font-color">客服正在赶来..</div></div>
 	</div>
 	</body>
 <script type="text/javascript" src="../js/mui.min.js" ></script>
@@ -45,6 +45,7 @@
 	function getInfo(){
 		if(!WKIThaveLogin){
 			priateToken = window.getItem("privateToken");
+			console.log('priateToken==='+priateToken);
 			if(priateToken){
 				//获取客服配置信息
 				util.mypost('customer',{privateToken:priateToken}, false, function(data) {
@@ -76,6 +77,7 @@
 				            imageZoom:true,
 				            onLoginSuccess:function(){
 				            	WKIThaveLogin = true;
+				            	window.setItem('WKIThaveLogin',WKIThaveLogin);
 				            },
 				            beforeImageUploaderTrigger: function(event, uploadFn){//接管上传图片按钮
 				         		getImgs(uploadFn);

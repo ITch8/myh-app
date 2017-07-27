@@ -36,7 +36,7 @@
 			var pdata = {},div = null,aboutData = null,description = null;
 			var list = doc.getElementById("hospitalList");
 			_.plusReady(function(){
-				u.mypost("us/aboutUs",pdata,true,function(data){
+				u.mypost("us/aboutUs",pdata,false,function(data){
 					if(data.code == 0){
 						aboutData = data.data.us[0];
 						description = aboutData.description?aboutData.description:'';

@@ -65,6 +65,9 @@
 								if (data.code == 0) {
 									page = 1;
 									u.emptyHtml(list), caseList(data.data || []);
+								}else if(data.code == -1){
+									u.emptyHtml(list);
+									_.toast(data.msg || '服务器异常');
 								}else{
 									_.toast(data.msg || '服务器异常');
 								}
@@ -75,7 +78,11 @@
 					}
 				});
 				u.mypost("medical/getIllnessList",pdata,true,function(data){
-					caseList(data.data);
+					if (data.code == 0) {
+						u.emptyHtml(list), caseList(data.data || []);
+					}else{
+						_.toast(data.msg || '服务器异常');
+					}
 				},myerror);
 			})
 			function caseList(data){

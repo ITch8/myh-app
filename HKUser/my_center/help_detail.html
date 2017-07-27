@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
@@ -11,7 +10,6 @@
 		<link rel="stylesheet" href="../css/mui.min.css" />
 		<link rel="stylesheet" href="../css/common.css" />
 		<link rel="stylesheet" href="../css/iconfont.css" />
-		<link 
 	</head>
 	<style>
 		.mui-content> .mui-table-view:first-child {
@@ -25,7 +23,6 @@
 			color: #33A2D7;
 			font-size: 15px;
 			background-color: #FFFFFF;
-			border-bottom: 1px solid #DEDEDE;
 			padding: 15px;
 		}
 		
@@ -51,12 +48,8 @@
 	<script src="../js/common.js"></script>
 	<script>
 		(function(_,doc,u,w){
-			_.init({swipeBack:true});
-			var pdata = {};
-			var helpId = null;
-			var title = null,helpDetail = null;
-			var data = null;
-			var web = null;
+			_.init({swipeBack:false});
+			var pdata = {},helpId = null,title = null,helpDetail = null,data = null,web = null;
 			_.plusReady(function(){
 				web = plus.webview.currentWebview();
 				helpId = web.helpId;

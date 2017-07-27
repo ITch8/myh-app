@@ -59,7 +59,7 @@
 					flag:1
 				};
 				u.mypost("api/sendIdentifyCode",pdata,true,function(data){
-					if(data.code.result == 0){
+					if(data.code.result == 0 && data.msg == '请求成功'){
 						_.toast("验证码已发送");
 						u.time(self);
 					}else{
@@ -106,7 +106,6 @@
 					u.mypost("api/checkVerificationCode",pdata,false,function(data){
 						if(data.code == 0){
 							_.toast(data.msg);
-							u.close('forgetPwd');
 							w.openView("resetPwd.html",{telephone:mobile});
 						}else if(data.code == 1){
 							_.toast(data.msg);

@@ -29,13 +29,7 @@
 		(function(_,doc,u,w){
 			_(".mui-scroll-wrapper").scroll();
 			var pdata={offset:0,limit:5};
-			var page = 0;
-			var li = null;
-			var privateToken = null;
-			var _pull = null;
-			var state = null;
-			var orderType = null;
-			var imgServer = null;
+			var page = 0,li = null,privateToken = null,_pull = null,state = null,orderType = null,imgServer = null;
 			var list = doc.getElementById('buyRecord-list');
 			_.plusReady(function() {
 				privateToken = w.getItem("privateToken");

@@ -34,7 +34,7 @@
 				</form>
 				<div class="mui-row">
 					<span class="mui-col-xs-1"><span id="res" class="mui-icon iconfont icon-xuanzhong main-font-color"></span></span>
-					<span class="mui-col-xs-11" id="user-manual">同意 《用户使用手册》</span>
+					<span class="mui-col-xs-11" id="user-manual">同意 <span class="main-font-color">《名医肿瘤科用户协议》</span></span>
 				</div>
 				<div class="next">
 					<button id="next" type="button" class="mui-btn mui-btn-green">完成</button>
@@ -66,11 +66,11 @@
 					mobile:mobileValue
 				};
 				u.mypost("api/sendIdentifyCode",pdata,true,function(data){
-					if(data.code.result == 0){
+					if(data.code.result == 0 && data.msg == '请求成功'){
 						_.toast("验证码已发送");
 						u.time(self);
 					}else{
-						_.toast(data.msg)
+						_.toast(data.msg);
 					}
 				},myerror);
 			});

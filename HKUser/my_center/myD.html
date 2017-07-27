@@ -119,14 +119,9 @@
 					if(data.code == 0){
 						personData = data.data.userInfo;
 						imgServer = data.data.imgServer;
-						photo = personData.avatar?personData.avatar:'';
-						if(personData.avatar == ""){
-							photo = "../images/default-person.png";
-						}else{
-							photo = imgServer + photo;
-						}
+						photo = personData.avatar;
 						nickName = personData.nickname?personData.nickname:'';
-						doc.getElementById("headImg").src = photo;
+						doc.getElementById("headImg").src = photo && ""!= photo?imgServer + photo:"../images/default-person.png";
 						doc.getElementById("username").innerHTML = nickName;
 					}
 				},myerror)
@@ -225,9 +220,9 @@
 				if(data.code == 0){
 					personData = data.data.userInfo;
 					imgServer = data.data.imgServer;
-					photo = personData.avatar?personData.avatar:'';
+					photo = personData.avatar;
 					nickName = personData.nickname?personData.nickname:'';
-					document.getElementById("headImg").src = imgServer+photo;
+					document.getElementById("headImg").src = photo && ''!=photo?imgServer+photo:"../images/default-person.png";
 					document.getElementById("username").textContent = nickName;
 				}
 			},myerror)
