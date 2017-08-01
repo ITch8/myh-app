@@ -134,7 +134,6 @@
 				//癌种列表
 				if("" == categoryList.innerHTML){
 					_.later(function(){
-						console.log("category=="+JSON.stringify(data.category));
 						categoryList.innerHTML = "<li>全部癌种</li>";
 						_.each(data.category || [],function(i,obj){
 							categoryList.innerHTML += "<li id='"+obj.cid+"'>"+(obj.cateName || '-')+"</li>";

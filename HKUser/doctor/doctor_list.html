@@ -216,7 +216,6 @@
 				page = 1;
 				keywordPro.value?pdata.keyword = keywordPro.value:'';
 				pdata.hid = this.id;
-				console.log("id==="+pdata.hid);
 				searchKey(keywordPro.value);
 			})
 			//根据科室搜索
@@ -229,7 +228,6 @@
 				page = 1;
 				keywordPro.value?pdata.keyword = keywordPro.value:'';
 				pdata.officeId = this.id;
-				console.log("id==="+pdata.officeId);
 				searchKey(keywordPro.value);
 			})
 		})(mui, document, util, window)

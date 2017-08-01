@@ -3,7 +3,7 @@
 
 	<head>
 		<meta charset="utf-8">
-		<title>我的发帖</title>
+		<title>我的评论</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
 		<meta name="apple-mobile-web-app-capable" content="yes">
 		<meta name="apple-mobile-web-app-status-bar-style" content="black">
@@ -230,7 +230,7 @@
 			function getComments(){
 				//我的评论
 				u.mypost("user_center/myPostComment",pdata,true,function(data){
-					console.log(JSON.stringify(data));
+					console.log("coments==========="+JSON.stringify(data))
 					if(data.data.result && data.data.result.length > 0){
 						imgServer = data.data.imgServer;
 						_.each(data.data.result,function(i,obj){

@@ -118,7 +118,6 @@
 			});
 			//检测金额输入
 			moneyObj.addEventListener("input", function() {
-				console.log("this.value=" + this.value)
 				inputMoy = Number(this.value || 0);
 				if(inputMoy > balance) {
 					removeClass(infoObj, 'mui-hidden')

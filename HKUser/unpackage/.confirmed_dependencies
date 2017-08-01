@@ -385,7 +385,8 @@
       "userLogin.html",
       "know_agree.html",
       "my_center/contactService.html",
-      "doctor/order_audit.html"
+      "doctor/order_audit.html",
+      "my_case_history/add_case.html"
     ]
   },
   "my_case_history/case_list.html": {
@@ -505,7 +506,8 @@
       "fonts/iconfont.ttf",
       "fonts/mui.ttf",
       "css/common.css",
-      "fonts/iconfont-nodata.ttf"
+      "fonts/iconfont-nodata.ttf",
+      "img/collection.png"
     ],
     "refer": [
       "userLogin.html"
@@ -846,7 +848,8 @@
       "js/common.js",
       "js/mui.min.js",
       "css/common.css",
-      "css/mui.min.css"
+      "css/mui.min.css",
+      "css/center/modify_pwd.css"
     ],
     "refer": [
       "userLogin.html"
@@ -871,7 +874,8 @@
       "js/mui.min.js",
       "css/mui.min.css",
       "css/common.css",
-      "fonts/mui.ttf"
+      "fonts/mui.ttf",
+      "css/center/help.css"
     ]
   },
   "my_center/help_detail.html": {

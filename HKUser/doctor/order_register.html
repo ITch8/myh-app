@@ -61,16 +61,12 @@
 					</div>
 					<div class="mui-input-row">
 						<label class="label">联系电话<span class="star">*</span>：</label>
-						<input type="tel" class="mui-input-clear" placeholder="请输入手机号码" id="telephone">
+						<input type="tel" readonly="readonly" placeholder="请输入手机号码" id="telephone">
 					</div>
 					<div class="mui-input-row">
 						<label class="label">选择病历：</label>
 						<select id="illnessSelect" class="choice-case-select font-size-14">
-							<option>病历表1</option>
-							<option>病历表2</option>
-							<option>病历表3</option>
-							<option>病历表4</option>
-							<option>病历表5</option>
+							<option>点击添加病历</option>
 						</select>
 					</div>
 				</form>
@@ -91,11 +87,11 @@
 	<script type="text/javascript" src="../js/mui.picker.min.js"></script>
 	<script type="text/javascript" src="../js/common.js"></script>
 	<script>
-		var newContactNum = null;
+		var newContactNum = null,privateToken = null,docId = null,illness = null;
 		(function(_, doc, u, w) {
 			_.init({swipeBack: false}),_(".mui-scroll-wrapper").scroll();
 			var payObj = doc.getElementById("pay"),illnessSelect = doc.getElementById("illnessSelect"),feeObj = doc.getElementById("fee");
-			var docId = null,pdata = {},privateToken = null,appointId = null,currentView = null,illness = null,fee = null,address = null,userInfo = null,optionhtml = "",type = null,targetWeb = null,addressObj = doc.getElementById("address"),yearObj = doc.getElementById("year"),personObj = doc.getElementById("person");
+			var pdata = {},appointId = null,currentView = null,fee = null,address = null,userInfo = null,optionhtml = "",type = null,targetWeb = null,addressObj = doc.getElementById("address"),yearObj = doc.getElementById("year"),personObj = doc.getElementById("person");
 			var sexObj = doc.getElementsByName("radio1"),birthdayObj = doc.getElementById("birthday"),telephoneObj = doc.getElementById("telephone"),remarkObj = doc.getElementById("remark"),newContactNum = doc.getElementById("newContactNum");
 			var picker = null,startDate = null;
 			_.plusReady(function(){
@@ -154,7 +150,10 @@
 			illnessSelect.addEventListener("tap",function(){
 				if(!illness || !illness.length){
 					this.setAttribute("disabled","disabled");
-					_.toast("您还没有病历，请先添加病历");
+					_.later(function(){
+						illnessSelect.removeAttribute("disabled")
+					},1000)
+					w.openView('../my_case_history/add_case.html');
 				}else{
 					this.removeAttribute("disabled")
 				}
@@ -335,8 +334,6 @@
 			//获取当前日期和时间
 			function getCurrentTime() {
 				var date = new Date();
-				var seperator1 = "-";
-				var seperator2 = ":";
 				var month = date.getMonth() + 1;
 				var strDate = date.getDate();
 				if(month >= 1 && month <= 9) {
@@ -345,10 +342,34 @@
 				if(strDate >= 0 && strDate <= 9) {
 					strDate = "0" + strDate;
 				}
-				var currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate +
-					" " + date.getHours() + seperator2 + date.getMinutes();
+				var currentdate = date.getFullYear() + "-" + month + "-" + strDate +
+					" " + date.getHours() + ":" + date.getMinutes();
 				return currentdate;
 			}
 		})(mui, document, util, window)
+		//获取病历列表
+		function getIllist(){
+			var pdata = {
+				privateToken:privateToken,
+				docId:docId
+			}
+			//根据医生id 获取基本信息
+			util.mypost("reg_num/regNumView",pdata,false,function(data){
+				if(data.code == 0){
+					var optionhtml = "";
+					illness = data.data.illness || [];//病历列表
+					if(illness && illness.length > 0){
+						mui.each(illness,function(i,obj){
+							optionhtml += "<option value='"+obj.illId+"'>"+obj.illName+"</option>";
+						});
+						illnessSelect.innerHTML = optionhtml;
+					}
+				}else if(data.code == 500 && "未登录" == data.msg){
+					u.goLogin();
+				}else{
+					_.toast(data.msg)
+				}
+			},myerror);
+		}
 	</script>
 </html>

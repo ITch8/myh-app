@@ -28,13 +28,10 @@
 		var width = screen.width;
 		var appkey = null,credential=null,touid=null,groupId=null,avatar=null,uid = null,password = null;
 	mui.plusReady(function(){
-		console.log("event1");
-//		getInfo();
 		plus.webview.currentWebview().setStyle({
 			softinputMode: "adjustResize"
 		});
 		window.addEventListener("event",function(){
-			console.log("event2");
 			getInfo();
 		});
 	});
@@ -45,7 +42,6 @@
 	function getInfo(){
 		if(!WKIThaveLogin){
 			priateToken = window.getItem("privateToken");
-			console.log('priateToken==='+priateToken);
 			if(priateToken){
 				//获取客服配置信息
 				util.mypost('customer',{privateToken:priateToken}, false, function(data) {
@@ -93,7 +89,12 @@
 								mui.back();
 							}
 					    });
-					}else{
+					}else if("未登录" == data.msg && data.code == 500){
+						util.goLogin();
+						mui.later(function(){
+							plus.webview.getWebviewById('contactService').hide()
+						},1000)
+					} else{
 						mui.toast(data.msg || '服务器异常');
 					}
 				}, function() {

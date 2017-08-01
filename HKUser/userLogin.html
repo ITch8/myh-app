@@ -162,7 +162,6 @@
 											openId:auth.authResult.openid
 										}
 										u.mypost("api/checkBind",pdata,true,function(data){
-											console.log("res========"+JSON.stringify(data));
 											if(data.code == 5){
 												var oid = auth.authResult.openid;
 												w.openView("my_center/boundpho.html",{openId:oid,oId:auth.id});

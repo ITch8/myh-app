@@ -62,7 +62,7 @@
 						</div>
 					</li>	
 				</ul>
-				<div id="logout" class="logout mui-text-center color_red font-size-14">退出当前账号</div>
+				<div id="logout" class="logout mui-text-center color_red font-size-14">退出登录</div>
 			</div>
 		</div>
 	</body>
@@ -135,7 +135,7 @@
 		    	})
 				//修改支付密码
 				_('.width-line').on('tap','#payPwd',function(){	
-					u.mypost("user_center/checkUserPayPwd",pdata,true,function(data){
+					u.mypost("user_center/checkUserPayPwd",pdata,false,function(data){
 						if(data.code == 1){
 							var btnArray = ['取消', '去设置'];
 							_.confirm('<div>您还未设置支付密码</div>', '<div class="btn-title">提示</div>',btnArray, function(e) {
@@ -202,8 +202,6 @@
 			//获取当前日期和时间
 			function getCurrentTime() {
 				var date = new Date();
-				var seperator1 = "-";
-				var seperator2 = ":";
 				var month = date.getMonth() + 1;
 				var strDate = date.getDate();
 				if(month >= 1 && month <= 9) {
@@ -212,8 +210,8 @@
 				if(strDate >= 0 && strDate <= 9) {
 					strDate = "0" + strDate;
 				}
-				var currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate +
-					" " + date.getHours() + seperator2 + date.getMinutes();
+				var currentdate = date.getFullYear() + "-" + month + "-" + strDate +
+					" " + date.getHours() + ":" + date.getMinutes();
 				return currentdate;
 			}
 		})(mui,document,util,window)

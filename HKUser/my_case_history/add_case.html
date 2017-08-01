@@ -154,15 +154,15 @@
 				u.mypost("medical/addIllnessHistory",pdata,true,function(data){
 					if(data.code == 0){
 						_.toast("病历添加成功");
-						plus.webview.getWebviewById("case_list").evalJS("getCaseList()");
-						w.openView("case_list.html");
-						illNameObj.value = "";
-						nameObj.value = "";
-						allergyHistoryObj.value = "";
-						resultObj.value = "";
-						situationObj.value = "";
-						ageObj.value = "";
-						stagesObj.value = "";
+						var case_listWeb = plus.webview.getWebviewById("case_list")
+						if(case_listWeb){
+							case_listWeb.evalJS("getCaseList()");
+							case_listWeb.show('slide-in-right',300);
+						}else{
+							var regWeb = plus.webview.getWebviewById('order_register');
+							regWeb && regWeb.evalJS('getIllist()');
+							_.back();
+						}
 					}else{
 						_.toast(data.msg);
 					}

@@ -251,7 +251,6 @@
 					}
 					//图片1
 					for (var i = 0; i < img1Objs.length; i++) {
-						console.log("img1=="+img1);
 						var img1 = img1Objs[i].getAttribute("src");
 						if(img1&&img1.indexOf("../images/medical-add.png") == -1&&img1.indexOf("https") == -1){
 							task.addFile(img1,{key:"img1_"+remarkIdsArr[i]});
@@ -260,7 +259,6 @@
 					//图片2
 					for (var i = 0; i < img2Objs.length; i++) {
 						var img2 = img2Objs[i].getAttribute("src");
-						console.log("img2==="+img2);
 						if(img2&&img2.indexOf("../images/medical-add.png") == -1&&img2.indexOf("https") == -1){
 							task.addFile(img2,{key:"img2_"+remarkIdsArr[i]});
 						}
@@ -270,7 +268,6 @@
 						var img3 = img3Objs[i].getAttribute("src");
 						if(img3&&img3.indexOf("../images/medical-add.png") == -1&&img3.indexOf("https") == -1){
 							task.addFile(img3,{key:"img3_"+remarkIdsArr[i]});
-							console.log("img3==="+img3);
 						}
 					}
 					task.start();
@@ -443,7 +440,6 @@
 			//长按删除所选图片
 			_(doc).on("longtap","img",function(){
 				var self = this;
-				console.log(self.src);
 				if(self.src.indexOf("medical-add.png") == -1){
 					plus.nativeUI.confirm("确定移除所选图片吗",function(e){
 						if(0 == e.index){
