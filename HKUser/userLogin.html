@@ -54,6 +54,9 @@
 				url:"my_center/contactService.html",
 				id:"contactService",
 				styles:{popGesture: "hide"}
+			},{
+				url:"communicate/post_detail.html",
+				id:"post_detail",styles:{popGesture: "hide"}
 			}]}),_(".mui-scroll-wrapper").scroll();
 			
 			var accountObj = doc.getElementById("account"),passwordObj = doc.getElementById("password");
@@ -106,7 +109,7 @@
 			//登录并隐藏登录
 			function loginSkip(){
 				var all = plus.webview.all();
-				if(all.length > 2){
+				if(all.length > 3){
 					plus.webview.hide(plus.webview.getWebviewById("userLogin"),"slide-out-right",300);
 				}else{
 					w.openView("tabbar.html");

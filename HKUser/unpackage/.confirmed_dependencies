@@ -28,7 +28,8 @@
       "my_center/qa_record.html",
       "my_center/myInterview.html",
       "userLogin.html",
-      "my_center/contactService.html"
+      "my_center/contactService.html",
+      "communicate/release_post.html"
     ],
     "resources": [
       "fonts/mui.ttf",
@@ -85,7 +86,13 @@
       "images/index/icon_5.png",
       "images/index/icon_01.png",
       "images/index/icon_4.png",
-      "images/default-doctor.png"
+      "images/default-doctor.png",
+      "images/index/icon_vac.png",
+      "images/index/icon_hos.png",
+      "images/index/icon_med.png",
+      "images/index/icon_server.png",
+      "images/index/icon_med.jpg",
+      "images/index/icon_vac.jpg"
     ],
     "refer": [
       "vaccine/vaccine_kind.html",
@@ -183,7 +190,8 @@
       "my_center/boundpho.html",
       "doctor/doctor_list.html",
       "userLogin.html",
-      "my_center/myD.html"
+      "my_center/myD.html",
+      "communicate/post_detail.html"
     ]
   },
   "my_center/buy_record.html": {
@@ -378,7 +386,8 @@
       "css/input.css",
       "css/mui.min.css",
       "css/common.css",
-      "fonts/mui.ttf"
+      "fonts/mui.ttf",
+      "doctor/order_register.html"
     ],
     "refer": [
       "doctor/pay.html",
@@ -414,7 +423,8 @@
       "js/mui.min.js",
       "css/center/about.css",
       "css/mui.min.css",
-      "css/common.css"
+      "css/common.css",
+      "fonts/mui.ttf"
     ],
     "refer": []
   },
@@ -484,9 +494,17 @@
       "css/common.css",
       "fonts/mui.ttf",
       "css/mui.min.css",
-      "css/pullRefresh.css"
+      "css/pullRefresh.css",
+      "js/jquery-1.8.3.min.js",
+      "images/default-record.png",
+      "img/input.png",
+      "fonts/iconfont-nodata.ttf",
+      "css/center/tab_post.css",
+      "images/release.png"
     ],
-    "refer": []
+    "refer": [
+      "communicate/release_post.html"
+    ]
   },
   "info/info_detail.html": {
     "resources": [
@@ -1147,5 +1165,43 @@
       "my_center/contactService.html"
     ],
     "priority": 0
+  },
+  "communicate/post_detail.html": {
+    "resources": [
+      "fonts/mui.ttf",
+      "images/release.png",
+      "js/mui.pullToRefresh.min.js",
+      "js/mui.zoom.js",
+      "js/common.js",
+      "images/praise-before.png",
+      "js/mui.pullToRefresh.material.min.js",
+      "css/common.css",
+      "js/mui.min.js",
+      "css/input.css",
+      "css/mui.min.css",
+      "css/iconfont-icon.css",
+      "css/pullRefresh.css",
+      "js/mui.previewimage.js",
+      "css/imagePreview.css",
+      "css/center/post_detail.css",
+      "images/praise-after.png"
+    ],
+    "refer": [
+      "communicate/release_post.html"
+    ]
+  },
+  "communicate/release_post.html": {
+    "resources": [
+      "css/iconfont.css",
+      "fonts/iconfont.ttf",
+      "images/medical-add.png",
+      "js/common.js",
+      "js/mui.min.js",
+      "css/mui.min.css",
+      "css/center/release_post.css",
+      "css/common.css",
+      "fonts/mui.ttf",
+      "css/input.css"
+    ]
   }
 }

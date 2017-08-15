@@ -84,13 +84,24 @@
 				privateToken = w.getItem("privateToken");
 				pdata.privateToken = privateToken;
 				//显示账号余额
-				u.mypost("user_center/takeCashView", pdata, true, function(data) {
-					if(data.code == 0) {
-						walletData = data.data[0][0];
-						balance = walletData ? walletData.amount : '0.00';
-						doc.getElementById("balance").textContent = balance;
-					}
-				}, myerror)
+				balance = w.getItem("amount");
+				if(balance){
+					doc.getElementById("balance").textContent = balance;
+				}else{
+					u.mypost("user_center/takeCashView", pdata, false, function(data) {
+						if(data.code == 0) {
+							walletData = data.data[0][0];
+							balance = walletData ? walletData.amount : '0.00';
+							doc.getElementById("balance").textContent = balance;
+							w.setItem("amount",balance);
+						}else if(data.code == 500 && "未登录" == data.msg){
+							u.goLogin();
+						}else{
+							_.toast(data.msg)
+						}
+					}, myerror)
+				}
+				
 				//编辑其他信息时 地址和银行选择器隐藏
 				var objs = doc.querySelectorAll("input");
 				for(var i = 0; i < objs.length; i++) {

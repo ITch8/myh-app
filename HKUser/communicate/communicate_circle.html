@@ -12,13 +12,9 @@
 		<link rel="stylesheet" href="../css/pullRefresh.css" />
 	</head>
 	<style>
-		.introduce-info-btn {
-			border-bottom: 1px solid #DEDEDE;
-		}
-		
 		.mui-segmented-control {
 			border: 0;
-			box-shadow: 0 1px 6px transparent;
+			box-shadow: 0 0 0 transparent;
 			font-size: 14px;
 		}
 		
@@ -27,13 +23,11 @@
 			height: 35px;
 			line-height: 35px;
 			color: #666;
-			border-left: 1px solid #DEDEDE;
+			border-bottom: 1px solid #dedede;
 		}
 		
 		.mui-segmented-control .mui-control-item.mui-active {
-			color: #33A2D7;
-			background-color: #FFFFFF;
-			border-bottom: 2px solid #33A2D7;
+		    border-bottom-color: #33A2d7;
 		}
 		
 		.doc-list {
@@ -64,11 +58,11 @@
 			margin-right: 8px;
 		}
 		.praise-img.p-active{
-			width: 25px;
+			width: 15px;
 			content: url(../images/praise-after.png);
 		}
 		.praise-img {
-			width: 25px;
+			width: 15px;
 			content: url(../images/praise-before.png);
 		}
 		.praise-img-number{
@@ -93,13 +87,11 @@
 		<div class="mui-content">
 			<div id="mui-scroll-wrapper" class="mui-fullscreen mui-scroll-wrapper" style="padding-bottom: 50px;">
 				<div id="cases" class="mui-scroll" style="top: 44px;">
-					<div class="introduce-info-btn">
-						<div id="segmentedControl" class="mui-segmented-control">
-							<a id="1" class="mui-control-item mui-active" href="#hot">
-								<div class="hot">本周热门</div>
-							</a>
-							<a id="2" class="mui-control-item" href="#new">最新</a>
-						</div>
+					<div id="segmentedControl" class="mui-segmented-control">
+						<a id="1" class="mui-control-item mui-active" href="#hot">
+							<div class="hot">本周热门</div>
+						</a>
+						<a id="2" class="mui-control-item" href="#new">最新</a>
 					</div>
 					<div id="hot" class="doc-list mui-control-content mui-active">
 						<ul id="hot-list" class="mui-table-view"></ul>
@@ -120,12 +112,7 @@
 			_.init({swipeBack:false}),_(".mui-scroll-wrapper").scroll();
 			var flag  = 1,_pull = null;//默认是1获取到本周最热列表，2获取到最新的帖子列表
 			var list = null,hot_list = doc.getElementById('hot-list'),new_list = doc.getElementById("new-list");
-			var pdata = {offset:0,limit:5};
-			var page = 0;
-			var imgServer = null;
-			var hasTaped = false;
-			var privateToken = null;
-			var isClickLike = true;//判断是否已点赞
+			var pdata = {offset:0,limit:5},page = 0,imgServer = null,hasTaped = false,privateToken = null,isClickLike = true;//判断是否已点赞
 			_.plusReady(function(){
 				privateToken = w.getItem("privateToken");
 				pdata.privateToken = privateToken;
@@ -141,6 +128,8 @@
 								if (data.code == 0) {
 									page = 1;
 									u.emptyHtml(list), renderList(data.data || []);
+								}else if(data.code == 500 && "未登录" == data.msg){
+									u.goLogin();
 								}else{
 									_.toast(data.msg || '服务器异常');
 								}
@@ -154,7 +143,7 @@
 							pdata.flag = flag;
 							pdata.offset=(pdata.limit)*page;
 							u.mypost('post/listPost',pdata, false, function(data) {
-								_pull.endPullUpToRefresh((data.data.postList || []).length == 10);
+								_pull.endPullUpToRefresh((data.data.postList || []).length < 5);
 								if (data.code  == 0) {
 									page++;
 									renderList(data.data || []);
@@ -178,6 +167,8 @@
 				u.mypost('post/listPost',pdata, true, function(data) {
 					if (data.code == 0) {
 						u.emptyHtml(new_list), renderList(data.data || []);
+					}else if(data.code == 500 && "未登录" == data.msg){
+						u.goLogin();
 					}else{
 						_.toast(data.msg || '服务器异常');
 					}
@@ -192,6 +183,8 @@
 				u.mypost('post/listPost',pdata, true, function(data) {
 					if (data.code == 0) {
 						u.emptyHtml(hot_list), renderList(data.data || []);
+					}else if(data.code == 500 && "未登录" == data.msg){
+						u.goLogin();
 					}else{
 						_.toast(data.msg || '服务器异常');
 					}
@@ -206,6 +199,8 @@
 				u.mypost('post/listPost',pdata, true, function(data) {
 					if (data.code == 0) {
 						u.emptyHtml(list), renderList(data.data || []);
+					}else if(data.code == 500 && "未登录" == data.msg){
+						u.goLogin();
 					}else{
 						_.toast(data.msg || '服务器异常');
 					}
@@ -219,12 +214,7 @@
 				if(data.postList && data.postList.length > 0){
 					var domItem = null;
 					imgServer = data.imgServer;
-					var cls = null;
-					var img = null;
-					var isAnonymous = null;
-					var postNickName = null;
-					var clickCount = null;
-					var countLen = null;
+					var cls = null,img = null,isAnonymous = null,postNickName = null,clickCount = null,countLen = null;
 					_.each(data.postList,function(i,o){
 						domItem = doc.createElement("li");
 						domItem.id = o.id;
@@ -259,7 +249,7 @@
 						domItem.innerHTML = "<img class='mui-media-object mui-pull-left' src='"+img+"'>"+
 							"<div class='mui-media-body'>"+
 								"<span class='post-title'>"+o.postTitle+"</span>"+
-								"<span id='"+o.id+"' data='"+o.collId+"' class='praise "+cls+"'></span><span class='doc-img'>"+clickCount+"</span>"+
+								"<span id='"+o.id+"' data='"+o.collId+"' class='praise "+cls+"'></span><span class='doc-img main-font-color'>"+clickCount+"</span>"+
 								"<p class='mui-ellipsis doc-img'>"+postNickName+"&emsp;时间："+o.postDate+"</p>"+
 							"</div><div class='mui-ellipsis great'>"+o.content+"</div>";
 						list.appendChild(domItem);
@@ -317,8 +307,14 @@
 										toggleClass(self,"p-active");
 										self.nextSibling.innerHTML = nextSbilingNum + 1;
 										allList();//刷新全部
+									}else if(data.code == 500 && "未登录" == data.msg){
+										u.goLogin();
+									}else{
+										_.toast(data.msg || '服务器异常');
 									}
 								},myerror);
+							}else if(data.code == 500 && "未登录" == data.msg){
+								u.goLogin();
 							}else{
 								_.toast("点赞失败");
 							}

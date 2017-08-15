@@ -61,11 +61,16 @@
 			_.plusReady(function(){
 				privateToken = w.getItem("privateToken");
 				pdata.privateToken = privateToken;
-				u.mypost("user_center/myMoneyIndex",pdata,true,function(data){
+				u.mypost("user_center/myMoneyIndex",pdata,false,function(data){
 					if(data.code == 0){
 						walletData = data.data[0][0];
 						money = walletData?walletData.amount:'0.00';
 						doc.getElementById("balance").textContent = money;
+						w.setItem("amount",money);
+					}else if(data.code == 500 && "未登录" == data.msg){
+						u.goLogin();
+					}else{
+						_.toast(data.msg)
 					}
 				},myerror)
 			});

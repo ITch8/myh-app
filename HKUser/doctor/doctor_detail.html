@@ -26,7 +26,6 @@
 						<img src="../images/default-person.png" id="docImg" data-preview-src='' data-preview-group='1'/>
 						<div><span class="doctor-name" id="nickname"></span>&nbsp;&nbsp;( <span id="docLevel"></span> )</div>
 						<div><span id="hospitalName"></span>( <span id="officeName"></span> )</div>
-						<div>回答问题：<span class="answer-num" id="answerNum"></span></div>
 					</div>
 				</div>
 				<div class="introduce-info-btn">
@@ -37,14 +36,6 @@
 				</div>
 				<div id="homepage-list" class="homepage-list mui-control-content mui-active">
 					<ul class="mui-table-view">
-						<li class="mui-table-view-cell">
-							<div class="homepage-title">简介</div>
-							<div class="mui-media-body homepage-content wrap-content" id="summary"></div>
-						</li>
-						<li class="mui-table-view-cell">
-							<div class="homepage-title">擅长</div>
-							<div class="mui-media-body homepage-content wrap-content" id="goodAt"></div>
-						</li>
 						<li class="mui-table-view-cell">
 							<div id="ser" class="mui-media-body homepage-content">
 								<dl id="message_question_answer.html">
@@ -60,6 +51,14 @@
 									<dd>预约挂号</dd>
 								</dl>
 							</div>
+						</li>
+						<li class="mui-table-view-cell">
+							<div class="homepage-title">简介</div>
+							<div class="mui-media-body homepage-content wrap-content" id="summary"></div>
+						</li>
+						<li class="mui-table-view-cell">
+							<div class="homepage-title">擅长</div>
+							<div class="mui-media-body homepage-content wrap-content" id="goodAt"></div>
 						</li>
 					</ul>
 				</div>
@@ -79,7 +78,7 @@
 		(function(_,doc,u,w){
 			_.init({swipeBack:false}),_(".mui-scroll-wrapper").scroll();
 			var list = doc.getElementById('comment');
-			var avatar = null,nickname = null,docLevel = null,hospitalName = null,officeName = null,answerNum = null,summary = null,goodAt = null;
+			var avatar = null,nickname = null,docLevel = null,hospitalName = null,officeName = null,summary = null,goodAt = null;
 			var pdata={}, li = null,docId = null,detail = null,_pull = null;
 			var page = 0;
 			var imgserver = null;
@@ -94,7 +93,6 @@
 					docId:docId
 				}
 				u.mypost("doctor/getDoctorDetail",pdata,true,function(data){
-					answerNum = data.data.answerNum;
 					imgserver = data.data.imgServer;
 					if(data.code == 0){
 						doctorData = data.data.doctor[0];
@@ -117,7 +115,6 @@
 						doc.getElementById("officeName").innerHTML = officeName;
 						doc.getElementById("summary").innerHTML = summary || '暂无简介';
 						doc.getElementById("goodAt").innerHTML = goodAt || '暂无介绍';
-						doc.getElementById("answerNum").innerHTML = answerNum;
 					}else{
 						detail = doctorData?doctorData.detail:nodataHtmlInfo;
 					}

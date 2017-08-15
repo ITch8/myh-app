@@ -3,7 +3,7 @@
 
 	<head>
 		<meta charset="utf-8">
-		<title>我的评论</title>
+		<title>我的发帖</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
 		<meta name="apple-mobile-web-app-capable" content="yes">
 		<meta name="apple-mobile-web-app-status-bar-style" content="black">
@@ -11,253 +11,189 @@
 		<link rel="stylesheet" href="../css/pullRefresh.css" />
 		<link rel="stylesheet" href="../css/iconfont.css" />
 		<link rel="stylesheet" href="../css/common.css" />
+		<link rel="stylesheet" href="../css/center/tab_post.css" />
 	</head>
-	<style>
-		.mui-control-content .mui-loading {
-			margin-top: 50px;
-		}
-		.mui-slider,.mui-scroll-wrapper{
-			overflow: visible;
-		}
-		.mui-table-view .mui-media-object{
-			max-width: 80px;
-			height: auto;
-			border-radius: 3px;
-		}
-		.mui-slider-handle p{
-			height:25px;
-			font-size: 12px;
-			margin-bottom: 0;
-			color: #666666;
-			line-height: 25px;
-			text-overflow: ellipsis;
-			white-space: nowrap;
-			overflow: hidden;
-		}
-		.mui-slider-handle span{
-			color: #999999;
-			font-size: 12px;
-			float: right;
-		}
-		.mui-media-body{
-			font-size: 14px;				
-		}
-		.mui-slider-handle{
-			border: 1px solid #DEDEDE;
-			padding: 15px;
-			border-radius: 5px;
-		}
-		.mui-slider-handle img{
-			width: 100px;
-			height: 65px !important;
-		}
-		.mui-table-view{
-			width: 100%;
-			height: auto;
-			
-		}
-		.mui-table-view-cell{
-			padding: 10px 15px 0 15px;
-		}
-		.mui-slider-indicator{
-			background: #fff;
-			border: none;
-			box-shadow: none;
-		}
-
-		.mui-active{
-			color: #33a2d7;
-		}
-		.mui-active b{
-			height: 2px;
-			width: 60px;
-			position: absolute;
-			bottom: 0;
-			left: 50%;
-			margin-left: -31px;
-			background: #33a2d7;
-		}
-		.reply{
-			padding: 15px 15px 15px 15px;
-			
-		}
-		.reply .mui-table-view-cell{
-			border: 1px solid #DEDEDE;
-			border-radius: 5px;
-			position: relative;
-			padding: 10px 10px 10px 60px;
-			margin-bottom: 15px;
-		}
-		.HeaderImg {
-			width: 40px;
-			height: 40px;
-			position: absolute;
-			top: 10px;
-			left: 10px;
-			text-align: center;
-		}
-		.HeaderImg span{
-			margin-top: 8px;
-			font-size: 12px;
-			color: #999999;
-		}
-		.reply .time{
-			font-size: 12px;
-			color: #999999;
-		}
-		.reply p{
-			color: #666666;
-			word-wrap: break-word;
-			word-break: break-all;
-			line-height: 17px;
-		}
-		.reply .answer{
-			background: url(../img/input.png) top no-repeat;
-			background-size: 100% 100%;
-			padding: 10px 8px;
-			margin-top: 5px;
-		}
-		.reply .answer .tit{
-			font-size: 15px;
-			color: #333333;
-			margin-top: 5px;
-		}
-		/*选项卡*/
-		li{
-			list-style-type: none;
-		}
-		#tab{
-			height: auto;
-		}
-		.tabList ul li{
-			float:left;				
-			text-align:center;				
-			position:relative;
-			cursor:pointer;
-		}
-		.tabCon{
-			position:absolute;
-			width: 100%;
-			height: auto;
-		}
-		.tabCon .cont{
-			display: none;
-		}
-		
-		.tabList ul{
-			padding: 0;
-			margin: 0;
-			width: 100%;
-			height: 45px;
-			background: #fff;
-			border-bottom: 1px solid #DEDEDE;
-		}
-		.tabList ul li{
-			width: 33.3%;
-			height: 100%;
-			line-height: 45px;
-			font-size: 14px;
-		}
-		.mui-btn i{
-			display: block;
-			width: 30px;
-			height: 30px;
-			line-height: 30px;
-			background: #F6F6F6;
-			border-radius: 50%;
-			position: absolute;
-			top: 50%;
-			left: 50%;
-			margin-top: -15px;
-			margin-left:-15px;
-		}
-		.mui-btn img{
-			width: 15px;
-			height: auto;
-			margin: 0 auto;
-			margin-top: 7px;
-		}
-		.HeaderImg img{
-			width: 40px;
-			height: 40px;
-			border-radius: 100%;
-		}
-		.tabCon .mui-table-view{
-			padding-bottom: 15px;
-		}
-		.mui-table-view-cell:after{
-			height: 0;
-		}
-		.mui-media-body{
-			color: #333;
-		}
-		.mui-table-view-cell.mui-active{
-			background-color: #FFFFFF;
-		}
-	</style>
 	<body>
 		<header class="mui-bar mui-bar-nav">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
-			<h1 class="mui-title">我的评论</h1>
+			<h1 class="mui-title">我的发帖</h1>
+			<a class="mui-btn mui-btn-link mui-pull-right" id="collect"><img src="../images/release.png"></a>
 		</header>
 		<div class="mui-content ">
-			<div id="cases" class="mui-scroll">	
-				<ul id="comment" class="mui-table-view reply"></ul>
+			<div id="cases" class="mui-scroll">
+				<div style="padding: 10px;">
+					<div id="segmentedControl" class="mui-segmented-control">
+						<a id="tab1" class="mui-control-item mui-active" href="#item1">我的帖子</a>
+						<a id="tab2" class="mui-control-item" href="#item2">我的回复</a>
+						<a id="tab3" class="mui-control-item" href="#item3">我的评论</a>
+					</div>
+				</div>
+				<div id="tab">
+					<div id="item1" class="mui-control-content mui-active">
+						<ul id="item1ul" class="mui-table-view"></ul>
+					</div>
+					<div id="item2" class="mui-control-content">
+						<ul id="item2ul" class="mui-table-view reply"></ul>
+					</div>
+					<div id="item3" class="mui-control-content">
+						<ul id="item3ul" class="mui-table-view reply"></ul>
+					</div>
+				</div>
 			</div>
 		</div>
 	</body>
-	<script type="text/javascript" src="../js/mui.min.js"></script>
-	<script type="text/javascript" src="../js/mui.pullToRefresh.min.js"></script>
-	<script type="text/javascript" src="../js/mui.pullToRefresh.material.min.js"></script>
-	<script type="text/javascript" src="../js/common.js"></script>
+	<script src="../js/mui.min.js"></script>
+	<script src="../js/mui.pullToRefresh.min.js"></script>
+	<script src="../js/mui.pullToRefresh.material.min.js"></script>
+	<script src="../js/common.js"></script>
 	<script type="text/javascript">
-		(function(_,doc,u,w){
-			_.init({swipeBack: false}),_(".mui-scroll-wrapper").scroll();
-			var pdata = {};
-			var li = null;
-			var commentli = null;
-			var privateToken = null;
-			var imgServer = null;
-			var comment_list = doc.getElementById('comment');
+		(function(_, doc, u, w) {
+			_.init({
+				swipeBack: false
+			}), _(".mui-scroll-wrapper").scroll();
+			var pdata = {},li = null,replyli = null,commentli = null;
+			var privateToken = null,imgServer = null;
+			var list = doc.getElementById('item1ul'),reply_list = doc.getElementById('item2ul'),comment_list = doc.getElementById('item3ul');
+			var imgHtml = "";
 			_.plusReady(function() {
 				privateToken = w.getItem("privateToken");
 				pdata.privateToken = privateToken;
-				getComments();
+				getPostList();
 			});
-			
-			var commentList = document.getElementById("comment-list");
-			//获得我的评论
-			function getComments(){
-				//我的评论
-				u.mypost("user_center/myPostComment",pdata,true,function(data){
-					console.log("coments==========="+JSON.stringify(data))
-					if(data.data.result && data.data.result.length > 0){
+
+			document.getElementById("tab1").addEventListener('tap', function() {
+				if(!hasClass(this,'mui-active')){
+					getPostList();
+				}
+			})
+			document.getElementById("tab2").addEventListener('tap', function() {
+				if(!hasClass(this,'mui-active')){
+					getPostReply();
+				}
+			})
+			document.getElementById("tab3").addEventListener('tap', function() {
+				if(!hasClass(this,'mui-active')){
+					getPostComment();
+				}
+			})
+			//获取帖子
+			function getPostList() {
+				//我的帖子
+				u.mypost("user_center/postList", pdata, true, function(data) {
+					list.innerHTML = "";
+					if(data.data.list && data.data.list.length > 0) {
 						imgServer = data.data.imgServer;
-						_.each(data.data.result,function(i,obj){
+						_.each(data.data.list, function(i, obj) {
+							imgHtml = "";
+							li = doc.createElement("li");
+							li.id = obj.id;
+							if(obj.img) {
+								if(obj.img.img0) {
+									imgHtml = "<img class='mui-media-object mui-pull-left' src='" + imgServer + obj.img.img0 + "'>";
+								}
+								if(obj.img.img1) {
+									imgHtml = "<img class='mui-media-object mui-pull-left' src='" + imgServer + obj.img.img1 + "'>";
+								}
+								if(obj.img.img2) {
+									imgHtml = "<img class='mui-media-object mui-pull-left' src='" + imgServer + obj.img.img2 + "'>";
+								}
+							} else {
+								imgHtml = "<img class='mui-media-object mui-pull-left' src='../images/default-record.png'>";
+							}
+							li.className = "mui-table-view-cell mui-media";
+							li.innerHTML = "<div class='mui-slider-handle'>" +
+								imgHtml +
+								"<div class='mui-media-body'>" +
+								"" + obj.postTitle + "" +
+								"<p>" + obj.postContent + "</p>" +
+								"<span>" + obj.dateline + "</span>" +
+								"</div>" +
+								"</div>";
+							list.appendChild(li);
+						})
+					} else {
+						list.innerHTML = nodataHtmlInfo;
+					}
+				}, myerror)
+			}
+			//获得评论
+			function getPostComment() {
+				comment_list.innerHTML = "";
+				//我的评论
+				u.mypost("user_center/myPostComment", pdata, true, function(data) {
+					if(data.data.result && data.data.result.length > 0) {
+						imgServer = data.data.imgServer;
+						_.each(data.data.result, function(i, obj) {
 							commentli = doc.createElement("li");
 							commentli.id = obj.postId;
 							var img = null;
-							if(obj.avatar == ""){
+							if(obj.avatar == "") {
 								img = "../images/default-person.png";
-							}else{
-								img = imgServer+obj.avatar;
+							} else {
+								img = imgServer + obj.avatar;
 							}
 							commentli.className = "mui-table-view-cell mui-media";
-							commentli.innerHTML = "<div class='HeaderImg'><img class='img' src='"+img+"' /><span>"+(obj.nickname || '')+"</span></div>"+
-												  "<div class='time'>时间："+obj.dateline+"</div>"+
-												  "<p>"+(obj.commentContent || '')+"</p>"+
-												  "<div class='answer'>"+
-													"<div class='tit'>"+obj.postTitle+"</div>"+
-													"<p>"+obj.postContent+"</p>"+
-												  "</div>";
-							commentList.appendChild(commentli);
+							commentli.innerHTML = "<div class='HeaderImg'><img class='img' src='" + img + "' /><span>" + (obj.nickname || '') + "</span></div>" +
+								"<div class='time'>时间：" + obj.dateline + "</div>" +
+								"<p>" + (obj.commentContent || '') + "</p>" +
+								"<div class='answer'>" +
+								"<div class='tit'>" + obj.postTitle + "</div>" +
+								"<p>" + obj.postContent + "</p>" +
+								"</div>";
+							comment_list.appendChild(commentli);
 						})
+					} else {
+						comment_list.innerHTML = nodataHtmlInfo;
 					}
-				},myerror)
+				}, myerror)
 			}
-			_('#comment').on('tap','li',function(){	      		
-	      		w.openView('post_detail',{postId:this.id});
-	    	})
-		})(mui,document,util,window)
+
+			//获取回复
+			function getPostReply() {
+				//我的回复
+				u.mypost("user_center/myPostReply", pdata, true, function(data) {
+					reply_list.innerHTML = "";
+					if(data.data.result && data.data.result.length > 0) {
+						imgServer = data.data.imgServer;
+						_.each(data.data.result, function(i, obj) {
+							replyli = doc.createElement("li");
+							replyli.id = obj.postId;
+							var img = null;
+							if(obj.avatar == "") {
+								img = "../images/default-person.png";
+							} else {
+								img = imgServer + obj.avatar;
+							}
+							replyli.className = "mui-table-view-cell mui-media";
+							replyli.innerHTML = "<div class='HeaderImg'><img class='img' src='" + img + "' /><span>" + obj.nickname + "</span></div>" +
+								"<div class='time'>时间：" + obj.dateline + "</div>" +
+								"<p>" + obj.commentContent + "</p>" +
+								"<div class='answer'>" +
+								"<div class='tit'>" + obj.postTitle + "</div>" +
+								"<p>" + obj.postContent + "</p>" +
+								"</div>";
+							reply_list.appendChild(replyli);
+						})
+					} else {
+						reply_list.innerHTML = nodataHtmlInfo;
+					}
+				}, myerror)
+			}
+
+			_('#tab').on('tap', 'li', function() {
+				w.openView('post_detail', {
+					postId: this.id
+				});
+			})
+			//写帖子
+			doc.getElementById("collect").addEventListener('tap', function() {
+				if(!w.getUser()){
+					w.openView("../userLogin.html");
+				}else{
+					w.openView("../communicate/release_post.html");
+				}
+			});
+		})(mui, document, util, window)
 	</script>
+
 </html>

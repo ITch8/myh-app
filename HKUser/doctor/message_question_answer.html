@@ -197,6 +197,10 @@
 								illnessSelectObj.innerHTML +="<option value='"+o.illId+"'>"+o.illName+"</option>";
 							})
 						}
+					}else if(data.code == 500 && "未登录" == data.msg){
+						u.goLogin();
+					}else{
+						_.toast(data.msg || '服务器异常');
 					}
 				},myerror);
 			});

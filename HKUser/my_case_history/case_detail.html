@@ -95,10 +95,7 @@
 						var len = data.data.remarks.length;
 						var src = null;
 						_.each(data.data.remarks,function(i,obj){
-							var img1Html = "";
-							var img2Html = "";
-							var img3Html = "";
-							var img4Html = "";
+							var img1Html = "",img2Html = "",img3Html = "",img4Html = "";
 							div = doc.createElement("div");
 							div.id = obj.illId;
 							if(obj.img){
@@ -118,15 +115,19 @@
 							}else{
 								imghtmls = "";
 							}
+							var cls_pro = "process-1";
 							if(0 == i){
 								src = "../images/process-header.png";
+								cls_pro = "process-1";
 							}else if(i < len - 1){
 								src = "../images/process-body.png";
+								cls_pro = "process-2";
 							}else{
 								src = "../images/process-body-last.png";
+								cls_pro = "process-2";
 							}
 							div.className = "fuzhen";
-							div.innerHTML = "<img src='"+src+"' class='process'/>"+
+							div.innerHTML = "<img src='"+src+"' class='"+cls_pro+"'/>"+
 											"<div class='fuzhen-content'>"+
 												"<div class='fuzhen-item'><span class='fuzhen-date'>"+obj.visitDate+"</span><span class='step'>"+obj.stage+"</span></div>"+
 												"<div class='fuzhen-item-con'>"+obj.content+"</div>"+

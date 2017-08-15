@@ -77,7 +77,7 @@
 						}
 					}
 				});
-				u.mypost("medical/getIllnessList",pdata,true,function(data){
+				u.mypost("medical/getIllnessList",pdata,false,function(data){
 					if (data.code == 0) {
 						u.emptyHtml(list), caseList(data.data || []);
 					}else{
