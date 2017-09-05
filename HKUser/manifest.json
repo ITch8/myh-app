@@ -122,7 +122,7 @@
             },
             "splashscreen": {
                 "ios": {
-                    "iphone": {"default":"F:/qdy/ios_png/320x480.png","retina47":"F:/qdy/ios_png/750x1334.png","retina55":"F:/qdy/ios_png/1242x2208.png","retina40":"F:/qdy/ios_png/640x1136.png","retina35":"F:/qdy/ios_png/640x960.png","retina55l":"F:/qdy/ios_png/2208x1242.png"
+                    "iphone": {"default":"F:/qdy/ios_png/320x480.png","retina47":"F:/qdy2017/ios_png/750x1334.png","retina55":"F:/qdy2017/ios_png/1242x2208.png","retina40":"F:/qdy2017/ios_png/640x1136.png","retina35":"F:/qdy2017/ios_png/640x960.png","retina55l":"F:/qdy2017/ios_png/2208x1242.png"
                          /*iPhone3启动图片选，分辨率：320x480*/
                         /*3.5英寸设备(iPhone4)启动图片，分辨率：640x960*/
                         /*4.0 英寸设备(iPhone5/iPhone5s)启动图片，分辨率：640x1136*/
@@ -130,7 +130,7 @@
                         /*5.5 英寸设备(iPhone6 Plus)启动图片，分辨率：1242x2208*/
                         /*5.5 英寸设备(iPhone6 Plus)横屏启动图片，分辨率：2208x1242*/
                     },
-                    "ipad": {"portrait":"F:/qdy/ios_png/768x1004.png","portrait7":"F:/qdy/ios_png/768x1024.png","landscape":"F:/qdy/ios_png/1024x748.png","landscape7":"F:/qdy/ios_png/1024x768.png","portrait-retina":"F:/qdy/ios_png/1536x2008.png","portrait-retina7":"F:/qdy/ios_png/1526x2048.png","landscape-retina":"F:/qdy/ios_png/2048x1496.png","landscape-retina7":"F:/qdy/ios_png/2048x1536.png"
+                    "ipad": {"portrait":"F:/qdy2017/ios_png/768x1004.png","portrait7":"F:/qdy2017/ios_png/768x1024.png","landscape":"F:/qdy2017/ios_png/1024x748.png","landscape7":"F:/qdy2017/ios_png/1024x768.png","portrait-retina":"F:/qdy2017/ios_png/1536x2008.png","portrait-retina7":"F:/qdy2017/ios_png/1526x2048.png","landscape-retina":"F:/qdy2017/ios_png/2048x1496.png","landscape-retina7":"F:/qdy2017/ios_png/2048x1536.png"
                          /*iPad竖屏启动图片，分辨率：768x1004*/
                         /*iPad高分屏竖屏图片，分辨率：1536x2008*/
                          /*iPad横屏启动图片，分辨率：1024x748*/
@@ -141,7 +141,7 @@
                         /*iPad iOS7高分屏横屏启动图片，分辨率：2048x1536*/
                     }
                 },
-                "android": {"hdpi":"F:/qdy/android_png/480x762.png","ldpi":"D:/名医肿瘤科启动页/android_png/320x442.png","mdpi":"D:/名医肿瘤科启动页/android_png/240x282.png","xhdpi":"F:/qdy/android_png/720x1242.png","xxhdpi":"F:/qdy/android_png/1080x1882.png"
+                "android": {"hdpi":"F:/qdy2017/android_png/480x762.png","ldpi":"D:/名医肿瘤科启动页/android_png/320x442.png","mdpi":"D:/名医肿瘤科启动页/android_png/240x282.png","xhdpi":"F:/qdy2017/android_png/720x1242.png","xxhdpi":"F:/qdy2017/android_png/1080x1882.png"
                      /*普通屏启动图片，分辨率：240x282*/
                      /*大屏启动图片，分辨率：320x442*/
                      /*高分屏启动图片，分辨率：480x762*/
@@ -539,7 +539,10 @@
 					"js/mui.zoom.js",
 					"fonts/iconfont.ttf",
 					"css/doctor/doctor_detail.css",
-					"css/imagePreview.css"
+					"css/imagePreview.css",
+					"images/release.png",
+					"images/note2.png",
+					"images/online2.png"
 				],
 				"refer": [
 					"doctor/message_question_answer.html",

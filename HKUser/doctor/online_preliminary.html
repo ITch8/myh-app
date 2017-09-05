@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="format-detection" content="telephone=no">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<title>在线问诊</title>
+		<link rel="stylesheet" href="../css/mui.css" />
+		<link rel="stylesheet" href="../css/common.css" />
+		<link rel="stylesheet" href="../css/input.css" />
+		<link rel="stylesheet" href="../css/case.css" />
+		<link rel="stylesheet" href="../css/iconfont.css" />
+		<link rel="stylesheet" type="text/css" href="../css/mui.picker.min.css" />
+		<link rel="stylesheet" href="../css/base.css" />
+		
+		<link rel="stylesheet" href="../css/mobiscroll_002.css"/>
+		<link rel="stylesheet" href="../css/mobiscroll.css"/>
+		<link rel="stylesheet" href="../css/mobiscroll_003.css"/>
+	</head>
+	<style>
+		.mui-bar{
+			z-index: 1000;
+		}
+		.search-btn {
+			width: 100%;
+			height: 40px;
+			font-size: 15px;
+			border-bottom: 1px solid #DEDEDE;
+			text-align: center;
+			color: #666;
+			background-color: #ffffff;
+		}
+		
+		.hospital {
+			width: 50%;
+			height: 80%;
+			float: left;
+			border-right: 1px solid #DEDEDE;
+			margin-top: 4px;
+			line-height: 32px;
+		}
+		
+		.department {
+			width: 50%;
+			height: 100%;
+			float: left;
+			line-height: 40px;
+		}
+		
+		.search-btn img {
+			width: 10px;
+			height: 8px;
+		}
+		
+		.consult-money {
+			color: #33A2D7;
+		}
+		
+		.person-info {
+			width: 100%;
+			overflow: hidden;
+			margin-top: 15px;
+			font-size: 14px;
+		}
+		
+		.state-brief {
+			width: 100%;
+			margin-top: 15px;
+		}
+		
+		.state-brief-title {
+			width: 100%;
+			height: 35px;
+			color: #666;
+			font-size: 14px;
+			border-bottom: 1px solid #DEDEDE;
+			line-height: 35px;
+			background-color: #FFFFFF;
+			padding-left: 10px;
+		}
+		
+		.state-brief textarea {
+			border: 0;
+		}
+		
+		.choice-case {
+			width: 100%;
+			height: 50px;
+			color: #666;
+			font-size: 14px;
+			border-bottom: 1px solid #DEDEDE;
+			padding-left: 15px;
+			background-color: #FFFFFF;
+			padding-top: 3px;
+		}
+		
+		.choice-case-select {
+			width: 40%;
+			height: 40px !important;
+			border: 1px solid #DEDEDE !important;
+		}
+		
+		.argee {
+			width: 100%;
+			overflow: hidden;
+			line-height: 30px;
+			margin-top: 15px;
+			padding-left: 15px;
+			color: #999;
+			font-size: 14px;
+		}
+		
+		.know {
+			width: 50%;
+			float: left;
+		}
+		
+		.service {
+			width: 50%;
+			margin: 0px auto;
+			text-align: right;
+			float: right;
+			padding-right: 20px;
+		}
+		
+		.service img {
+			width: 50px;
+			height: 60px;
+		}
+		
+		.star {
+			color: red;
+		}
+		h5,
+		.mui-h5 {
+			font-size: 14px;
+			font-weight: normal;
+			color: #999;
+		}
+		
+		.mui-table-view-inverted .mui-table-view-cell.mui-active {
+		    background-color: #FFFFFF;
+		}
+		.retrie {
+			position: relative;
+			z-index: 102;
+			height: 40px;
+			background-color: #fff;
+			border-bottom: 1px solid #e8e8e8;
+			margin-top: 0px; 
+		}
+		.retrie dt {
+			border-bottom: 1px solid #DEDEDE;
+		}
+		
+		.retrie dt a {
+			font-size: 14px;
+		}
+		
+		.area ul li a {
+			font-size: 14px;
+		}
+		
+		.wage ul li a {
+			font-size: 14px;
+		}
+		
+		.downlist li a {
+			color: #666;
+		}
+		
+		.downlist {
+			overflow: hidden;
+		}
+		a{
+			color: #33A2D7;
+		}
+		.retrie dt #wage:after {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			margin-top: -4px;
+			margin-left: 30px;
+			width: 8px;
+			height: 8px;
+			border: #666 solid;
+			border-width: 1px 1px 0 0;
+			content:normal !important;
+			-webkit-transform: rotate(135deg);
+		}
+		.mui-table-view-cell > a:not(.mui-btn) {
+			position: relative;
+			display: block;
+			overflow: hidden;
+			margin: -20px -15px !important;
+			padding: inherit;
+			white-space: nowrap;
+			text-overflow: ellipsis;
+			color: inherit;
+		}
+		.slide li{
+			display: block;
+			padding: 0 30px;
+			height: 40px;
+			background-color: transparent;
+			line-height: 40px;
+			text-align: left !important;
+			font-size: 14px;
+			border: 0px;
+		}
+		.myicon {
+			position: absolute;
+			top: 11px;
+			width: 25px;
+		}
+		.contact-icon {
+			content: url(../images/service-1.png);
+			right: 13px;
+		}
+		.newContactNum{
+			position: absolute;
+			right: 5px;
+			top: 3px;
+		}
+		.m-undisplay {
+			display: none;
+		}
+	</style>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">在线问诊</h1>
+			<span id="service" class="mui-pull-right">
+				<span class="myicon contact-icon"></span>
+				<span id="newContactNum" class="mui-badge mui-badge-danger newContactNum m-undisplay">0</span>
+			</span>
+		</header>
+		<div class="mui-content">
+			<div class="search-btn">
+				<div class="retrie">
+					<dt>
+						<a id="area">选择时长 </a>
+						<a id="wage">咨询费：<span class="consult-money">¥<span id="consult-money"></span></span></a>
+					</dt>
+					<dd class="area">
+						<ul id="durationList" class="slide downlist duration-cell">
+							<li class='mui-table-view-cell' id="firstTime" timeKeyAttr='phoneTimeLenFirst'></li>
+							<li class='mui-table-view-cell' id="secondTime" timeKeyAttr='phoneTimeLenSecond'></li>
+							<li class='mui-table-view-cell' id="thirdTime" timeKeyAttr='phoneTimeLenThird'></li>
+						</ul>
+					</dd>
+				</div>
+			</div>
+			<div class="person-info">
+				<form class="mui-input-group">
+					<div class="mui-input-row">
+						<label class="label">联系人<span class="star">*</span>：</label>
+						<input type="text" placeholder="请输入姓名" id="name">
+					</div>
+					<div class="mui-input-row">
+						<label class="label">性别<span class="star">*</span>：</label>
+						<div class="mui-card">
+							<div class="mui-input-row mui-radio mui-left" id="maleRadio">
+								<input value="1" name="radio1" type="radio" checked id="male">
+								<label class="label">男</label>
+							</div>
+							<div class="mui-radio mui-left" id="femaleRadio">
+								<input value="2" name="radio1" type="radio" id="female">
+								<label class="label">女</label>
+							</div>
+						</div>
+					</div>
+					<div class="mui-input-row">
+						<label class="label">您的联系电话<span class="star">*</span>：</label>
+						<input type="tel" class="mui-input-clear" placeholder="请输入您的手机号码" id="mobile">
+					</div>
+					<div class="mui-input-row">
+						<label class="label">期望沟通时间：</label>
+						<!--<input id='communicate' style="width:50% !important;text-align:left;border: 1px solid #DEDEDE;border-radius: 3px;font-size: 14px;" data-options='{"type":"datetime","beginYear":2010,"endYear":2020}' class="btn mui-btn mui-btn-block">-->
+						<input value="" class="" placeholder="请选择期望沟通时间" readonly="readonly" name="appDateTime" id="communicate" type="text">
+					</div>
+				</form>
+				<div class="state-brief">
+					<form>
+						<div class="state-brief-title">病情简要概述</div>
+						<textarea rows="5" placeholder="请输入病情简要概述" class="textarea" id="illDescription"></textarea>
+					</form>
+				</div>
+				<div class="choice-case">
+					选择病历：
+					<select class="choice-case-select" id="illnessSelect"></select>
+				</div>
+				<div class="argee">
+					<div class="know"><span id="res" style="color: #32A3D6;" class="mui-icon iconfont icon-xuanzhong"></span>&nbsp;<span id="know-agree">知情同意书</span></div>
+				</div>
+			</div>
+			<div class='next'>
+				<button type="button" class="mui-btn save-btn" id="order" >预约</button>
+			</div>
+		</div>
+	</body>
+	<script src="../js/mui.min.js"></script>
+	<script src="../js/mui.picker.min.js"></script>
+	<script src="../js/jquery-1.8.3.min.js"></script>
+	<script src="../js/common.js"></script>
+	
+	<script type="text/javascript" src="../js/jquery.1.7.2.min.js"></script>
+	<script type="text/javascript" src="../js/mobiscroll_002.js"></script>
+	<script type="text/javascript" src="../js/mobiscroll_004.js"></script>
+	<script type="text/javascript" src="../js/mobiscroll.js"></script>
+	<script type="text/javascript" src="../js/mobiscroll_003.js"></script>
+	<script type="text/javascript" src="../js/mobiscroll_005.js"></script>
+	<script type="text/javascript">
+        $(function () {
+			var currYear = (new Date()).getFullYear();	
+			var opt={};
+			opt.date = {preset : 'date'};
+			opt.datetime = {preset : 'datetime'};
+			opt.time = {preset : 'time'};
+			opt.default = {
+				theme: 'android-ics light', //皮肤样式
+		        display: 'modal', //显示方式 
+		        mode: 'scroller', //日期选择模式
+				dateFormat: 'yyyy-mm-dd',
+				lang: 'zh',
+				showNow: true,
+				nowText: "今天",
+		        startYear: currYear - 70, //开始年份
+		        endYear: currYear + 10 //结束年份
+			};
+
+		  	$("#appDate").mobiscroll($.extend(opt['date'], opt['default']));
+		  	var optDateTime = $.extend(opt['datetime'], opt['default']);
+		  	var optTime = $.extend(opt['time'], opt['default']);
+		    $("#communicate").mobiscroll(optDateTime).datetime(optDateTime);
+		    $("#appTime").mobiscroll(optTime).time(optTime);
+        });
+    </script>
+	<script>
+		$(function() {
+			$('.retrie dt a').click(function() {
+				var $t = $(this);
+				if($t.hasClass('up')) {
+					$(".retrie dt a").removeClass('up');
+					$('.downlist').hide();
+					$('.mask').hide();
+				} else {
+					$(".retrie dt a").removeClass('up');
+					$('.downlist').hide();
+					$t.addClass('up');
+					$('.downlist').eq($(".retrie dt a").index($(this)[0])).show();
+					$('.mask').show();
+				}
+			});
+			$(".area ul li a:contains('" + $('#area').text() + "')").addClass('selected');
+		});
+		var newContactNum = null;
+		(function(_,doc,u,w){
+			_.init({swipeBack:false}),_(".mui-scroll-wrapper").scroll();
+			var type = null,targetWeb = null;
+			var list = doc.getElementById('durationList');
+			var pdata = {}, li = null;
+			var illness = null,timeLen = null;
+			var docId = null, privateToken = null;
+			var optionhtml = "";
+			var orderId = null;
+			var userInfo = null;
+			var moneyObj = doc.getElementById("consult-money");
+			var orderObj = doc.getElementById("order"),
+				nameObj = doc.getElementById("name"),
+				sexObj = doc.getElementsByName("radio1"),
+				mobileObj = doc.getElementById("mobile"),
+				communicateObj = doc.getElementById("communicate"),
+				illDescriptionObj = doc.getElementById("illDescription"),
+				illnessSelectObj = doc.getElementById("illnessSelect");
+			var firstTimeObj = doc.getElementById("firstTime");
+			var secondTimeObj = doc.getElementById("secondTime");
+			var thirdTimeObj = doc.getElementById("thirdTime");
+			var phoneTimeLen = null;
+			var timeLenKey = null;
+			var web = null;
+			newContactNum = doc.getElementById("newContactNum");
+			_.plusReady(function(){
+				privateToken = w.getItem("privateToken");
+			})
+			w.addEventListener("event",function(e){
+				privateToken = w.getItem("privateToken");
+				pdata.privateToken = privateToken;
+				docId = e.detail.docId;
+				oid = e.detail.oid;
+				pdata.docId = docId;
+				//根据医生id 获取基本信息
+				u.mypost("diagnosis_online/diaSelectTimeLenView",pdata,true,function(data){
+					if(data.code == 0){
+						optionhtml = "";
+						illness = data.data.illness;//病历列表
+						timeLen = data.data.timeLen;//选择时长的费用
+						userInfo = data.data.userInfo;//联系人信息
+						if(illness && illness.length > 0){
+							_.each(illness,function(i,obj){
+								optionhtml += "<option value='"+obj.illId+"'>"+obj.illName+"</option>";
+							});
+							illnessSelect.innerHTML = optionhtml;
+						}
+						//选择时长,咨询费
+						firstTimeObj.innerHTML = timeLen?timeLen[0].phoneTimeLenFirst +"分钟":'';
+						secondTimeObj.innerHTML = timeLen?timeLen[0].phoneTimeLenSecond +"分钟":'';
+						thirdTimeObj.innerHTML = timeLen?timeLen[0].phoneTimeLenThird +"分钟":'';
+						firstTimeObj.addEventListener('tap', function() {
+							moneyObj.innerHTML = timeLen?timeLen[0].phoneFeeFirst:'';
+						});
+						secondTimeObj.addEventListener('tap', function() {
+							moneyObj.innerHTML = timeLen?timeLen[0].phoneFeeSecond:'';
+						});
+						thirdTimeObj.addEventListener('tap', function() {
+							moneyObj.innerHTML = timeLen?timeLen[0].phoneFeeThird:'';
+						});
+						//联系人、联系电话、性别
+						nameObj.value = userInfo.nickname?userInfo.nickname:'';
+						mobileObj.value = userInfo.phone?userInfo.phone:'';
+						var sex = userInfo.sex?userInfo.sex:'';
+						if(sex == "男"){
+							doc.getElementById("male").checked = true;
+						}else if(sex == "女"){
+							doc.getElementById("female").checked = true;
+						}
+					}else{
+						_.toast(data.msg);
+					}
+				},myerror);
+				type = e.detail.type?e.detail.type:2;
+				switch (type){
+					case 1://预约成功
+						targetWeb = "interview_submit_succeed.html";//interview_order_succeed.html
+						break;
+					case 2://支付
+						targetWeb = "pay.html";
+						break;
+					default:
+						break;
+				}
+			});
+			illnessSelectObj.addEventListener("tap",function(){
+				if(illness.length == undefined){
+					this.setAttribute("disabled","disabled");
+					_.toast("您还没有病历，请先添加病历");
+					return;
+				}
+			});
+			_('.duration-cell').on('tap','li',function(){
+		      	$(".retrie dt a").removeClass('up');
+				$('.downlist').hide();
+				$('.mask').hide();
+				//获取选择的沟通时长
+				var id = this.id;
+				timeLenKey = this.getAttribute("timeKeyAttr");
+				phoneTimeLen = doc.getElementById(id).textContent.replace("分钟","");//截取数字
+				doc.getElementById("area").innerHTML = this.innerHTML;
+		 	})
+			//预约
+			orderObj.addEventListener('tap',function(){
+				var day = new Date();//当前时间
+				var orderTime = communicateObj.value;//期望沟通时间
+				var CurrentDate = "";
+				var Year = day.getFullYear(); 
+				var Month = day.getMonth()+1; 
+				var Day = day.getDate(); 
+				var hour = day.getHours();
+				var min = day.getMinutes();
+				var second = day.getSeconds();
+				CurrentDate += Year + "-"; 
+				if (Month >= 10){ 
+					CurrentDate += Month + "-"; 
+				}else{ 
+					CurrentDate += "0" + Month + "-"; 
+				} 
+				if (Day >= 10){ 
+					CurrentDate += Day + " "; 
+				}else{ 
+					CurrentDate += "0" + Day + " "; 
+				}  
+				if(hour > 10){
+					CurrentDate += hour + ":"; 
+				}else{
+					CurrentDate += "0" + hour + ":"; 
+				}
+				if(min > 10){
+					CurrentDate += min + ":"; 
+				}else{
+					CurrentDate += "0" + min + ":"; 
+				}
+				if(second > 10){
+					CurrentDate += second ; 
+				}else{
+					CurrentDate += "0" + second ; 
+				}
+				var startDate = new Date(CurrentDate.replace("-",",")).getTime(); //当前日期
+				var orderDate = new Date(orderTime.replace("-",",")).getTime();//所选期望沟通时间
+				
+				if(u.isNull(moneyObj.textContent)){
+					_.toast("请选择时长");
+					return;
+				}else if(u.isNull(nameObj.value)){
+					_.toast("请输入姓名");
+					return;
+				}else if(u.isNull(mobileObj.value)){
+					_.toast("请输入手机号码");
+					return;
+				}else if(!u.checkPhone(mobileObj.value)){
+					_.toast("请输入正确的手机号码");
+					return;
+				}else if(u.isNull(communicateObj.value)){
+					_.toast("请选择期望沟通时间");
+					return;
+				}else if(startDate > orderDate){
+					_.toast('期望沟通时间不能早于当前时间！'); 
+					return;
+				}else if(u.isNull(illnessSelectObj.value)){
+					_.toast("请选择病历");
+					return;
+				}else if(isEmojiCharacter(nameObj.value) || isEmojiCharacter(mobileObj.value) || isEmojiCharacter(illDescriptionObj.value)){
+					_.toast("不支持表情输入");
+					return;
+				}
+				var name = nameObj.value.trim(),
+					sex = getRadioBoxValue(sexObj),
+					mobile = mobileObj.value.trim(),
+					communicate = communicateObj.value,
+					illDescription = illDescriptionObj.value.trim(),
+					illnessId = illnessSelectObj.value,
+					money = moneyObj.textContent;
+				
+				pdata.privateToken = privateToken;
+				pdata.person = name;
+				pdata.sex = sex;
+				pdata.telephone = mobile;
+				pdata.hopeCallDate = communicate;
+				pdata.content = illDescription;
+				pdata.illnessId = illnessId;
+				pdata.price = money;
+				pdata.phoneTimeLen = phoneTimeLen;
+				pdata.timeLenKey = timeLenKey;
+				
+				if(type == 1){
+//					pdata.oid = oid;//重新预约id
+					//重新预约  根据医生id 获取基本信息
+					u.mypost("diagnosis_online/reDiaSubmit",pdata,true,function(data){
+						if(data.code == 0){
+							var ex = {
+								type:4,
+								order_type:"在线问诊咨询费",
+								orderId:oid,
+								fee:moneyObj.textContent
+							}
+							_.toast(data.msg);
+							w.openView("pay.html",ex);
+							moneyObj.textContent = "";
+							nameObj.value = "";
+							mobileObj.value = "";
+							communicateObj.value = "";
+							illDescriptionObj.value = "";
+							doc.getElementById("area").innerHTML = "选择时长";
+						}else{
+							_.toast(data.msg);
+						}
+					},myerror);
+				}else if(type == 2){
+					//根据医生id 获取基本信息
+					u.mypost("diagnosis_online/diaDoPostTempOne",pdata,true,function(data){
+						if(data.code == 0){
+							orderId = data.data.orderId;
+							var ex = {
+								type:4,
+								order_type:"在线问诊咨询费",
+								orderId:orderId,
+								fee:moneyObj.textContent
+							}
+							_.toast(data.msg);
+							w.openView("pay.html",ex);
+							moneyObj.textContent = "";
+							nameObj.value = "";
+							mobileObj.value = "";
+							communicateObj.value = "";
+							illDescriptionObj.value = "";
+							doc.getElementById("area").innerHTML = "选择时长";
+						}else{
+							_.toast(data.msg);
+						}
+					},myerror);
+				}
+			})
+			//获取单选按钮
+			function getRadioBoxValue(obj){
+                var value =0;
+                for(i=0; i<obj.length;i++){
+                    if(obj[i].checked){ 
+                        value = obj[i].value; 	                       
+                    } 
+	            }         
+             	return value;
+			}
+			//知情同意书
+			doc.getElementById("res").addEventListener('tap', function() {
+				if(hasClass(this,"icon-xuanzhong")){
+					removeClass(this,"icon-xuanzhong");
+					addClass(this,"icon-weixuanzhong");
+					orderObj.setAttribute("disabled","disabled");
+				}else{
+					removeClass(this,"icon-weixuanzhong");
+					addClass(this,"icon-xuanzhong");
+					orderObj.removeAttribute("disabled");
+				}
+			});
+			//客服
+			doc.getElementById("service").addEventListener('tap', function() {
+				newContactNum.innerText = "";
+				newContactNum.className="mui-badge mui-badge-danger newContactNum m-undisplay";
+				w.openView("../my_center/contactService.html");
+			});
+			//知情同意书跳转
+			doc.getElementById("know-agree").addEventListener('tap', function() {
+				w.openView("../know_agree.html")
+			});
+			//期望沟通时间
+			var picker = null;
+			var btns = _('.btn');
+			btns.each(function(i, btn) {
+				btn.addEventListener('tap', function() {
+					var self = this;
+					var optionsJson = this.getAttribute('data-options') || '{}';
+					var options = JSON.parse(optionsJson);
+					var id = this.getAttribute('id');
+					picker = new _.DtPicker(options);
+					picker.show(function(rs) {
+						self.value = rs.text;
+						picker.dispose();
+					});
+				}, false);
+			});
+			//当点击事件选择器关闭其他输入法
+//			communicateObj.addEventListener('tap', function() {
+//				doc.activeElement.blur();
+//			});
+			var oldBack = _.back;
+			_.back = function() {
+				picker?picker.hide():'';
+				doc.activeElement.blur();
+				$(".retrie dt a").removeClass('up');
+				$('.downlist').hide();
+				$('.mask').hide();
+				doc.getElementById("area").innerHTML = "选择时长";
+				moneyObj.textContent = "";
+				oldBack();
+			};
+		})(mui,document,util,window)
+		/**
+	     * @description 提示客服消息
+	     */
+	    function newContactInfo(unreadNum){
+	    	var num = Number(newContactNum.innerHTML || '0') || 0;
+	   		unreadNum?num +=unreadNum:num++;
+	   		newContactNum.innerHTML = (num > 99)?"99+":num;
+	   		newContactNum.className = "mui-badge mui-badge-danger newContactNum";
+	  	}
+	</script>
+</html>

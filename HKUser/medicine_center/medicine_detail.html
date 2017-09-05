@@ -92,7 +92,7 @@
 			})
 			//致电客服
 			doc.getElementById("telTo").addEventListener('tap',function(){
-				var tel = null,btnArray = ['致电', '取消'];;
+				var tel = null,btnArray = ['致电', '取消'];
 				tel = sessionStorage.getItem("kfTel");
 				if(!tel){
 					u.mypost('api/customerTel',pdata, true, function(data) {

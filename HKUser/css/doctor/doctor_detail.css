@@ -151,7 +151,7 @@ header {
 	background-color: #FFFFFF
 }
 
-.mui-action-back {
+.mui-action-back ,.main-font-color, header .mui-icon.mui-icon-left-nav{
 	color: #FFFFFF !important
 }
 
