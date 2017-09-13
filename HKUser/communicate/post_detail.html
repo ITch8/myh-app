@@ -99,7 +99,7 @@
 				pdata.offset = 0;
 				postId =  e.detail.postId;
 				privateToken = w.getItem("privateToken");
-				pdata.privateToken = w.getItem("privateToken");
+				pdata.privateToken = privateToken;
 				pdata.postId = postId;
 				u.mypost("post/detailPost",pdata,true,function(data){
 					if(data.code == 0){

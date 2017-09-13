@@ -25,7 +25,7 @@
 		<div class="mui-bar mui-bar-tab">
 			<div class="detail-btn-know">
 				<div class="pay-money"><span class="pay-title">定金：</span><span class="RMB">¥</span><span id="price"></span></div>
-				<div class="pay-money"><span class="pay-title">剩余款项<span class="paytoHK">（到港支付）</span>：</span><span class="RMB">¥</span><span id="price2"></span></div>
+				<div class="pay-money"><span class="pay-title">剩余款项<span class="paytoHK">（到港支付）</span>：</span><span class="RMB">HKD</span><span id="price2">0.00</span></div>
 			</div>
 			<button type="button" class="mui-btn detail-btn-pay" id="pay">付款</button>
 		</div>
@@ -73,7 +73,7 @@
 				if(!w.getUser()){
 					w.openView("../userLogin.html");
 				}else{
-					pdata.privateToken = privateToken;
+					pdata.privateToken = w.getItem("privateToken");
 					pdata.vaccinumId = vaccinumId;
 					u.mypost("vaccinum/payView",pdata,true,function(data){
 						if(data.code == 0){
@@ -86,7 +86,7 @@
 							}
 							w.openView("../doctor/pay.html",ex);//1代表直接支付，并跳转到购买成功
 						}else if(data.code == 500 && '未登录' == data.msg){
-							w.openView("../userLogin.html");
+							u.goLogin();
 						}
 					},myerror);
 				}

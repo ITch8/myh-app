@@ -229,9 +229,9 @@
 				w.openView("doctor/hospital_list.html")
 			});
 			//药品中心
-//			doc.getElementById("medical").addEventListener('tap', function() {
-//				w.openView("medicine_center/medicine_center.html");
-//			});
+			doc.getElementById("medical").addEventListener('tap', function() {
+				w.openView("medicine_center/medicine_center.html");
+			});
 			//基因检测
 			doc.getElementById("check").addEventListener('tap', function() {
 				w.openView("gene_detect/gene_detect_list.html")
@@ -252,7 +252,6 @@
 					docId: this.parentNode.id
 				});
 			})
-
 			//直接预约
 			_('#doctor-list').on('tap', '.mui-btn-outlined', function() {
 				if(!w.getUser()) {
