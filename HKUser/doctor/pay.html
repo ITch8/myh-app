@@ -166,6 +166,7 @@
 								u.close('pay')
 							},200)
 							u.close('order_register');
+							u.close('doctor_detail');
 		                });
 					}else if(data.code == 500 && "未登录" == data.msg){
 						u.goLogin();

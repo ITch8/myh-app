@@ -29,7 +29,8 @@
       "my_center/myInterview.html",
       "userLogin.html",
       "my_center/contactService.html",
-      "communicate/release_post.html"
+      "communicate/release_post.html",
+      "my_center/feedback.html"
     ],
     "resources": [
       "fonts/mui.ttf",

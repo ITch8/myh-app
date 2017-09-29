@@ -3,7 +3,7 @@
     "id": "H568440CA",/*应用的标识，创建应用时自动生成，勿手动修改*/
     "name": "名医肿瘤科",/*应用名称，程序桌面图标名称*/
     "version": {
-        "name": "4.0.0",/*应用版本名称*/
+        "name": "4.0.2",/*应用版本名称*/
         "code": ""
     },
     "description": "",/*应用描述信息*/
@@ -1026,7 +1026,8 @@
 					"my_center/my_post.html",
 					"userLogin.html",
 					"my_center/question.html",
-					"communicate/release_post.html"
+					"communicate/release_post.html",
+					"my_center/feedback.html"
 				],
 				"priority": 0
 			},

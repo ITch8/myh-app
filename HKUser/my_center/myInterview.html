@@ -1,5 +1,6 @@
 <!doctype html>
 <html>
+
 	<head>
 		<meta charset="UTF-8">
 		<title>我的问诊</title>
@@ -15,7 +16,7 @@
 	<body>
 		<header class="mui-bar mui-bar-nav">
 			<a class="mui-pull-left mui-action-back mui-icon mui-icon-left-nav"></a>
-			<h1 id="title" class="mui-title">我的问诊</h1>	
+			<h1 id="title" class="mui-title">我的问诊</h1>
 		</header>
 		<div id="mui-scroll-wrapper" class="mui-content mui-fullscreen mui-scroll-wrapper">
 			<div id="cases" class="mui-scroll">
@@ -28,82 +29,106 @@
 	<script type="text/javascript" src="../js/mui.pullToRefresh.material.min.js"></script>
 	<script type="text/javascript" src="../js/common.js"></script>
 	<script type="text/javascript">
-		(function(_,doc,u,w){
-			_.init({swipeBack: false}),_(".mui-scroll-wrapper").scroll();
-			var pdata = {offset:0,limit:5};
-			var page = 0,privateToken = null,li = null,_pull = null,state = null;
+		(function(_, doc, u, w) {
+			_.init({
+				swipeBack: false
+			}), _(".mui-scroll-wrapper").scroll();
+			var pdata = {
+				offset: 0,
+				limit: 5
+			};
+			var page = 0,
+				privateToken = null,
+				li = null,
+				_pull = null,
+				state = null;
 			var list = doc.getElementById('interview-list');
 			_.plusReady(function() {
-				mui('#mui-scroll-wrapper').scroll().scrollTo(0,0,100);
+				mui('#mui-scroll-wrapper').scroll().scrollTo(0, 0, 100);
 				privateToken = w.getItem("privateToken");
 				pdata.privateToken = privateToken;
 				_pull = _('#cases').pullToRefresh({
 					down: {
 						callback: function() {
 							pdata.offset = 0;
-							u.mypost('user_center/onlineAskList',pdata, false, function(data) {
+							u.mypost('user_center/onlineAskList', pdata, false, function(data) {
 								_pull.endPullDownToRefresh((data.data[0] || []).length == 5);
-								if (data.code == 0) {
+								if(data.code == 0) {
 									page = 1;
 									u.emptyHtml(list), interviewList(data.data || []);
-								}else{
+								} else if(data.code == 500 && "未登录" == data.msg) {
+									u.goLogin();
+								} else {
 									_.toast(data.msg || '服务器异常');
 								}
 							}, function() {
 								_.toast('获取列表失败'), _pull.endPullDownToRefresh();
 							});
 						}
-					},up: {
+					},
+					up: {
 						callback: function() {
-							pdata.offset=(pdata.limit)*page;
-							u.mypost('user_center/onlineAskList',pdata, false, function(data) {
+							pdata.offset = (pdata.limit) * page;
+							u.mypost('user_center/onlineAskList', pdata, false, function(data) {
 								_pull.endPullUpToRefresh((data.data[0] || []).length < 5);
-								if (data.code  == 0) {
+								if(data.code == 0) {
 									page++;
 									interviewList(data.data || []);
+								} else if(data.code == 500 && "未登录" == data.msg) {
+									u.goLogin();
 								} else {
-									_.toast(data.msg ||'服务器异常');
+									_.toast(data.msg || '服务器异常');
 								}
 							}, function() {
 								_.toast('获取列表失败'), _pull.endPullUpToRefresh(true);
 							});
-						},auto: true
+						},
+						auto: true
 					}
 				});
 			});
-			function interviewList(data){
-				var stateClass = "",stateClass_01 = "color_f99",stateClass_02 = "color_ff0";
-				var payBtn = "",pay = "",cancel = "",cancelBtn = "";
-				var payClass = "but",payText = "付款",cancelOrder = "取消",cancelClass = "cancel";
-				_.each(data[0],function(i,obj){
+
+			function interviewList(data) {
+				var stateClass = "",
+					stateClass_01 = "color_f99",
+					stateClass_02 = "color_ff0";
+				var payBtn = "",
+					pay = "",
+					cancel = "",
+					cancelBtn = "";
+				var payClass = "but",
+					payText = "付款",
+					cancelOrder = "取消",
+					cancelClass = "cancel";
+				_.each(data[0], function(i, obj) {
 					li = doc.createElement("li");
 					li.id = obj.id;
 					state = obj.state;
-					if(state == "已确认沟通时间"){
+					if(state == "已确认沟通时间") {
 						stateClass = "";
 						payBtn = "";
 						pay = "";
 						cancel = "";
 						cancelBtn = "";
-					}else if(state == "完成"){
+					} else if(state == "完成") {
 						stateClass = stateClass_01;
 						payBtn = "";
 						pay = "";
 						cancel = "";
 						cancelBtn = "";
-					}else if(state == "未支付"){
+					} else if(state == "未支付") {
 						stateClass = stateClass_02;
 						payBtn = payClass;
 						pay = payText;
 						cancel = cancelOrder;
 						cancelBtn = cancelClass;
-					}else if(state == "待处理"){
+					} else if(state == "待处理") {
 						stateClass = "";
 						payBtn = "";
 						pay = "";
 						cancel = "";
 						cancelBtn = "";
-					}else if(state == "失败"){
+					} else if(state == "失败") {
 						stateClass = stateClass_02;
 						payBtn = "";
 						pay = "";
@@ -111,59 +136,69 @@
 						cancelBtn = "";
 					}
 					li.className = "mui-table-view-cell mui-media";
-					li.innerHTML = "<div class='mui-pull-left mui-col-sm-8 left'>"+
-        								"<div class='font-color-333 font-size-14'>"+obj.docName+"</div>"+
-        								"<div class='font-color-999 font-size-12'>"+obj.dateline+"</div>"+
-        								"<div class='describe'>"+obj.askContent+"</div>"+
-       								"</div>"+
-        							"<div class='mui-pull-right mui-col-sm-4 right mui-text-right'>"+
-        								"<span class='state "+stateClass+"'>"+state+"</span>"+
-        								"<span></span>"+
-                						"<p data='"+obj.price+"' class='mui-pull-right "+cancelBtn+"' id='"+obj.id+"'>"+cancel+"</p>&nbsp;<p data='"+obj.price+"' class='mui-pull-right "+payBtn+"' id='"+obj.id+"'>"+pay+"</p>"+
-       								"</div>";
+					li.innerHTML = "<div class='mui-pull-left mui-col-sm-8 left'>" +
+						"<div class='font-color-333 font-size-14'>" + obj.docName + "</div>" +
+						"<div class='font-color-999 font-size-12'>" + obj.dateline + "</div>" +
+						"<div class='describe'>" + obj.askContent + "</div>" +
+						"</div>" +
+						"<div class='mui-pull-right mui-col-sm-4 right mui-text-right'>" +
+						"<span class='state " + stateClass + "'>" + state + "</span>" +
+						"<span></span>" +
+						"<p data='" + obj.price + "' class='mui-pull-right " + cancelBtn + "' id='" + obj.id + "'>" + cancel + "</p>&nbsp;<p data='" + obj.price + "' class='mui-pull-right " + payBtn + "' id='" + obj.id + "'>" + pay + "</p>" +
+						"</div>";
 					list.appendChild(li);
 				})
 			}
-			function getData(){
-				mui('#mui-scroll-wrapper').scroll().scrollTo(0,0,100);
+
+			function getData() {
+				mui('#mui-scroll-wrapper').scroll().scrollTo(0, 0, 100);
 				var stateClass = "";
 				var stateClass_01 = "color_f99";
 				var stateClass_02 = "color_ff0";
-				var payBtn = "",pay = "",cancel = "",cancelBtn = "";
-				var payClass = "but",payText = "付款",cancelOrder = "取消",cancelClass = "cancel";
-				list.innerHTML = "";//清空
-				var pdata = {offset:0,limit:5};
+				var payBtn = "",
+					pay = "",
+					cancel = "",
+					cancelBtn = "";
+				var payClass = "but",
+					payText = "付款",
+					cancelOrder = "取消",
+					cancelClass = "cancel";
+				list.innerHTML = ""; //清空
+				var pdata = {
+					offset: 0,
+					limit: 5
+				};
 				pdata.privateToken = privateToken;
-				u.mypost('user_center/onlineAskList',pdata, true, function(data) {
-					_.each(data.data[0],function(i,obj){
+				u.mypost('user_center/onlineAskList', pdata, true, function(data) {
+					_.each(data.data[0], function(i, obj) {
 						li = doc.createElement("li");
 						li.id = obj.id;
 						state = obj.state;
-						if(state == "已确认沟通时间"){
+						if(state == "已确认沟通时间") {
 							stateClass = "";
 							payBtn = "";
 							pay = "";
 							cancel = "";
 							cancelBtn = "";
-						}else if(state == "完成"){
+						} else if(state == "完成") {
 							stateClass = stateClass_01;
 							payBtn = "";
 							pay = "";
 							cancel = "";
 							cancelBtn = "";
-						}else if(state == "未支付"){
+						} else if(state == "未支付") {
 							stateClass = stateClass_02;
 							payBtn = payClass;
 							pay = payText;
 							cancel = cancelOrder;
 							cancelBtn = cancelClass;
-						}else if(state == "待处理"){
+						} else if(state == "待处理") {
 							stateClass = "";
 							payBtn = "";
 							pay = "";
 							cancel = "";
 							cancelBtn = "";
-						}else if(state == "失败"){
+						} else if(state == "失败") {
 							stateClass = stateClass_02;
 							payBtn = "";
 							pay = "";
@@ -171,58 +206,59 @@
 							cancelBtn = "";
 						}
 						li.className = "mui-table-view-cell mui-media";
-						li.innerHTML = "<div class='mui-pull-left mui-col-sm-8 left'>"+
-	        								"<div class='font-color-333 font-size-14'>"+obj.docName+"</div>"+
-	        								"<div class='font-color-999 font-size-12'>"+obj.dateline+"</div>"+
-	        								"<div class='describe'>"+obj.askContent+"</div>"+
-	       								"</div>"+
-	        							"<div class='mui-pull-right mui-col-sm-4 right mui-text-right'>"+
-	        								"<span class='state "+stateClass+"'>"+state+"</span>"+
-	        								"<span></span>"+
-	                						"<p data='"+obj.price+"' class='mui-pull-right "+cancelBtn+"' id='"+obj.id+"'>"+cancel+"</p>&nbsp;<p data='"+obj.price+"' class='mui-pull-right "+payBtn+"' id='"+obj.id+"'>"+pay+"</p>"+
-	       								"</div>";
+						li.innerHTML = "<div class='mui-pull-left mui-col-sm-8 left'>" +
+							"<div class='font-color-333 font-size-14'>" + obj.docName + "</div>" +
+							"<div class='font-color-999 font-size-12'>" + obj.dateline + "</div>" +
+							"<div class='describe'>" + obj.askContent + "</div>" +
+							"</div>" +
+							"<div class='mui-pull-right mui-col-sm-4 right mui-text-right'>" +
+							"<span class='state " + stateClass + "'>" + state + "</span>" +
+							"<span></span>" +
+							"<p data='" + obj.price + "' class='mui-pull-right " + cancelBtn + "' id='" + obj.id + "'>" + cancel + "</p>&nbsp;<p data='" + obj.price + "' class='mui-pull-right " + payBtn + "' id='" + obj.id + "'>" + pay + "</p>" +
+							"</div>";
 						list.appendChild(li);
 					})
-				},myerror);
+				}, myerror);
 			}
 			//问诊详情
-			_('.mui-table-view').on('tap','li',function(){
+			_('.mui-table-view').on('tap', 'li', function() {
 				var ex = {
-					interviewId:this.id
+					interviewId: this.id
 				}
-	      		w.openView('interview_details.html',ex);
-	    	})
+				w.openView('interview_details.html', ex);
+			})
 			//付款
-			_('.mui-table-view').on('tap','.but',function(e){	
+			_('.mui-table-view').on('tap', '.but', function(e) {
 				var price = this.getAttribute("data");
 				var orderId = this.id;
 				var ex = {
-					type:4,
-					order_type:"在线问诊咨询费",
-					orderId:orderId,
-					fee:price
+					type: 4,
+					order_type: "在线问诊咨询费",
+					orderId: orderId,
+					fee: price
 				}
-		      	w.openView('pay.html',ex);
-		      	e.stopPropagation();
+				w.openView('pay.html', ex);
+				e.stopPropagation();
 			})
 			//取消订单
-			_('.mui-table-view').on('tap','.cancel',function(e){
+			_('.mui-table-view').on('tap', '.cancel', function(e) {
 				e.stopPropagation();
 				pdata.privateToken = privateToken;
 				pdata.oid = this.id;
 				pdata.orderType = 2;
 				var btnArray = ['取消', '确认'];
-				_.confirm('<div>确定要取消吗？</div>', '<div class="btn-title">取消</div>',btnArray, function(e) {
-					if(e.index == 1){
-						u.mypost("user_center/orderCancel",pdata,true,function(data){
-							if(data.code == 0){
+				_.confirm('<div>确定要取消吗？</div>', '<div class="btn-title">取消</div>', btnArray, function(e) {
+					if(e.index == 1) {
+						u.mypost("user_center/orderCancel", pdata, true, function(data) {
+							if(data.code == 0) {
 								_.toast("取消成功");
 								getData();
 							}
-						},myerror);
+						}, myerror);
 					}
-				},'div');
+				}, 'div');
 			})
-		})(mui,document,util,window)
+		})(mui, document, util, window)
 	</script>
+
 </html>

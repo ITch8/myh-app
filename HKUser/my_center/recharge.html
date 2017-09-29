@@ -83,20 +83,20 @@
 				doc.getElementById("pay").addEventListener('tap',function(){
 					if(u.isNull(totalObj.value)){
 	                    _.toast("请输入支付金额");
-	                    return;
+	                }else if(Number(totalObj.value || 0) <= 0){
+	                    _.toast("支付金额数目必须大于0");
 	                }else if(!u.checkMoney(totalObj.value)){
-	                    _.toast("支付金额必须是数字");
-	                    return;
+	                    _.toast("请正确输入金额数目");
 	                }else if(isEmojiCharacter(totalObj.value)){
 	                    _.toast("不支持表情输入");
-	                    return;
+	                }else{
+	                	payWay = doc.querySelector(".mui-table-view-cell.mui-selected").id;
+						if(payWay==1){//微信支付
+							pay('wxpay');
+						}else if(payWay==2){//支付宝
+							pay('alipay');
+						}
 	                }
-					payWay = doc.querySelector(".mui-table-view-cell.mui-selected").id;
-					if(payWay==1){//微信支付
-						pay('wxpay');
-					}else if(payWay==2){//支付宝
-						pay('alipay');
-					}
 				});
 			})
 			//检查服务的加载

@@ -163,6 +163,8 @@
 							regWeb && regWeb.evalJS('getIllist()');
 							_.back();
 						}
+					}else if(data.code == 500 && "未登录" == data.msg){
+						u.goLogin();
 					}else{
 						_.toast(data.msg);
 					}

@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<title>反馈意见</title>
+		<title>联系我们</title>
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<link rel="stylesheet" href="../css/mui.min.css" />
 		<link rel="stylesheet" href="../css/common.css" />
@@ -11,52 +11,85 @@
 	<body>
 		<header class="mui-bar mui-bar-nav">
 			<a class="mui-pull-left mui-action-back mui-icon mui-icon-left-nav"></a>
-			<h1 id="title" class="mui-title">反馈意见</h1>	
+			<h1 id="title" class="mui-title">联系我们</h1>
 		</header>
-		<div class="mui-content" >			
+		<div class="mui-content">
+			<p class="main-font-color">如果您是医生，希望加入到我们平台中来，请填写以下申请表单：</p>
+			<form class="mui-input-group">
+				<div class="mui-input-row">
+					<label><span class="star">*</span> 姓&ensp;&ensp;&ensp;&ensp;名:</label>
+					<input type="text" id="content_1" maxlength="10" placeholder="请输入姓名">
+				</div>
+				<div class="mui-input-row">
+					<label><span class="star">*</span> 就职医院:</label>
+					<input type="text" id="content_2" maxlength="20" placeholder="请输入就职医院">
+				</div>
+				<div class="mui-input-row">
+					<label><span class="star">*</span> 科&ensp;&ensp;&ensp;&ensp;室:</label>
+					<input type="text" id="content_3" maxlength="20" placeholder="请输入科室">
+				</div>
+				<div class="mui-input-row">
+					<label><span class="star">*</span> 邮箱地址:</label>
+					<input type="text" id="content_4" maxlength="30" placeholder="请输入邮箱地址">
+				</div>
+				<div class="mui-input-row">
+					<label><span class="star">*</span> 电&ensp;&ensp;&ensp;&ensp;话:</label>
+					<input type="tel" id="content_5" maxlength="11" placeholder="请输入电话">
+				</div>
+			</form>
 			<div class="mui-input-row" style="margin: 15px 15px 0px 15px;">
-				<textarea id="content" name="status" rows="5" placeholder="请留下您的反馈意见" maxlength="300"></textarea>
-				<p class="mui-pull-right"><span id="counter">0</span>\300</p>
+				<textarea id="content_6"  rows="5" placeholder="添加备注" maxlength="180"></textarea>
 			</div>
 			<button id="submit">提交</button>
 		</div>
 	</body>
 	<script src="../js/mui.min.js"></script>
 	<script src="../js/common.js"></script>
-	<script language="javascript"> 
-		(function(_,doc,u,w){
-			var pdata = {},content = null,privateToken = null,contentObj = doc.getElementById("content");
-			_.plusReady(function(){
-				privateToken = w.getItem("privateToken");
-				doc.getElementById("submit").addEventListener('tap',function(){
-					if(u.isNull(contentObj.value)){
-						_.toast("请输入您的反馈意见");
-						return;
-					}else if(contentObj.value.length > 300){
-						_.toast("反馈意见不能超过300字");
-						return;
-					}else if(isEmojiCharacter(contentObj.value)){
-						_.toast("不支持表情输入");
-						return;
+	<script language="javascript">
+		(function(_, doc, u, w) {
+			var pdata = {},
+				content = null,
+				privateToken = null,
+				contentObj = doc.getElementById("content");
+
+			var content_1Obj = document.getElementById("content_1"),
+				content_2Obj = document.getElementById("content_2"),
+				content_3Obj = document.getElementById("content_3"),
+				content_4Obj = document.getElementById("content_4"),
+				content_5Obj = document.getElementById("content_5"),
+				content_6Obj = document.getElementById("content_6");
+
+			_.plusReady(function() {
+				doc.getElementById("submit").addEventListener('tap', function() {
+					privateToken = w.getItem("privateToken");
+					if(u.isNull(content_1Obj.value)) {
+						_.toast("请输入您的姓名");
+					} else if(u.isNull(content_2Obj.value)) {
+						_.toast("请输入您的就职医院");
+					} else if(u.isNull(content_3Obj.value)) {
+						_.toast("请输入您的科室");
+					} else if(u.isNull(content_4Obj.value)) {
+						_.toast("请输入您的邮箱地址");
+					} else if(u.isNull(content_5Obj.value)) {
+						_.toast("请输入您的电话");
+					}else{
+						pdata.privateToken = privateToken;
+						pdata.content = "医生姓名：" + content_1Obj.value + ";    就职医院:" + content_2Obj.value + ";    科室：" + content_3Obj.value + ";    邮箱地址:" + content_4Obj.value + ";    电话:" + content_5Obj.value + ";    备注:" + content_6Obj.value;
+						u.mypost("user_center/feedback",pdata,true,function(data){
+							if(data.code == 0){
+							    _.toast("提交成功");
+							    _.later(function(){
+							    	_.back("slide-out-right");
+							    },500)
+							}else if("未登录" == data.msg && data.code == 500){
+								u.goLogin();
+							}else{
+								_.toast(data.msg);
+							}
+						},myerror);
 					}
-					pdata.privateToken = privateToken;
-					pdata.content = contentObj.value.trim();
-					u.mypost("user_center/feedback",pdata,true,function(data){
-						if(data.code == 0){
-							w.openView("setting.html");
-						    _.toast("反馈意见提交成功");
-						    contentObj.value = "";
-						    doc.getElementById("counter").textContent = 0;
-						}else{
-							_.toast(data.msg);
-						}
-					},myerror);
 				});
-				contentObj.addEventListener('input',function(){
-					doc.getElementById("counter").textContent = contentObj.value.length;
-				})
 			})
-			
-		})(mui,document,util,window)
+		})(mui, document, util, window)
 	</script>
 </html>

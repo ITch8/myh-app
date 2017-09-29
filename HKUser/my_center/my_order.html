@@ -44,6 +44,8 @@
 								if (data.code == 0) {
 									page = 1;
 									u.emptyHtml(list), orderList(data.data || []);
+								}else if(data.code == 500 && "未登录" == data.msg){
+									u.goLogin();
 								}else{
 									_.toast(data.msg || '服务器异常');
 								}
@@ -59,6 +61,8 @@
 								if (data.code  == 0) {
 									page++;
 									orderList(data.data || []);
+								}else if(data.code == 500 && "未登录" == data.msg){
+									u.goLogin();
 								} else {
 									_.toast(data.msg ||'服务器异常');
 								}
