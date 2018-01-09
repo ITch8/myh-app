@@ -14,27 +14,27 @@
 			<h1 id="title" class="mui-title">联系我们</h1>
 		</header>
 		<div class="mui-content">
-			<p class="main-font-color">如果您是医生，希望加入到我们平台中来，请填写以下申请表单：</p>
+			<p class="main-font-color">如果您是医生，希望进一步了解我们平台，请在下方填写联系方式：</p>
 			<form class="mui-input-group">
 				<div class="mui-input-row">
-					<label><span class="star">*</span> 姓&ensp;&ensp;&ensp;&ensp;名:</label>
-					<input type="text" id="content_1" maxlength="10" placeholder="请输入姓名">
+					<label><span class="star">*</span>&ensp;姓 名:</label>
+					<input type="text" id="content_1" maxlength="10">
 				</div>
 				<div class="mui-input-row">
-					<label><span class="star">*</span> 就职医院:</label>
-					<input type="text" id="content_2" maxlength="20" placeholder="请输入就职医院">
+					<label><span class="star">*</span>&ensp;专 科:</label>
+					<input type="text" id="content_3" maxlength="20">
 				</div>
 				<div class="mui-input-row">
-					<label><span class="star">*</span> 科&ensp;&ensp;&ensp;&ensp;室:</label>
-					<input type="text" id="content_3" maxlength="20" placeholder="请输入科室">
+					<label><span class="star">*</span>&ensp;电 话:</label>
+					<input type="tel" id="content_5" maxlength="15">
 				</div>
 				<div class="mui-input-row">
-					<label><span class="star">*</span> 邮箱地址:</label>
-					<input type="text" id="content_4" maxlength="30" placeholder="请输入邮箱地址">
+					<label>&emsp;电 邮:</label>
+					<input type="tel" id="content_4" maxlength="20">
 				</div>
 				<div class="mui-input-row">
-					<label><span class="star">*</span> 电&ensp;&ensp;&ensp;&ensp;话:</label>
-					<input type="tel" id="content_5" maxlength="11" placeholder="请输入电话">
+					<label>&emsp;医 院:</label>
+					<input type="text" id="content_2" maxlength="30">
 				</div>
 			</form>
 			<div class="mui-input-row" style="margin: 15px 15px 0px 15px;">
@@ -64,17 +64,13 @@
 					privateToken = w.getItem("privateToken");
 					if(u.isNull(content_1Obj.value)) {
 						_.toast("请输入您的姓名");
-					} else if(u.isNull(content_2Obj.value)) {
-						_.toast("请输入您的就职医院");
 					} else if(u.isNull(content_3Obj.value)) {
 						_.toast("请输入您的科室");
-					} else if(u.isNull(content_4Obj.value)) {
-						_.toast("请输入您的邮箱地址");
 					} else if(u.isNull(content_5Obj.value)) {
 						_.toast("请输入您的电话");
 					}else{
 						pdata.privateToken = privateToken;
-						pdata.content = "医生姓名：" + content_1Obj.value + ";    就职医院:" + content_2Obj.value + ";    科室：" + content_3Obj.value + ";    邮箱地址:" + content_4Obj.value + ";    电话:" + content_5Obj.value + ";    备注:" + content_6Obj.value;
+						pdata.content = "医生姓名：" + content_1Obj.value + ";医院:" + content_2Obj.value + ";科室：" + content_3Obj.value + ";电邮:" + content_4Obj.value + ";电话:" + content_5Obj.value + ";    备注:" + content_6Obj.value;
 						u.mypost("user_center/feedback",pdata,true,function(data){
 							if(data.code == 0){
 							    _.toast("提交成功");

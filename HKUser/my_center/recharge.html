@@ -133,6 +133,7 @@
 			    }
 				pdata.amount = totalObj.value * 100;//支付金额(totalObj.value * 100)
 				u.mypost('user_pay/recharge',pdata, true, function(data) {
+					console.log("result========="+data.data.alipayReqStr);
 					//支付宝支付
 					if(id=='alipay'){
 						plus.payment.request(pays[id],data.data.alipayReqStr,function(result){
